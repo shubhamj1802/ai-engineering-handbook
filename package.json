@@ -4,14 +4,14 @@
   "private": true,
   "description": "AI Engineering Handbook - Python to Production Agentic AI. Interactive learning platform.",
   "scripts": {
-    "dev": "next dev",
+    "dev": "cross-env NODE_OPTIONS=--use-system-ca next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "check:content": "node scripts/check-content.mjs",
     "verify": "node scripts/check-content.mjs && tsc --noEmit && next build",
-    "check:db": "node scripts/check-db.mjs"
+    "check:db": "node --use-system-ca scripts/check-db.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "1.0.2",
@@ -34,6 +34,7 @@
     "@types/react": "19.2.0",
     "@types/react-dom": "19.2.0",
     "autoprefixer": "10.4.20",
+    "cross-env": "10.1.0",
     "postcss": "8.4.49",
     "tailwindcss": "3.4.19",
     "typescript": "5.7.3"

@@ -152,6 +152,26 @@ npm run verify           # content + types + build
 
 ---
 
+## Troubleshooting
+
+**`fetch failed` / `UNABLE_TO_GET_ISSUER_CERT_LOCALLY` when connecting to the database**
+
+You are on a network that inspects TLS (common on corporate VPNs). A proxy re-signs HTTPS
+connections with an internal root certificate that Windows trusts but Node.js does not, since
+Node ships its own CA bundle.
+
+The `dev` and `check:db` scripts already pass `--use-system-ca`, which tells Node to use the
+operating system's trust store instead. If you run Node directly, add the same flag:
+
+```bash
+node --use-system-ca your-script.mjs
+```
+
+This affects local development only. Hosting platforms have direct internet access and are
+unaffected.
+
+---
+
 ## Adding or editing lessons
 
 Lessons are markdown files in `content/<phase-id>/<slug>.md`. Adding a file is all that is
