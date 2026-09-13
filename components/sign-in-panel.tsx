@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { AlertTriangle, CheckCircle2, Cloud, Laptop, ShieldCheck } from 'lucide-react';
@@ -7,11 +8,12 @@ import { GoogleMark } from './top-bar';
 
 const ERROR_COPY: Record<string, string> = {
   Configuration:
-    'Google sign-in is not configured on this instance. Add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET to .env.local and restart the dev server.',
+    'Sign-in could not start. This usually means the page was opened directly or reloaded mid-flow — use the button below rather than a bookmarked link.',
   AccessDenied: 'That account was not allowed to sign in.',
   Verification: 'The sign-in link expired. Try again.',
   OAuthCallback:
-    'Google rejected the callback. Check that http://localhost:3000/api/auth/callback/google is listed as an authorised redirect URI.',
+    'Google rejected the callback. The redirect URI registered for this app does not match where you are signed in from.',
+  OAuthSignin: 'Could not reach Google. Check your connection and try again.',
 };
 
 export function SignInPanel({
@@ -24,6 +26,10 @@ export function SignInPanel({
   callbackUrl: string;
 }) {
   const { data: session } = useSession();
+  // Read after mount: the server has no window, and hardcoding localhost would
+  // print the wrong redirect URI on a deployed instance.
+  const [origin, setOrigin] = useState('');
+  useEffect(() => setOrigin(window.location.origin), []);
 
   if (session?.user) {
     return (
@@ -49,7 +55,7 @@ export function SignInPanel({
         <h1 className="mt-4 text-xl font-semibold tracking-tight">Sign in to the handbook</h1>
         <p className="mt-1.5 text-[13.5px] leading-relaxed text-[var(--text-muted)]">
           Use your Gmail or Google Workspace account to keep lesson progress and bookmarks across
-          browsers on this machine.
+          every browser and device you read on.
         </p>
       </div>
 
@@ -91,7 +97,7 @@ GOOGLE_CLIENT_SECRET=...`}
             </pre>
             <p className="mt-3 text-[12px] text-[var(--text-dim)]">
               Authorised redirect URI:{' '}
-              <code className="font-mono">http://localhost:3000/api/auth/callback/google</code>
+              <code className="font-mono">{origin}/api/auth/callback/google</code>
             </p>
           </div>
         )}
@@ -103,8 +109,8 @@ GOOGLE_CLIENT_SECRET=...`}
           </li>
           <li className="flex gap-2.5">
             <Laptop size={14} className="mt-0.5 shrink-0 text-[var(--accent)]" />
-            This app runs locally. Progress files stay in{' '}
-            <code className="font-mono text-[11px]">.data/progress/</code> on your machine.
+            Progress follows you across browsers and devices. Without signing in it is kept in
+            this browser only.
           </li>
           <li className="flex gap-2.5">
             <ShieldCheck size={14} className="mt-0.5 shrink-0 text-[var(--accent)]" />
