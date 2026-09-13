@@ -1,0 +1,28 @@
+# Licence for the lesson content
+
+The application code in this repository is licensed under the MIT Licence
+(see LICENSE).
+
+Everything under `content/` - the 82 lesson markdown files, their text, code
+samples, diagrams, exercises and quizzes - is licensed separately under the
+
+    Creative Commons Attribution-ShareAlike 4.0 International
+    (CC BY-SA 4.0)
+
+Full text: https://creativecommons.org/licenses/by-sa/4.0/legalcode
+
+In short, you are free to:
+
+  Share  - copy and redistribute the material in any medium or format
+  Adapt  - remix, transform and build upon the material, for any purpose,
+           including commercially
+
+Under these terms:
+
+  Attribution - give appropriate credit and link back to this repository,
+                and indicate if changes were made.
+  ShareAlike  - if you remix or build upon the material, you must distribute
+                your contributions under this same licence.
+
+No additional restrictions - you may not apply legal terms or technological
+measures that legally restrict others from doing anything the licence permits.

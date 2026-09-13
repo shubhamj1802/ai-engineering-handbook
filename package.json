@@ -1,0 +1,40 @@
+{
+  "name": "ai-engineering-handbook",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI Engineering Handbook - Python to Production Agentic AI. Interactive learning platform.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "check:content": "node scripts/check-content.mjs",
+    "verify": "node scripts/check-content.mjs && tsc --noEmit && next build"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "1.0.2",
+    "clsx": "2.1.1",
+    "gray-matter": "4.0.3",
+    "highlight.js": "11.12.0",
+    "lucide-react": "1.45.0",
+    "markdown-it": "14.1.0",
+    "markdown-it-anchor": "9.2.0",
+    "mermaid": "12.0.0",
+    "next": "15.5.25",
+    "next-auth": "5.0.0-beta.32",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "14.1.2",
+    "@types/node": "22.10.2",
+    "@types/react": "19.2.0",
+    "@types/react-dom": "19.2.0",
+    "autoprefixer": "10.4.20",
+    "postcss": "8.4.49",
+    "tailwindcss": "3.4.19",
+    "typescript": "5.7.3"
+  }
+}

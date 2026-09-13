@@ -1,0 +1,5 @@
+# Normalise line endings. A stray CR breaks the markdown callout parser.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.ico binary
