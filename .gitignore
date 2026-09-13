@@ -16,3 +16,8 @@ build.log
 dev.log
 *.log
 page.html
+
+.vercel
+.env*
+deploy.log
+.vercel
