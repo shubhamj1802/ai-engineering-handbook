@@ -55,7 +55,7 @@ public repo is public forever, even after you delete it.
 
 1. Go to <https://neon.tech> and sign up (GitHub login works, no card needed).
 2. **Create project** → any name → pick the region closest to your users.
-3. On the dashboard, find **Connection string** and choose the **Pooled connection**.
+3. On the project dashboard click **Connect**, and choose the **Pooled connection**.
    It looks like:
 
    ```
@@ -65,11 +65,33 @@ public repo is public forever, even after you delete it.
 4. Copy it. You will paste it into Vercel in step 4.
 
 The `progress` table is created automatically the first time someone saves progress —
-there is no migration to run.
+there is no migration to run, and no schema files to deploy.
+
+**Verify the string before you deploy.** Paste it into `DATABASE_URL` in your local
+`.env.local`, then:
+
+```bash
+npm run check:db
+```
+
+That connects, creates the table, round-trips a row and deletes it. It prints the host but
+never the password, so the output is safe to share. A `PASS` line means Vercel will work too.
 
 > **⚠️ Warning — Use the *pooled* connection string**
 > The unpooled one opens a new connection per serverless function invocation and will exhaust
-> Neon's connection limit under even light traffic. The pooled host has `-pooler` in it.
+> Neon's connection limit under even light traffic. The pooled host has `-pooler` in it, and
+> `npm run check:db` warns you if you used the wrong one.
+
+> **ℹ️ Note — Ignore Neon's "Set up with your coding agent" prompt**
+> That flow installs a global CLI, an MCP server and a schema-as-code deploy pipeline. This
+> app needs none of it: it has one table that it creates itself. (As of this writing the Neon
+> CLI also fails to install — it depends on `@hono/node-server@2.0.4`, which was never
+> published.) All you need from Neon is the connection string.
+
+> **ℹ️ Note — Free-tier compute sleeps**
+> Neon's free plan scales to zero after a few minutes idle, so the first progress save after
+> a quiet period takes an extra second or so while the compute wakes. Page loads are
+> unaffected — lesson pages are static and never touch the database.
 
 ---
 

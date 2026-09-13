@@ -76,8 +76,8 @@ because these APIs change often.
 ## Google (Gmail) sign-in
 
 Sign-in is **optional**. Without it, progress is stored in the browser only. With it,
-progress is stored per account in `.data/progress/` on this machine, so it survives across
-browsers and profiles.
+progress is stored per account so it follows you across browsers, profiles and devices —
+in Postgres when `DATABASE_URL` is set, otherwise in `.data/progress/` on this machine.
 
 ### 1. Create an OAuth client
 
@@ -125,12 +125,16 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 
 | Data | Where | Notes |
 | --- | --- | --- |
-| Completed lessons, bookmarks | `.data/progress/<sha256 of email>.json` | filenames are hashed |
+| Completed lessons, bookmarks (production) | Postgres, keyed by `sha256(email)` | no email is stored |
+| Completed lessons, bookmarks (local) | `.data/progress/<sha256 of email>.json` | filenames are hashed |
 | Session | an encrypted JWT cookie | signed with `AUTH_SECRET` |
-| Name, email, avatar | the session cookie only | never written to disk |
+| Name, email, avatar | the session cookie only | never persisted server-side |
 
-`.data/` and `.env.local` are gitignored. Nothing leaves the machine except the OAuth
-handshake with Google.
+The database key is a SHA-256 hash of the lowercased email, so a full database dump contains
+no user identities — only opaque hashes and lesson IDs.
+
+`.data/` and `.env.local` are gitignored. Locally, nothing leaves the machine except the
+OAuth handshake with Google.
 
 ---
 
@@ -142,6 +146,7 @@ npm run build            # production build
 npm start                # serve the production build
 npm run typecheck        # tsc --noEmit
 npm run check:content    # lint the markdown: frontmatter, quizzes, fences, callouts
+npm run check:db         # verify DATABASE_URL connects (safe: never prints the password)
 npm run verify           # content + types + build
 ```
 
