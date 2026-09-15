@@ -9,6 +9,10 @@ prereqs: ["From Symbolic AI to Foundation Models"]
 keyConcepts: ["token", "context window", "temperature", "top-p", "hallucination", "in-context learning"]
 ---
 
+:::note In one line
+**Most confusion about AI is vocabulary, not difficulty.** Learn these words properly and the papers, docs and job adverts all become readable.
+:::
+
 ## Why this matters
 
 These words appear in every API parameter, every cost calculation and every incident

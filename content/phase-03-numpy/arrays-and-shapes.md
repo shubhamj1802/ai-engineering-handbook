@@ -9,6 +9,10 @@ prereqs: ["Lists and Tuples", "Comprehensions and Generator Expressions"]
 keyConcepts: ["ndarray", "shape", "dtype", "axis", "reshape", "view"]
 ---
 
+:::note In one line
+**A NumPy array is a grid of one type, and its shape is the thing you will spend your time reasoning about.** Most errors are shape errors.
+:::
+
 ## Why this matters
 
 An embedding is a NumPy array. A batch of embeddings is a 2-D array. A similarity search is

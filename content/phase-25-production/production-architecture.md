@@ -9,6 +9,10 @@ prereqs: ["Evaluating Agents and Gating Releases", "Logging, Configuration, HTTP
 keyConcepts: ["FastAPI", "streaming", "background jobs", "caching", "rate limiting", "Docker"]
 ---
 
+:::note In one line
+**Everything from the whole handbook, assembled and deployable.** API, queue, cache, limits, fallbacks and cost control.
+:::
+
 ## Why this matters
 
 Everything so far produces answers. This phase produces a **service**: something with an SLO,
@@ -411,7 +415,7 @@ class AnswerCache:
     @staticmethod
     def key(tenant_id: str, question: str) -> str:
         normalised = re.sub(r"\s+", " ", question.strip().lower())
-        digest = hashlib.sha256(f"{tenant_id} {normalised}".encode()).hexdigest()[:32]
+        digest = hashlib.sha256(f"{tenant_id}\0{normalised}".encode()).hexdigest()[:32]
         return f"answer:{digest}"
 
     async def get(self, key: str) -> dict | None:

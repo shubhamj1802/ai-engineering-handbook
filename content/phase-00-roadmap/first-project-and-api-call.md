@@ -9,6 +9,11 @@ prereqs: ["Development Environment — Python, uv, Git, VS Code"]
 keyConcepts: ["environment variables", ".env", "config module", "HTTP client", "timeouts"]
 ---
 
+:::note In one line
+**Secrets live in the environment, never in your code.** You keep them in a `.env` file that
+Git ignores, load them once into a settings object, and the rest of your app just reads that.
+:::
+
 ## Why this matters
 
 Every AI application you build will call an API with a secret key. Doing this correctly on

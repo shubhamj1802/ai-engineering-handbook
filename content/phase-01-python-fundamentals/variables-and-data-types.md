@@ -9,6 +9,10 @@ prereqs: ["A working Python environment (Phase 0)"]
 keyConcepts: ["variable", "object", "type", "mutability", "f-string"]
 ---
 
+:::note In one line
+**A variable is a label you stick on a value, not a box you put a value into.** Two labels can point at the same thing — and that one fact explains a whole family of confusing bugs.
+:::
+
 ## Why this matters
 
 Everything else in Python — every DataFrame, every model output, every agent state object —
@@ -18,18 +22,76 @@ Phase 4 when a Pandas operation mysteriously changes data you thought you had co
 
 ## Mental Model
 
-A variable is **not a box you put a value in**. It is a **label you stick on an object**.
+Most people picture a variable as a box with a value inside it. That picture will mislead you.
 
-```mermaid
-flowchart LR
-  A["a"] --> OBJ["list object<br/>[1, 2, 3]<br/>id: 0x7f3c"]
-  B["b"] --> OBJ
-  C["c"] --> OBJ2["int object<br/>42"]
+The real picture: **the value sits in memory, and the variable is a sticky label pointing at it.**
+
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 270" role="img" aria-label="Diagram: labels a and b both point at the same list object in memory, so changing the list through a is visible through b. A separate label c points at its own number object.">
+  <defs>
+    <marker id="vd-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--accent)"/>
+    </marker>
+    <marker id="vd-g" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+  </defs>
+
+  <text class="dg-sub" x="60" y="22" text-anchor="middle">labels</text>
+  <text class="dg-sub" x="440" y="22" text-anchor="middle">objects in memory</text>
+
+  <rect x="20" y="40" width="80" height="34" rx="17" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
+  <text class="dg-mono" x="60" y="62" text-anchor="middle" fill="var(--accent)">a</text>
+
+  <rect x="20" y="92" width="80" height="34" rx="17" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
+  <text class="dg-mono" x="60" y="114" text-anchor="middle" fill="var(--accent)">b</text>
+
+  <rect x="20" y="184" width="80" height="34" rx="17" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.5"/>
+  <text class="dg-mono" x="60" y="206" text-anchor="middle">c</text>
+
+  <rect x="300" y="52" width="280" height="76" rx="12" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="dg-mono"  x="322" y="80">[1, 2, 3]</text>
+  <text class="dg-sub"   x="322" y="100">one list · can be changed</text>
+  <text class="dg-sub"   x="322" y="117">both labels see every change</text>
+
+  <rect x="300" y="170" width="280" height="62" rx="12" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.5"/>
+  <text class="dg-mono"  x="322" y="196">42</text>
+  <text class="dg-sub"   x="322" y="216">a number · can never be changed</text>
+
+  <path d="M100,57 L294,80" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#vd-a)"/>
+  <path d="M100,109 L294,100" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#vd-a)"/>
+  <path d="M100,201 L294,201" stroke="var(--text-muted)" stroke-width="1.6" fill="none" marker-end="url(#vd-g)"/>
+
+  <text class="dg-sub" x="330" y="258" text-anchor="middle">Two labels, one list. There is no second copy anywhere.</text>
+</svg>
+<figcaption>
+<strong>This is the whole lesson.</strong> After <code>b = a</code> there is still only one
+list. Change it through <code>a</code> and <code>b</code> shows the change too — because
+they were never separate things.
+</figcaption>
+</figure>
+
+See it happen:
+
+```python
+a = [1, 2, 3]
+b = a              # NOT a copy - just a second label on the same list
+a.append(4)
+
+print(b)           # [1, 2, 3, 4]   <- b changed too
+print(a is b)      # True           <- same object, not just equal
+
+c = a.copy()       # THIS makes a real second list
+a.append(5)
+print(c)           # [1, 2, 3, 4]   <- unaffected
 ```
 
-If `a` and `b` label the same list and you change the list through `a`, then `b` sees the
-change — because there is only one list. This is the single most important idea in this
-lesson.
+:::warning Why you should care now
+This is the same bug that bites people in Phase 4, when a Pandas operation changes data they
+thought they had copied. The rule is simple and worth memorising:
+
+**Assignment never copies. It only adds another label.**
+:::
 
 ## Core Concepts
 

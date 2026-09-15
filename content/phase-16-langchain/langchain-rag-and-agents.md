@@ -9,6 +9,10 @@ prereqs: ["LangChain — Models, Messages, Structured Output and LCEL", "RAG fro
 keyConcepts: ["loaders", "text splitters", "retriever", "create_agent", "middleware", "AgentState"]
 ---
 
+:::note In one line
+**Everything you built by hand, now in five lines.** Worth knowing both, so you can debug when the five lines misbehave.
+:::
+
 ## Why this matters
 
 This is where a framework pays off most: fifteen document loaders, a dozen vector store

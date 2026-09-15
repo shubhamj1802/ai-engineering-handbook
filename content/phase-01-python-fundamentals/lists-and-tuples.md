@@ -5,9 +5,13 @@ difficulty: Beginner
 duration: 15
 badges: ["Hands-on"]
 summary: Ordered collections — building, slicing, sorting and copying them safely, and knowing when a tuple is the better choice.
-prereqs: ["Variables and Data Types", "Strings"]
+prereqs: ["Variables and Data Types", "Strings — The Material Prompts Are Made Of"]
 keyConcepts: ["list", "tuple", "slicing", "sort", "shallow copy", "unpacking"]
 ---
+
+:::note In one line
+**Lists can be changed, tuples cannot.** Reach for a list when you are collecting things, and a tuple when the shape is fixed and should stay that way.
+:::
 
 ## Why this matters
 

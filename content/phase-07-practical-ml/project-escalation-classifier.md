@@ -9,6 +9,10 @@ prereqs: ["Evaluation, Pipelines and Hyperparameter Tuning"]
 keyConcepts: ["end-to-end ML", "feature engineering", "model card", "error analysis", "artifact"]
 ---
 
+:::note In one line
+**A first end-to-end build: raw data in, trained model out, saved to disk.** The plumbing, not the maths, is what takes the time.
+:::
+
 ## Why this matters
 
 This is the workflow you will repeat for every tabular problem, and it is also the model

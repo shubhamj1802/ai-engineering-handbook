@@ -9,6 +9,10 @@ prereqs: ["LangGraph — Persistence, Interrupts and Multi-Agent Graphs", "Guard
 keyConcepts: ["working memory", "episodic memory", "semantic memory", "summarisation", "retention"]
 ---
 
+:::note In one line
+**Short-term memory is this conversation; long-term memory is what you keep about a user.** Mixing them up causes both bugs and privacy problems.
+:::
+
 ## Why this matters
 
 Memory is what makes an assistant feel competent rather than amnesiac — and it is the fastest

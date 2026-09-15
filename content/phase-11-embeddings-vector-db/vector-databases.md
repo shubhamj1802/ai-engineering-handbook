@@ -9,6 +9,10 @@ prereqs: ["Embeddings, Similarity and Chunking"]
 keyConcepts: ["ANN", "HNSW", "IVF", "metadata filter", "hybrid search", "multi-tenancy"]
 ---
 
+:::note In one line
+**A vector database is an index that finds the nearest points fast.** Start with the simplest one that works; you can move later.
+:::
+
 ## Why this matters
 
 "Which vector database?" is the most-asked and least-important question in RAG. Chunking and

@@ -9,6 +9,10 @@ prereqs: ["groupby, Joins, Reshaping and Time Series"]
 keyConcepts: ["figure", "axes", "line/bar/scatter/hist", "subplots", "annotation"]
 ---
 
+:::note In one line
+**A chart should answer one question.** If you cannot say which question, the chart is decoration.
+:::
+
 ## Why this matters
 
 You will use charts three ways in this handbook: to understand a dataset before modelling

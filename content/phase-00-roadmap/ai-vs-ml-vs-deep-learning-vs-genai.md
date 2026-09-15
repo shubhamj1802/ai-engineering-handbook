@@ -2,268 +2,176 @@
 title: AI vs ML vs Deep Learning vs Generative AI
 order: 2
 difficulty: Beginner
-duration: 12
+duration: 10
 badges: ["Read once, refer often"]
-summary: Precise definitions for the words everyone uses loosely — plus LLMs, RAG, agents and agentic AI — so the rest of the handbook can be unambiguous.
+summary: The words everyone mixes up, sorted out once — AI, ML, deep learning, generative AI, LLMs, RAG and agents — with a picture that makes the nesting obvious.
 prereqs: ["What is AI Engineering?"]
 keyConcepts: ["AI", "ML", "deep learning", "generative AI", "LLM", "RAG", "agent"]
 ---
 
+:::note In one line
+**These words are boxes inside boxes, not synonyms.** All deep learning is machine learning.
+All machine learning is AI. But plenty of AI is neither.
+:::
+
 ## Why this matters
 
-These terms are nested, not synonymous. Using them loosely leads to real engineering
-mistakes: reaching for a language model when logistic regression is the correct tool,
-calling a two-step chain an "agent" and then wondering why it needs a supervisor, or
-promising a stakeholder "AI" when what you will deliver is a rules engine.
+Mixing these up is not just sloppy talk. It causes real mistakes:
 
-## Mental Model
+- Reaching for a **language model** when a simple formula would be better, faster and free
+- Calling a two-step script an **"agent"**, then wondering why it needs a supervisor
+- Promising someone **"AI"** when you are going to deliver a list of `if` statements
 
-They are concentric, with generative AI as a *capability* that cuts across the inner rings.
+Ten minutes here saves a lot of confusion later.
 
-```mermaid
-flowchart TB
-  subgraph AI["ARTIFICIAL INTELLIGENCE — any system that performs tasks requiring intelligence"]
-    subgraph ML["MACHINE LEARNING — behaviour learned from data, not hand-coded"]
-      subgraph DL["DEEP LEARNING — many-layered neural networks"]
-        GEN["GENERATIVE AI<br/>models that produce new content"]
-        LLM["LLMs<br/>generative models over text"]
-      end
-      CLASSIC["Classical ML<br/>regression · trees · SVM · k-means"]
-    end
-    RULES["Symbolic / rule-based AI<br/>expert systems · search · planning"]
-  end
-  GEN --- LLM
-```
+## The picture
 
-## Core Concepts
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 360" role="img" aria-label="Diagram: nested boxes. Artificial intelligence is the outermost box and contains rule-based AI and machine learning. Machine learning contains classical machine learning and deep learning. Deep learning contains generative AI, which contains large language models.">
+  <rect x="10" y="10" width="640" height="300" rx="16" fill="none" stroke="var(--border-strong)" stroke-width="2"/>
+  <text class="dg-label" x="28" y="36">ARTIFICIAL INTELLIGENCE</text>
+  <text class="dg-sub"   x="28" y="52">any machine doing something we'd call smart</text>
 
-### Artificial Intelligence
+  <rect x="28" y="228" width="240" height="62" rx="10" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.5"/>
+  <text class="dg-label" x="44" y="252">Rule-based AI</text>
+  <text class="dg-sub"   x="44" y="270">chess engines, expert systems</text>
+  <text class="dg-sub"   x="44" y="284">no learning at all</text>
 
-The broadest term: any technique that makes a machine do something we would call
-intelligent. A chess engine doing minimax search is AI. A 1980s expert system of
-`if`-rules for diagnosing infections is AI. No learning is required.
+  <rect x="286" y="64" width="350" height="226" rx="14" fill="none" stroke="var(--accent-3)" stroke-width="2"/>
+  <text class="dg-label" x="302" y="88" fill="var(--accent-3)">MACHINE LEARNING</text>
+  <text class="dg-sub"   x="302" y="104">learned from examples, not hand-written</text>
 
-### Machine Learning
+  <rect x="302" y="216" width="150" height="60" rx="10" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.5"/>
+  <text class="dg-label" x="316" y="240">Classical ML</text>
+  <text class="dg-sub"   x="316" y="257">trees, regression</text>
+  <text class="dg-sub"   x="316" y="270">still the right tool often</text>
 
-A subset of AI in which behaviour is **learned from examples** rather than programmed.
-You supply data and a loss function; the algorithm finds parameters that minimise the loss.
+  <rect x="470" y="118" width="152" height="158" rx="12" fill="none" stroke="var(--accent-2)" stroke-width="2"/>
+  <text class="dg-label" x="484" y="140" fill="var(--accent-2)">DEEP LEARNING</text>
+  <text class="dg-sub"   x="484" y="155">neural networks</text>
 
-- **Supervised**: learn a mapping from inputs to known labels (spam / not spam, house price).
-- **Unsupervised**: find structure with no labels (customer segments, anomalies).
-- **Reinforcement**: learn a policy from rewards received by acting in an environment.
+  <rect x="484" y="168" width="124" height="94" rx="10" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="dg-label" x="496" y="190" fill="var(--accent)">Generative AI</text>
+  <text class="dg-sub"   x="496" y="205">makes new content</text>
 
-Classical ML — linear and logistic regression, decision trees, random forests, gradient
-boosting, SVMs, k-means — is still the correct answer for most tabular business problems.
-It is fast, cheap, interpretable and deterministic. Phases 6–7 cover it properly.
+  <rect x="496" y="216" width="100" height="34" rx="8" fill="var(--panel)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="dg-label" x="546" y="237" text-anchor="middle" fill="var(--accent)">LLMs</text>
 
-### Deep Learning
+  <text class="dg-sub" x="330" y="336">Read it inwards: every box is a special case of the box around it.</text>
+</svg>
+<figcaption>
+<strong>LLMs sit four layers deep.</strong> When someone says "we should use AI", ask which
+box they mean — the answer changes the cost, the speed and the accuracy by orders of magnitude.
+</figcaption>
+</figure>
 
-A subset of ML using neural networks with many layers. Its superpower is **representation
-learning**: instead of you engineering features ("length of the email", "number of
-capitals"), the network learns useful features itself from raw-ish input — pixels,
-waveforms, tokens. This is what unlocked vision, speech and language. It costs data and
-compute, and gives up interpretability. Phase 9.
+## The four boxes, plainly
 
-### Generative AI
+### Artificial Intelligence — the outer box
 
-Models that produce new content rather than a label or a number. Instead of learning
-`P(label | input)`, a generative model learns the distribution of the data itself and can
-sample from it: text, images, audio, video, code.
+Any machine doing something that looks intelligent. **Learning is not required.**
 
-| | Discriminative (classical ML, classifiers) | Generative |
+A chess engine that searches ahead is AI. It never learned anything; someone wrote the rules.
+
+### Machine Learning — learned from examples
+
+Instead of writing the rules, you show the computer examples and it works the rules out.
+
+You do not write "if the email says FREE MONEY, it is spam". You show it 10,000 emails
+already marked spam or not, and it finds the pattern.
+
+### Deep Learning — neural networks with many layers
+
+A particular way of doing machine learning, using layered networks loosely inspired by
+brains. It wins when data is messy and huge: images, audio, language.
+
+It needs a lot of data and a lot of computing power. That is the trade.
+
+### Generative AI — it produces new things
+
+Older models mostly **judged** things: spam or not, £340,000 or £360,000.
+
+Generative models **produce** things: a sentence, an image, a block of code. That is the
+whole difference, and it is why the last few years felt sudden.
+
+:::tip A one-question test
+Ask: *does it pick from options, or does it make something new?*
+
+Picking is classification. Making is generative. Spam filters pick. ChatGPT makes.
+:::
+
+## The words that come after
+
+These are not in the nesting diagram, because they are things you **build**, not types of
+model.
+
+| Word | What it actually is | Built in |
 | --- | --- | --- |
-| Learns | boundary between classes | the data distribution |
-| Outputs | label, score, number | new content |
-| Example | "is this email spam?" | "write a reply to this email" |
-| Evaluation | accuracy, F1, AUC | faithfulness, helpfulness, human/LLM judgement |
+| **LLM** | A generative model trained on text. Takes text, predicts what comes next. | Phase 10 |
+| **RAG** | Search your documents first, then paste the results into the prompt. | Phase 12 |
+| **Agent** | A model in a loop that can use tools and decides when it is finished. | Phase 14 |
+| **Agentic AI** | Agents that plan, work over many steps, and hand off to each other. | Phase 15 |
 
-### Large Language Models
+:::warning "Agent" is the most abused word in this list
+If it runs a fixed sequence of steps, it is a **workflow** — and that is usually better:
+cheaper, faster, easier to debug. It is only an agent if the *model* decides what happens
+next. Phase 14 makes this distinction carefully, because choosing wrong is expensive.
+:::
 
-Generative models over sequences of tokens, built on the transformer architecture, trained
-on enormous text corpora to predict the next token, then aligned to follow instructions.
-Their surprising property is **generality**: one model does translation, summarisation,
-extraction, classification and code generation with no task-specific training — you just
-describe the task. Phase 10.
+## When the boring option wins
 
-### RAG — Retrieval-Augmented Generation
+This is the part most AI courses skip.
 
-A model only knows what was in its training data and what you put in the prompt. RAG is
-the pattern of **searching your own data at query time and inserting the results into the
-prompt**, so answers are grounded in current, private, verifiable sources.
-
-```text
-question → search your documents → put the best chunks in the prompt → answer + citations
-```
-
-It is the single highest-value pattern in applied AI. Phases 12–13.
-
-### Agents and Agentic AI
-
-An **agent** is a loop in which the model chooses actions ("tools") and sees their results,
-repeating until a goal is satisfied. The defining feature is that *the model decides the
-control flow* — which step comes next is not fixed in your code.
-
-**Agentic AI** describes systems built from that primitive: planning, memory, reflection,
-self-correction, and several specialised agents collaborating.
-
-```mermaid
-flowchart LR
-  A["LLM call<br/>one prompt, one answer"] --> B["Chain<br/>fixed sequence of calls"]
-  B --> C["Workflow<br/>branches your code decides"]
-  C --> D["Agent<br/>model decides next step"]
-  D --> E["Multi-agent<br/>several agents, a topology"]
-```
-
-Move right only when the problem forces you to. Each step right adds capability and
-subtracts predictability, speed and budget control. Phases 14–15, 23.
-
-## Real-World Example
-
-One business question, four legitimate solutions at four levels:
-
-> "Which of last month's 20,000 support tickets should we escalate?"
-
-| Approach | Technique | When it's right |
+| Your problem | Best tool | Why |
 | --- | --- | --- |
-| Rules | `if "outage" in text or priority == "P1"` | Criteria are known, stable, auditable |
-| Classical ML | TF-IDF + logistic regression on 5,000 labelled tickets | You have labels; you need fast, cheap, explainable scoring |
-| Deep learning | Fine-tuned transformer classifier | Labels exist, language is subtle, volume justifies the effort |
-| Generative AI | LLM with a rubric in the prompt, returning structured JSON | Few or no labels, criteria change often, you need a rationale |
+| Is this transaction fraud? | Classical ML | Faster, cheaper, and you can explain the decision |
+| Predict next month's sales | Classical ML | Numbers in, number out — no language involved |
+| Sort support emails into 5 buckets | Start classical | An LLM works, but costs 100× more per email |
+| Answer questions about our handbook | LLM + RAG | Needs language understanding |
+| Write a first-draft reply | LLM | Generation is the whole point |
+| Convert dates to a standard format | **Plain code** | Seriously. No model. A regex. |
 
-A strong AI engineer can argue for any of these — and will often ship the rules-plus-LLM
-hybrid: rules catch the obvious 70%, the model handles the ambiguous remainder, and the
-model's decisions are sampled and reviewed to build the labelled set that lets you train
-the cheap classifier later.
+:::mistake The expensive habit
+Using an LLM for something a `for` loop could do. It is slower, costs money per call, and
+occasionally gets it wrong — whereas the loop is instant, free and correct every time.
 
-## Common Mistakes
-
-:::mistake Vocabulary errors that cost real money
-- **"We need AI" when you need a query.** If a SQL `GROUP BY` answers it, use SQL.
-- **Calling every LLM call an agent.** If your code decides every step, it is a workflow.
-  Say so — it sets correct expectations about latency, cost and reliability.
-- **Assuming an LLM "knows" your data.** It does not. Without retrieval it is guessing
-  from training data with a cut-off date.
-- **Assuming fine-tuning is the fix for wrong facts.** Fine-tuning teaches *form and
-  behaviour*; retrieval supplies *facts*. Reaching for fine-tuning to fix hallucinated
-  policy details is the classic expensive mistake.
+Always ask: *could ordinary code do this?* Surprisingly often, yes.
 :::
 
-## Best Practices
-
-1. Choose the least powerful technique that solves the problem. Predictability is a feature.
-2. Name the pattern honestly in design docs: *prompt*, *chain*, *workflow*, *agent*,
-   *multi-agent*.
-3. When someone says "the AI got it wrong", ask which box failed: retrieval, prompt, model,
-   validation, or the tool the model called. They have wildly different fixes.
-
-## Hands-on Exercise
-
-:::exercise Classify five systems
-For each, name the innermost ring that applies (AI / ML / DL / GenAI) and say whether it is
-a prompt, chain, workflow, agent or multi-agent system:
-
-1. A spam filter trained on 100k labelled emails.
-2. A chatbot that answers HR questions from a policy PDF with citations.
-3. A thermostat schedule with `if temp < 19: heat_on`.
-4. A system that reads a bug report, searches the codebase, writes a patch, runs the tests,
-   and opens a pull request if they pass.
-5. Autocomplete in your IDE.
-:::
-
-:::solution Answers
-1. **ML** (probably classical: TF-IDF + Naive Bayes/logreg). A single model call, not even a
-   prompt — no generation involved.
-2. **GenAI/LLM**, and architecturally a **workflow**: retrieve → prompt → validate
-   citations. Your code decides each step; nothing is agentic about it.
-3. **AI** in the loosest sense — a rule. No learning at all.
-4. **GenAI/LLM** as an **agent**: the model chooses search, edit and test actions in a loop
-   whose length is not known in advance, with a hard gate (tests must pass) before the
-   irreversible action (opening the PR).
-5. **DL/GenAI** — a code LLM — used as a single completion call per keystroke batch.
-:::
-
-## Challenge
-
-:::challenge Draw your own boundary
-Take the last feature request you heard at work. Write two one-paragraph designs: one that
-uses no model at all, and one that uses an LLM. For each, state the failure mode, the cost
-per 1,000 requests and how you would test it. Most engineers discover the honest answer is
-a hybrid, and that writing it down makes the trade-off obvious to stakeholders.
-:::
-
-## Interview Questions
-
-:::interview
-1. Is all machine learning AI? Is all AI machine learning?
-2. What exactly makes a model "generative"?
-3. When is fine-tuning the right tool, and when is retrieval?
-4. Define an agent in one sentence, without using the word "autonomous".
-5. Give an example where classical ML beats an LLM in production and explain why.
-:::
-
-## Cheat Sheet
-
-```text
-AI          any machine doing intelligent-seeming work (rules count)
- └ ML       behaviour learned from data
-    ├ Classical   regression, trees, boosting, SVM, k-means  → tabular, cheap, explainable
-    └ Deep        neural nets, learned features               → text, vision, audio
-       └ GenAI    produces new content
-          └ LLM   generative over tokens → the substrate of this handbook
-
-RAG         retrieve your data at query time → ground the answer → cite the source
-Agent       loop: model chooses tool → tool runs → model sees result → repeat → answer
-Agentic AI  planning + memory + reflection + multiple agents on top of that loop
-```
+## Quick check
 
 ```quiz
 [
   {
-    "question": "Which of these is NOT machine learning?",
-    "options": [
-      "A random forest predicting churn",
-      "An expert system of hand-written diagnostic rules",
-      "A fine-tuned BERT classifier",
-      "A k-means customer segmentation"
-    ],
-    "answer": 1,
-    "explanation": "Hand-written rules are AI but involve no learning from data. Everything else derives its behaviour from a training set."
+    "question": "Every deep learning system is also a machine learning system.",
+    "options": ["True", "False"],
+    "answer": 0,
+    "explanation": "Deep learning sits inside machine learning, which sits inside AI. The boxes nest inwards, so anything deep is also ML and also AI."
   },
   {
-    "question": "Your assistant gives a confidently wrong answer about your company's 2026 refund policy. What is the most likely fix?",
-    "options": [
-      "Fine-tune the model on general customer-service transcripts",
-      "Raise the temperature so it explores more",
-      "Add retrieval over the current policy documents and require citations",
-      "Switch to a larger model"
-    ],
-    "answer": 2,
-    "explanation": "Missing facts are a context problem, not a weights problem. Retrieval supplies facts; fine-tuning mostly shapes behaviour and style."
+    "question": "You need to flag transactions as fraud or not, with an explanation for auditors. What should you reach for first?",
+    "options": ["A large language model", "Classical machine learning", "A multi-agent system", "Rule-based AI only"],
+    "answer": 1,
+    "explanation": "It is a classification problem on numeric data, and you need explainability. Classical ML is faster, far cheaper, and its decisions can be explained — all three matter to an auditor."
   },
   {
-    "question": "What distinguishes an agent from a workflow?",
-    "options": [
-      "Agents use bigger models",
-      "In an agent, the model chooses the next step; in a workflow, your code does",
-      "Workflows cannot call tools",
-      "Agents always require multiple models"
-    ],
+    "question": "A script always runs: fetch data, summarise it, email it. Is it an agent?",
+    "options": ["Yes, it uses an LLM", "No, it is a workflow"],
     "answer": 1,
-    "explanation": "Control flow ownership is the distinction, and it is what drives the differences in latency, cost and predictability."
+    "explanation": "The steps are fixed and decided by you, not the model. That is a workflow. It becomes an agent only when the model chooses what to do next."
   }
 ]
 ```
 
 ## Summary
 
-- AI ⊃ ML ⊃ deep learning; generative AI is a capability of (mostly) deep models; LLMs are
-  generative models over text.
-- Classical ML remains the right answer for a large share of business problems.
-- RAG supplies facts; fine-tuning shapes behaviour; prompts shape a single interaction.
-- Prompt → chain → workflow → agent → multi-agent is a ladder of increasing capability and
-  decreasing predictability. Climb it only when forced.
+- The terms nest: AI ⊃ ML ⊃ deep learning ⊃ generative AI ⊃ LLMs.
+- Learning is not required for something to count as AI.
+- Generative means it **makes** things rather than **picks** between them.
+- RAG and agents are things you build, not kinds of model.
+- Ordinary code and classical ML are still the right answer more often than people admit.
 
 ## Next Step
 
-Now that the vocabulary is precise, let's see how the pieces connect into an actual running
-system — the architecture you will keep rebuilding for the rest of the handbook.
+Now that the words are clear, let's see how the pieces fit together into a working system —
+and which parts you will build in which order.

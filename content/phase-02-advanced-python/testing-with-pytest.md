@@ -9,6 +9,10 @@ prereqs: ["Functions", "Modules, Packages and Imports", "Async Python — asynci
 keyConcepts: ["pytest", "fixture", "parametrize", "mock", "test double", "coverage"]
 ---
 
+:::note In one line
+**A test is a sentence about what your code should do, written so a machine can check it.** Write the failing one first.
+:::
+
 ## Why this matters
 
 In an AI system the model is non-deterministic, but **everything around it is not** —

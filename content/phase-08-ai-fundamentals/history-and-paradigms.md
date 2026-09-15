@@ -9,6 +9,10 @@ prereqs: ["What Machine Learning Actually Is"]
 keyConcepts: ["symbolic AI", "expert systems", "representation learning", "transformer", "foundation model"]
 ---
 
+:::note In one line
+**AI has swung between hand-written rules and learning from data for seventy years.** Knowing the swings tells you why today looks the way it does.
+:::
+
 ## Why this matters
 
 Every current debate — will scaling continue, do models reason, is retrieval a crutch — is a

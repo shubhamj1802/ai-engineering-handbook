@@ -9,6 +9,10 @@ prereqs: ["LangGraph — State, Nodes, Edges and Reducers"]
 keyConcepts: ["checkpointer", "thread_id", "interrupt", "Command", "subgraph", "supervisor"]
 ---
 
+:::note In one line
+**A checkpoint lets a graph stop mid-run, wait for a human, and continue later.** That is what makes approval gates possible.
+:::
+
 ## Why this matters
 
 An agent that cannot be paused cannot ask a human for permission. An agent that cannot be

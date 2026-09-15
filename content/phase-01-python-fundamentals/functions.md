@@ -9,6 +9,10 @@ prereqs: ["Control Flow — if, for, while"]
 keyConcepts: ["def", "parameters", "*args", "**kwargs", "scope", "pure function"]
 ---
 
+:::note In one line
+**A function is a name for a job.** Give it clear inputs, one clear output, and no surprises — and never use a list or dict as a default argument, for a reason this lesson shows you.
+:::
+
 ## Why this matters
 
 Functions are the unit of reuse, the unit of testing, and — once you reach Phase 22 — the

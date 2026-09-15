@@ -9,6 +9,10 @@ prereqs: ["The Core Algorithms"]
 keyConcepts: ["precision", "recall", "ROC-AUC", "threshold", "Pipeline", "cross-validation"]
 ---
 
+:::note In one line
+**Accuracy is a trap on unbalanced data.** A model that says no to everything scores 99% when only 1% is a yes.
+:::
+
 ## Why this matters
 
 Choosing a metric *is* choosing what the system optimises for, and choosing a threshold is a

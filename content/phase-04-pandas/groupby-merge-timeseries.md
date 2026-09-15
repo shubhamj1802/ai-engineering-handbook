@@ -9,6 +9,10 @@ prereqs: ["Cleaning, Missing Values and Transformation"]
 keyConcepts: ["groupby", "agg", "transform", "merge", "pivot", "resample"]
 ---
 
+:::note In one line
+**Group, then summarise.** `groupby` splits the table into pieces, computes something on each, and puts the answers back together.
+:::
+
 ## Why this matters
 
 "What is our p95 latency per model per day?" "Which documents get retrieved but never

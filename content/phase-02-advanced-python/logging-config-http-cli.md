@@ -9,6 +9,10 @@ prereqs: ["Errors and Exceptions", "Dataclasses, Properties and Enums", "Async P
 keyConcepts: ["logging", "structured logs", "pydantic-settings", "httpx", "argparse", "correlation id"]
 ---
 
+:::note In one line
+**Never use `print` for anything you want to see in production.** Logging gives you levels, timestamps and somewhere for the output to go.
+:::
+
 ## Why this matters
 
 This is the boring layer that decides whether your system is operable at 3am. When a user

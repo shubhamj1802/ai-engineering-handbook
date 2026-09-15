@@ -9,6 +9,10 @@ prereqs: ["Modules, Packages and Imports", "Testing with pytest"]
 keyConcepts: ["pyproject.toml", "lock file", "ruff", "pre-commit", "CI"]
 ---
 
+:::note In one line
+**A project that others can install and run is a different artefact from a folder of scripts.** This is the difference.
+:::
+
 ## Why this matters
 
 Every project in Phases 7, 12, 17 and 26 ships as a package with a lock file, a test suite

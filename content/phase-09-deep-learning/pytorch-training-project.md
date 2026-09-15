@@ -9,6 +9,10 @@ prereqs: ["Neural Networks from Scratch"]
 keyConcepts: ["tensor", "autograd", "nn.Module", "DataLoader", "optimizer", "checkpoint"]
 ---
 
+:::note In one line
+**Every training loop is the same five lines.** Forward, loss, zero the gradients, backward, step. Everything else is scaffolding.
+:::
+
 ## Why this matters
 
 PyTorch is the language the field writes in. Every model on Hugging Face, every fine-tuning

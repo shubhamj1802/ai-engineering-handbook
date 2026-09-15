@@ -9,6 +9,10 @@ prereqs: ["Control Flow — if, for, while", "Dictionaries and Sets"]
 keyConcepts: ["list comprehension", "dict comprehension", "generator expression", "laziness"]
 ---
 
+:::note In one line
+**A comprehension is a `for` loop that builds a list, written on one line.** Use it when you are transforming or filtering. Go back to a normal loop the moment it stops being readable.
+:::
+
 ## Why this matters
 
 Comprehensions are everywhere in Python code — data cleaning, building prompts, reshaping

@@ -9,6 +9,10 @@ prereqs: ["Functions", "Files, JSON and CSV"]
 keyConcepts: ["module", "package", "__init__.py", "src layout", "circular import"]
 ---
 
+:::note In one line
+**A module is one file, a package is a folder of them.** Imports feel like magic until you see how Python actually searches for files — then they become obvious.
+:::
+
 ## Why this matters
 
 Every project in this handbook from Phase 7 onwards is multi-file. Import errors are the

@@ -9,6 +9,10 @@ prereqs: ["Numbers, Booleans, None and Operators", "Lists and Tuples"]
 keyConcepts: ["if/elif/else", "for", "while", "enumerate", "zip", "break"]
 ---
 
+:::note In one line
+**Three tools, and that is all:** do something `if` a condition holds, repeat `for` each item, repeat `while` something stays true. Everything else is a variation on these.
+:::
+
 ## Why this matters
 
 Control flow is where your program makes decisions: retry or fail, escalate or answer,

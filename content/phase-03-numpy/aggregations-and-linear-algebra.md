@@ -9,6 +9,10 @@ prereqs: ["Indexing, Boolean Masks and Broadcasting"]
 keyConcepts: ["aggregation", "matmul", "norm", "SVD", "default_rng", "reproducibility"]
 ---
 
+:::note In one line
+**`axis` is the one thing to get right.** `axis=0` goes down the columns, `axis=1` goes across the rows.
+:::
+
 ## Why this matters
 
 Cosine similarity is a normalised dot product. A neural network layer is a matrix

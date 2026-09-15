@@ -278,7 +278,7 @@ export const PHASES: PhaseMeta[] = [
   },
   {
     id: 'phase-28-multi-agent-labs',
-    number: 28,
+    number: 27,
     title: 'Multi-Agent Labs',
     group: 'PROJECTS',
     blurb:
@@ -287,7 +287,7 @@ export const PHASES: PhaseMeta[] = [
   },
   {
     id: 'phase-27-reference',
-    number: 27,
+    number: 28,
     title: 'Reference & Maps',
     group: 'REFERENCE',
     blurb: 'Roadmaps, dependency maps, cheat sheets, interview prep and the production checklist.',

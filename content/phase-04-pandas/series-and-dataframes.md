@@ -9,6 +9,10 @@ prereqs: ["Arrays, Shapes and dtypes", "Files, JSON and CSV"]
 keyConcepts: ["Series", "DataFrame", "index", "dtype", "read_csv", "category"]
 ---
 
+:::note In one line
+**A DataFrame is a table; a Series is one column of it.** The index is not decoration - it is how rows line up when you combine tables.
+:::
+
 ## Why this matters
 
 Pandas is where your data actually lives before it becomes features, evaluation results or

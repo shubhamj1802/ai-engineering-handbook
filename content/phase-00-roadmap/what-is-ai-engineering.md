@@ -2,264 +2,226 @@
 title: What is AI Engineering?
 order: 1
 difficulty: Beginner
-duration: 14
+duration: 12
 badges: ["Start here", "Read once, refer often"]
-summary: The discipline of building reliable software on top of probabilistic models — what the job actually involves, and how it differs from data science and ML engineering.
-prereqs: ["None — this is the first page"]
+summary: What the job actually is, in plain language — building reliable software around a model that is sometimes wrong, and how that differs from data science and ML.
+prereqs: []
 keyConcepts: ["AI engineering", "foundation model", "non-determinism", "eval", "agent"]
 ---
 
+:::note In one line
+**AI engineering is normal software engineering, with one unusual part: a component that is sometimes wrong.** Your job is to build everything around that component so the whole system stays useful anyway.
+:::
+
 ## Why this matters
 
-Most people arriving at "AI" think the hard part is the model. It isn't. The model is a
-service you call. The hard part is everything around it: getting the right context into it,
-constraining what it is allowed to do, checking whether its answer was any good, making it
-fast and cheap enough, and making it fail safely when it is wrong — because it *will* be
-wrong.
+Most people think the hard part of AI is the model.
 
-That surrounding work is **AI engineering**, and it is a software engineering discipline.
-If you can write clear Python, model a problem, test your code, and reason about latency,
-cost and failure, you can do this job. This handbook teaches the Python first, then the
-data, then the models, then the systems — in that order, because that is the order in which
-the ideas actually depend on each other.
+It isn't. The model is a service you call, like a payment API. Someone else trained it. You
+send text, you get text back.
 
-## Mental Model
+The hard part is everything around it:
 
-Think of a large language model as a **brilliant, fast, confident intern with no memory,
-no access to your systems, and no accountability**.
+- Getting the **right information** into the model
+- Limiting **what it is allowed to do**
+- **Checking** whether the answer was any good
+- Making it **fast and cheap** enough
+- Making it **fail safely** when it is wrong — because it will be wrong
 
-```mermaid
-flowchart LR
-  U["User request"] --> APP["Your application<br/>(rules, auth, budgets)"]
-  APP --> CTX["Context assembly<br/>retrieval · memory · tools"]
-  CTX --> LLM["Foundation model<br/>(the intern)"]
-  LLM --> VAL["Validation<br/>schema · policy · citations"]
-  VAL --> ACT["Action / answer"]
-  VAL -.->|invalid| CTX
-  ACT --> OBS["Traces · evals · cost"]
-```
+That surrounding work is AI engineering. It is a software job, not a maths job.
 
-Everything you will learn in this handbook sits in one of those boxes:
+**If you can write clear Python, test your code, and think about cost and failure, you can
+do this.** That is the whole entry requirement.
 
-| Box | What you build | Phases |
+## The big picture
+
+Here is the shape of almost every serious AI system. Look at how small the model's box is:
+
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 250" role="img" aria-label="Diagram: a user request flows through your application, context assembly, the model, and a validation step before becoming an answer. Traces and evaluations observe the result, and invalid answers loop back to context assembly.">
+  <defs>
+    <marker id="ae-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+    <marker id="ae-b" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--warn)"/>
+    </marker>
+  </defs>
+
+  <rect class="dg-box" x="8"   y="52" width="112" height="52" rx="9"/>
+  <text class="dg-label" x="64"  y="76" text-anchor="middle">User asks</text>
+  <text class="dg-sub"   x="64"  y="92" text-anchor="middle">a question</text>
+
+  <rect class="dg-box" x="148" y="52" width="122" height="52" rx="9"/>
+  <text class="dg-label" x="209" y="72" text-anchor="middle">Your app</text>
+  <text class="dg-sub"   x="209" y="88" text-anchor="middle">login · rules · budget</text>
+
+  <rect class="dg-box" x="298" y="52" width="122" height="52" rx="9"/>
+  <text class="dg-label" x="359" y="72" text-anchor="middle">Find context</text>
+  <text class="dg-sub"   x="359" y="88" text-anchor="middle">docs · memory · tools</text>
+
+  <rect x="448" y="46" width="104" height="64" rx="10" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="dg-label" x="500" y="72" text-anchor="middle" fill="var(--accent)">The model</text>
+  <text class="dg-sub"   x="500" y="90" text-anchor="middle">you just call it</text>
+
+  <rect class="dg-box" x="448" y="152" width="104" height="52" rx="9"/>
+  <text class="dg-label" x="500" y="172" text-anchor="middle">Check it</text>
+  <text class="dg-sub"   x="500" y="188" text-anchor="middle">is it valid?</text>
+
+  <rect class="dg-box" x="580" y="52" width="72" height="52" rx="9"/>
+  <text class="dg-label" x="616" y="76" text-anchor="middle">Answer</text>
+  <text class="dg-sub"   x="616" y="92" text-anchor="middle">to user</text>
+
+  <path class="dg-arrow" d="M120,78 L142,78" marker-end="url(#ae-a)"/>
+  <path class="dg-arrow" d="M270,78 L292,78" marker-end="url(#ae-a)"/>
+  <path class="dg-arrow" d="M420,78 L442,78" marker-end="url(#ae-a)"/>
+  <path class="dg-arrow" d="M500,110 L500,146" marker-end="url(#ae-a)"/>
+  <path class="dg-arrow" d="M552,170 Q616,170 616,110" marker-end="url(#ae-a)"/>
+  <path d="M448,178 Q359,178 359,110" stroke="var(--warn)" stroke-width="1.6" fill="none" stroke-dasharray="4 3" marker-end="url(#ae-b)"/>
+  <text class="dg-sub" x="392" y="198" fill="var(--warn)">if the answer is bad, try again</text>
+
+  <text class="dg-sub" x="330" y="228" text-anchor="middle">You build every box except the green one.</text>
+</svg>
+<figcaption>
+<strong>The model is one box out of six.</strong> Everything else — the context you feed it,
+the checks on its output, the retry when it fails — is ordinary code that you write.
+</figcaption>
+</figure>
+
+Everything in this handbook fits into one of those boxes:
+
+| Box | What you build | Where you learn it |
 | --- | --- | --- |
-| Your application | Python services, APIs, config, auth | 1–2, 25 |
-| Context assembly | retrieval, embeddings, RAG, memory, tools | 11–13, 21–22 |
-| The model | prompting, sampling, structured output, model choice | 8–10 |
-| Validation | guardrails, schemas, human approval | 19–20 |
-| Action | agents, workflows, multi-agent systems | 14–18, 23 |
-| Observability | tracing, evaluation, cost control | 24–25 |
+| Your app | Python services, APIs, logins | Phases 1–2, 25 |
+| Find context | search, embeddings, RAG, memory | Phases 11–13, 21–22 |
+| The model | prompting, structured output, model choice | Phases 8–10 |
+| Check it | guardrails, schemas, human approval | Phases 19–20 |
+| Answer / act | agents and workflows | Phases 14–18, 26 |
+| Watching it | tracing, evaluation, cost control | Phases 23–24 |
 
-## Core Concepts
+## Three ideas that change how you build
 
-### 1. You are programming with a non-deterministic component
+### 1. The model gives different answers to the same question
 
-A function you write returns the same output for the same input. A model does not. The
-same prompt can produce different words, a different JSON shape, or a confidently wrong
-fact. This single property changes your engineering practice:
+A function you write is predictable. `add(2, 2)` returns `4` every single time.
 
-- **Tests become evaluations.** `assert result == expected` becomes "does this output
-  satisfy these properties, on this dataset, at least this often?" (Phase 24)
-- **Types become runtime contracts.** You validate model output with Pydantic at runtime,
-  because the model is not bound by your type hints. (Phase 19)
-- **Retries and fallbacks are normal.** A malformed response is an expected event, not an
-  exception you forgot to handle. (Phase 10, 25)
+A model is not. The same prompt can give you different words, a different JSON shape, or a
+confident lie. This one fact changes three habits:
+
+| Normal software | AI software |
+| --- | --- |
+| `assert result == expected` | "Is this good enough, often enough?" |
+| Type hints catch mistakes | You check the output at runtime, every time |
+| A retry means something broke | A retry is a normal Tuesday |
+
+:::tip Think of it like a weather forecast
+You would not write `assert forecast == "sunny"`. You would ask whether the forecast is
+right often enough to be useful. Model output works the same way.
+:::
 
 ### 2. Context is the product
 
-Models do not know your documents, your database, your customer, or today's date. Almost
-all of the quality in a serious AI product comes from *what you put in the context window*
-and *what you leave out*. Retrieval-augmented generation (Phase 12) is the systematic
-answer to that problem; memory (Phase 21) and tools (Phase 22) are the others.
+The model does not know your documents, your database, your customer, or today's date.
 
-### 3. Capability is bounded by permission
+It only knows what you put in the message. So almost all of the quality in a real AI
+product comes from **what you put in** and **what you leave out**.
 
-An agent that can call `refund_customer()` can refund the wrong customer. The engineering
-question is never "can the model do it?" but "what is the blast radius when it does the
-wrong thing?" Permissions, sandboxing, budget caps, loop limits and human approval gates
-(Phases 19–20) are the answer, and they are not optional in production.
+This is why retrieval (Phase 12) is such a big topic. Most "the AI is dumb" problems are
+really "the AI never saw the right information" problems.
 
-### 4. Cost and latency are design constraints, not afterthoughts
+### 3. What it can do is what you let it do
 
-A single agent run can make thirty model calls. At scale that is a real bill and a real
-p95 latency. Model selection, caching, streaming, batching, and deciding *not* to use an
-agent when a deterministic workflow would do (Phase 15) are core skills.
+A model cannot delete your database. It can only produce text.
 
-## Real-World Example
+It becomes dangerous when *you* connect that text to something real — a shell, an email
+send, a refund button. Every capability you add is a capability an attacker can try to
+reach through the model.
 
-Here is the anatomy of a real internal tool — "answer support questions from our docs" —
-and where each phase of this handbook shows up.
-
-```text
-support-assistant/
-├── app/
-│   ├── main.py          FastAPI endpoint, auth, rate limits      → Phase 25
-│   ├── config.py        settings from env vars, no secrets in code → Phase 0, 19
-│   ├── retrieval.py     chunking, embeddings, vector search       → Phase 11-13
-│   ├── graph.py         router → RAG → tools → human escalation   → Phase 17
-│   ├── tools.py         order lookup, refund (permission-gated)   → Phase 22
-│   ├── guardrails.py    PII scrub, injection checks, output schema → Phase 19
-│   └── memory.py        conversation state, per-user profile      → Phase 21
-├── evals/
-│   ├── dataset.jsonl    50 real questions + expected behaviour    → Phase 24
-│   └── run_eval.py      faithfulness, relevance, regression gate  → Phase 24
-├── tests/               unit tests for the deterministic parts    → Phase 2
-├── Dockerfile                                                     → Phase 25
-└── pyproject.toml                                                 → Phase 0, 2
-```
-
-Notice the ratio: exactly one file is "the AI part". The rest is software engineering.
-
-## The three adjacent job titles
-
-:::note Titles vary by company — the boundaries below are the common ones
-Do not over-index on titles. Read the responsibilities and find the overlap you want.
+:::warning The rule that keeps you out of trouble
+Give the model the **smallest** set of tools that lets it do the job. Not the most
+convenient set. Phase 19 covers this properly.
 :::
 
-| | Data Scientist | ML Engineer | AI Engineer |
+## How this job differs from the neighbours
+
+People mix these three up constantly. They are different jobs:
+
+| | Data scientist | ML engineer | **AI engineer** |
 | --- | --- | --- | --- |
-| Core question | "What does the data say?" | "How do we train and serve this model reliably?" | "How do we build a product on top of models we did not train?" |
-| Typical output | Analysis, experiment, model prototype | Training pipeline, feature store, deployed model | API, agent, RAG system, evaluation suite |
-| Trains models? | Often | Almost always | Rarely — usually fine-tunes at most |
-| Key tools | Pandas, scikit-learn, notebooks | PyTorch, MLflow, Kubernetes, Spark | LLM APIs, vector DBs, LangGraph, FastAPI, tracing |
-| Hardest part | Statistical validity | Scale, reproducibility, drift | Non-determinism, context, safety, evaluation |
+| Main question | What does the data say? | How do we train and serve a model? | How do we build a reliable product on a model someone else trained? |
+| Builds | analyses, dashboards | training pipelines | applications, agents, RAG systems |
+| Maths needed | statistics | a lot | **surprisingly little** |
+| Core skill | analysis | modelling | **software engineering** |
 
-The tracks overlap heavily. This handbook deliberately teaches the data-science and ML
-foundations (Phases 3–9) before the LLM material, because you cannot evaluate an AI system
-properly without understanding precision, recall, overfitting and data leakage — and
-because "just use an LLM" is frequently the wrong answer to a problem a 40-line
-scikit-learn model solves better, cheaper and more predictably.
+You do not need to train a model to be an AI engineer. You need to be good at building
+systems around one.
 
-## Common Mistakes
+## Words you will keep hearing
 
-:::mistake Four mistakes that define the beginner phase
-1. **Starting with a framework.** Writing LangChain before you can write the same thing in
-   50 lines of plain Python means you cannot debug it. This handbook always builds by hand
-   first.
-2. **Treating prompt tweaking as engineering.** Without an evaluation set you have no idea
-   whether your "improvement" improved anything. Phase 24 exists for this reason.
-3. **Reaching for an agent immediately.** Most production "AI features" are a fixed
-   sequence of two or three model calls. Agents add latency, cost and failure modes; use
-   them when the control flow genuinely cannot be decided in advance (Phase 15).
-4. **Ignoring cost until the bill arrives.** Learn to count tokens early (Phase 10).
-:::
+Learn these five now and most articles stop being confusing:
 
-## Security Considerations
+| Word | Plain meaning |
+| --- | --- |
+| **Foundation model** | A big general-purpose model someone else trained. You rent it. |
+| **Token** | A chunk of text, roughly ¾ of a word. You are billed per token. |
+| **Context window** | How much text the model can read at once. |
+| **Eval** | A test for something that has no single right answer. |
+| **Agent** | A model in a loop that can call tools and decide when to stop. |
 
-Three rules to internalise now, before you write a single line:
+Phase 8 covers the full vocabulary. These five carry you a long way.
 
-1. **API keys live in environment variables, never in code, never in a notebook cell, never
-   in a screenshot.** You will set this up properly in the next lesson.
-2. **Any text that reaches the model can try to instruct it.** A PDF, a web page, a support
-   ticket — all of it is untrusted input. This is prompt injection, and the defence is
-   architectural (Phase 19), not a magic prompt.
-3. **Log what the system did, not what the user typed.** Traces will otherwise become the
-   largest PII store in your company (Phases 21, 24).
+## What you will be able to do
+
+By the end of this handbook you will have built:
+
+- A search system over your own documents that answers with citations
+- An agent that uses tools and knows when to stop
+- A multi-agent system with real safety limits
+- A service you can deploy, monitor, and control the cost of
+
+You will start from `print("hello")`. That is genuinely fine.
 
 ## Hands-on Exercise
 
-:::exercise Map a product you already use
-Pick an AI feature you have used recently — an email writing assistant, a "chat with your
-PDF" tool, a coding assistant, a support bot. On paper, sketch the six boxes from the
-mental model above and fill each one in with your best guess:
+:::exercise Ten minutes, no code
+Pick any AI product you have used — a chatbot, an email assistant, a code helper.
 
-- What context does it need at request time, and where would that come from?
-- What could it do that would be dangerous, and what gate would you put in front of that?
-- How would you tell, automatically, that a release made it worse?
+1. Draw the six boxes from the diagram above on paper.
+2. For each box, guess what that product does. What context does it fetch? What does it
+   check before showing you the answer?
+3. Find one place it could go wrong, and write down what the user would see.
+
+This is the exact thinking the rest of the handbook trains. Doing it badly now is useful —
+you will redo it properly in Phase 26.
 :::
 
-:::solution Worked answer for "chat with your PDF"
-- **Context assembly:** the PDF is split into ~800-token chunks, embedded, stored in a
-  vector index scoped to *this user's* documents. At query time the top 5 chunks by
-  similarity, plus the last few turns of conversation, go into the prompt.
-- **Danger:** answering from another tenant's document (access control on the vector
-  filter), or inventing a citation. Gate: every claim must carry a chunk id that is
-  verified to exist in the retrieved set before the answer is returned.
-- **Regression detection:** a fixed set of 40 question/document pairs with known answers,
-  scored for faithfulness and answer relevance on every deploy; the build fails if the mean
-  score drops more than 5% below the previous release.
+:::solution What a good answer looks like (a code assistant)
+```text
+User asks       "why is this test failing?"
+Your app         checks I am logged in and have quota left
+Find context     pulls the failing test, the source file, the error output
+The model        reads it, suggests a fix
+Check it         does the suggested code parse? does the test pass now?
+Answer           show the diff
+Watching it      log tokens, latency, whether I accepted the fix
 
-If your answer named retrieval, access control and an eval set, you already have the
-instincts this handbook is going to formalise.
-:::
-
-## Challenge
-
-:::challenge Cost estimate from first principles
-An internal assistant serves 500 employees. Each asks ~8 questions a day. Each question
-retrieves 5 chunks of ~800 tokens, adds a ~400-token system prompt and conversation
-history, and produces ~300 output tokens.
-
-Estimate the daily token volume. Then, using any current model's published per-million
-token pricing, estimate the monthly bill — and calculate how much you would save by
-caching the system prompt and by routing the 60% of questions that are simple lookups to a
-smaller model. You will do this calculation for real in Phase 10.
-:::
-
-## Interview Questions
-
-:::interview Commonly asked at the AI-engineering screen
-1. What changes about testing when part of your system is non-deterministic?
-2. When would you *not* use an LLM for a task?
-3. What is the difference between a workflow and an agent, and why does it matter for
-   latency and cost?
-4. How would you stop an agent from making an irreversible mistake?
-5. Your RAG system returns a plausible but wrong answer. Walk me through how you debug it.
-:::
-
-## Cheat Sheet
-
-| Term | One-line definition |
-| --- | --- |
-| Foundation model | A large model pre-trained on broad data, used as a base for many tasks |
-| LLM | A foundation model specialised in text (and often images/audio) generation |
-| Prompt | The full input given to a model: instructions + context + question |
-| Context window | The maximum number of tokens a model can consider at once |
-| RAG | Retrieving relevant documents at query time and putting them in the prompt |
-| Tool / function calling | The model emits a structured request; *your code* executes it |
-| Agent | A loop where a model repeatedly chooses tools until a goal is met |
-| Agentic AI | Systems of one or more agents with planning, memory and autonomy |
-| Guardrail | A deterministic check on input or output that the model cannot bypass |
-| Eval | A repeatable, scored test of system quality on a fixed dataset |
-
-```quiz
-[
-  {
-    "question": "Which statement best captures the core engineering difference when building with LLMs?",
-    "options": [
-      "You must train your own model for each task",
-      "A component of your system is non-deterministic, so tests become scored evaluations",
-      "Python is no longer suitable, so you need a specialised language",
-      "Latency stops mattering because models are fast"
-    ],
-    "answer": 1,
-    "explanation": "The model can return different output for identical input, which is why assertion-style tests give way to evaluation datasets with scored properties (Phase 24)."
-  },
-  {
-    "question": "You need to extract the invoice number from 10,000 well-structured PDFs with a fixed layout. What should you try first?",
-    "options": [
-      "A multi-agent system with a supervisor",
-      "A deterministic parser or regex, falling back to an LLM only for failures",
-      "Fine-tune a foundation model on the PDFs",
-      "A RAG pipeline over all 10,000 documents"
-    ],
-    "answer": 1,
-    "explanation": "Deterministic beats probabilistic whenever the structure is fixed: it is cheaper, faster, testable and auditable. Use the model for the long tail it cannot handle."
-  }
-]
+Where it goes wrong:
+  the retriever grabs the wrong file, so the model explains code I never ran.
+  The user sees a confident, detailed, completely irrelevant answer.
 ```
+That last line is the most common failure in real AI products, and it is a **retrieval**
+bug, not a model bug. Phase 13 is largely about preventing it.
+:::
 
 ## Summary
 
-- AI engineering is building reliable software around models you did not train.
-- The model is one box in a system whose other boxes — context, validation, permissions,
-  observability — determine whether the product works.
-- Non-determinism forces a change in practice: evaluations instead of assertions, runtime
-  schemas instead of trust, blast-radius thinking instead of feature thinking.
-- The classical data and ML foundations are not optional detours; they are the vocabulary
-  you need to judge whether an AI system is any good.
+- The model is one small part. You build everything around it.
+- The model is sometimes wrong. Plan for it instead of hoping.
+- Quality comes from context — what you feed in and leave out.
+- Limit what the model can reach. Small permissions, always.
+- This is a software job. Your Python skills matter more than maths.
 
 ## Next Step
 
-Next we pin down the words people use interchangeably and wrongly — AI, ML, deep learning,
-generative AI, LLM, RAG, agent — so that the rest of the handbook has a precise vocabulary.
+Next we untangle the words people use interchangeably: AI, machine learning, deep learning
+and generative AI. It takes five minutes and removes a lot of confusion.

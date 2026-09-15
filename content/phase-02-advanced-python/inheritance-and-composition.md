@@ -9,6 +9,10 @@ prereqs: ["Classes and Objects"]
 keyConcepts: ["inheritance", "composition", "polymorphism", "ABC", "super()"]
 ---
 
+:::note In one line
+**Prefer composition over inheritance.** Inheritance says *is a*; composition says *has a* - and *has a* stays flexible far longer.
+:::
+
 ## Why this matters
 
 Every provider abstraction you will build — three vector stores behind one interface, four

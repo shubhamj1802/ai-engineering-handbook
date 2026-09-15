@@ -589,3 +589,46 @@ body {
     display: none !important;
   }
 }
+
+/* --- Lesson figures -------------------------------------------------------
+   Hand-authored SVG diagrams. They use theme variables for every colour, so
+   one drawing works in both light and dark without a second copy. */
+.lesson-figure {
+  margin: 1.9rem 0;
+  padding: 1.35rem 1.25rem 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--panel);
+  overflow-x: auto;
+}
+
+.lesson-figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 660px;
+  margin: 0 auto;
+}
+
+.lesson-figure figcaption {
+  margin-top: 0.9rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--border);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.lesson-figure figcaption strong { color: var(--text); }
+
+/* Text inside diagrams: kept on the system stack so it matches the page. */
+.lesson-figure svg text {
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+.lesson-figure svg .dg-label { font-size: 13px; fill: var(--text); font-weight: 600; }
+.lesson-figure svg .dg-sub   { font-size: 11px; fill: var(--text-muted); }
+.lesson-figure svg .dg-mono  { font-family: ui-monospace, 'Cascadia Code', monospace; font-size: 12px; fill: var(--text); }
+.lesson-figure svg .dg-box   { fill: var(--panel-2); stroke: var(--border-strong); stroke-width: 1.5; }
+.lesson-figure svg .dg-accent{ fill: none; stroke: var(--accent); stroke-width: 2; }
+.lesson-figure svg .dg-arrow { stroke: var(--text-muted); stroke-width: 1.6; fill: none; }

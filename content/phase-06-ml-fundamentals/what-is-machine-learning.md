@@ -9,6 +9,10 @@ prereqs: ["Aggregations, Linear Algebra and Random Numbers", "groupby, Joins, Re
 keyConcepts: ["supervised learning", "generalisation", "overfitting", "bias-variance", "data leakage"]
 ---
 
+:::note In one line
+**The model learns the pattern; you decide whether the pattern is any good.** Splitting your data honestly matters more than the algorithm you pick.
+:::
+
 ## Why this matters
 
 Two reasons this phase is not optional for an AI engineer. First, a large share of the

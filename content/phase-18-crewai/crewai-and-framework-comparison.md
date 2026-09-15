@@ -9,6 +9,10 @@ prereqs: ["LangGraph — Persistence, Interrupts and Multi-Agent Graphs"]
 keyConcepts: ["Agent", "Task", "Crew", "Process", "delegation", "framework choice"]
 ---
 
+:::note In one line
+**CrewAI gives agents roles and tasks.** Convenient for the shape it fits, constraining for anything else - here is how to choose.
+:::
+
 ## Why this matters
 
 CrewAI takes a different stance from LangGraph: instead of describing a state machine, you

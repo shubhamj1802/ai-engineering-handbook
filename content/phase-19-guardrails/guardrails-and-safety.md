@@ -9,6 +9,10 @@ prereqs: ["LLM API Engineering", "Build an Agent from Scratch"]
 keyConcepts: ["input validation", "output validation", "prompt injection", "PII", "budget caps"]
 ---
 
+:::note In one line
+**Assume every input is hostile and every output is wrong until checked.** Guardrails are the checks on both sides of the model.
+:::
+
 ## Why this matters
 
 Everything in this phase is code the model cannot talk its way around. That is the entire

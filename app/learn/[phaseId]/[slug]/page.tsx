@@ -32,6 +32,7 @@ export default async function LessonPage({ params }: Params) {
   const { html, toc } = renderMarkdown(lesson.body);
   const { prev, next } = getSiblings(lesson);
   const phaseLessons = getPhaseLessons(phaseId);
+  const lessonByTitle = new Map(getAllLessons().map((l) => [l.title.toLowerCase(), l]));
   const indexInPhase = phaseLessons.findIndex((l) => l.id === lesson.id) + 1;
 
   return (
@@ -107,12 +108,27 @@ export default async function LessonPage({ params }: Params) {
               <ListChecks size={11} /> Prerequisites
             </p>
             <ul className="space-y-1 text-[12.5px] text-[var(--text-muted)]">
-              {lesson.prereqs!.map((p) => (
-                <li key={p} className="flex gap-1.5">
-                  <span className="text-[var(--text-dim)]">›</span>
-                  {p}
-                </li>
-              ))}
+              {lesson.prereqs!.map((p) => {
+                // A prerequisite naming a real lesson should be one click away.
+                // Some name a condition instead ("a working Python install"), so
+                // those stay as plain text rather than becoming a dead link.
+                const target = lessonByTitle.get(p.toLowerCase());
+                return (
+                  <li key={p} className="flex gap-1.5">
+                    <span className="text-[var(--text-dim)]">›</span>
+                    {target ? (
+                      <Link
+                        href={target.href}
+                        className="text-[var(--accent)] underline-offset-2 hover:underline"
+                      >
+                        {p}
+                      </Link>
+                    ) : (
+                      <span>{p}</span>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </section>
         )}

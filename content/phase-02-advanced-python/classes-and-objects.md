@@ -9,6 +9,10 @@ prereqs: ["Functions", "Modules, Packages and Imports"]
 keyConcepts: ["class", "__init__", "self", "instance state", "dunder methods"]
 ---
 
+:::note In one line
+**A class is a template; an object is one thing built from it.** Use a class when data and the behaviour that belongs to it should travel together.
+:::
+
 ## Why this matters
 
 Every framework you will use — LangChain runnables, LangGraph graphs, Pydantic models,

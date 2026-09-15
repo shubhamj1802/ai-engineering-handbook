@@ -9,6 +9,10 @@ prereqs: ["Comprehensions and Generator Expressions", "Classes and Objects"]
 keyConcepts: ["yield", "iterator protocol", "lazy evaluation", "with", "contextmanager"]
 ---
 
+:::note In one line
+**A generator produces values one at a time instead of building a whole list.** That is how you process a file larger than your memory.
+:::
+
 ## Why this matters
 
 Streaming an LLM response token by token is a generator. Reading a 10 GB corpus without

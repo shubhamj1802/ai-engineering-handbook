@@ -9,6 +9,10 @@ prereqs: ["LLM API Engineering"]
 keyConcepts: ["system prompt", "few-shot", "decomposition", "chain-of-thought", "prompt evaluation"]
 ---
 
+:::note In one line
+**Be specific about the output you want, and show one example.** That beats every clever prompt trick you will read about.
+:::
+
 ## Why this matters
 
 Prompting is the cheapest lever you have and the easiest to fool yourself with. Without an

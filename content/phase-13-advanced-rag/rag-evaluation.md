@@ -9,6 +9,10 @@ prereqs: ["Query Transformation, Hybrid Search and Reranking"]
 keyConcepts: ["faithfulness", "answer relevance", "context precision", "LLM-as-judge", "regression gate"]
 ---
 
+:::note In one line
+**Measure retrieval and generation separately, or you will fix the wrong one.** Most RAG failures are retrieval failures.
+:::
+
 ## Why this matters
 
 Without evaluation, every RAG change is a coin flip. With it, you can answer the two

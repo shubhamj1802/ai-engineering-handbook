@@ -9,6 +9,10 @@ prereqs: ["Project 1 — Support Ticket Escalation Classifier", "Logging, Config
 keyConcepts: ["regression", "quantile loss", "FastAPI", "model serving", "drift"]
 ---
 
+:::note In one line
+**Training a model is half the job; serving it behind an API is the other half.** Here you do both.
+:::
+
 ## Why this matters
 
 A model in a notebook has produced no value. This lesson closes the loop: a second project

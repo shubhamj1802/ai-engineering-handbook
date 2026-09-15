@@ -9,6 +9,10 @@ prereqs: ["Build an Agent from Scratch"]
 keyConcepts: ["ReAct", "planner-executor", "reflection", "routing", "supervisor", "evaluator"]
 ---
 
+:::note In one line
+**Most tasks people give agents are better served by a workflow.** Learn the patterns so you can pick the smallest one that works.
+:::
+
 ## Why this matters
 
 These patterns are the vocabulary of agentic AI, and each one exists because a simpler design

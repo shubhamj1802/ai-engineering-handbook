@@ -9,6 +9,10 @@ prereqs: ["Variables and Data Types"]
 keyConcepts: ["int", "float", "truthiness", "None", "short-circuit", "walrus"]
 ---
 
+:::note In one line
+**`0.1 + 0.2` is not `0.3`.** Floats are approximations, `None` means "no value" rather than zero, and `and`/`or` hand back one of your values instead of `True`/`False`.
+:::
+
 ## Why this matters
 
 Cost calculations, similarity thresholds, retry counters, confidence scores, token budgets

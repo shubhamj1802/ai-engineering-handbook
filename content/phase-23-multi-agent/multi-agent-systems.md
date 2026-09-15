@@ -9,6 +9,10 @@ prereqs: ["Agentic Patterns — ReAct, Planning, Reflection, Routing", "LangGrap
 keyConcepts: ["supervisor", "topology", "handoff", "shared state", "coordination failure"]
 ---
 
+:::note In one line
+**Every agent you add multiplies cost and failure modes.** Use one until you can name exactly why one is not enough.
+:::
+
 ## Why this matters
 
 Multi-agent systems are the most over-adopted pattern in AI engineering. They are genuinely

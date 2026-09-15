@@ -9,6 +9,10 @@ prereqs: ["Arrays, Shapes and dtypes"]
 keyConcepts: ["boolean mask", "fancy indexing", "broadcasting", "np.where", "vectorisation"]
 ---
 
+:::note In one line
+**Broadcasting lets arrays of different shapes work together, so you can delete your loops.** Vectorised code is both shorter and far faster.
+:::
+
 ## Why this matters
 
 Broadcasting is the single idea that turns "loop over 50,000 vectors" into one expression

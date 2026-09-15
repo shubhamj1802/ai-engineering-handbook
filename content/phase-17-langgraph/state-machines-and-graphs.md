@@ -9,6 +9,10 @@ prereqs: ["LangChain — Retrieval, Agents and Middleware", "Build an Agent from
 keyConcepts: ["StateGraph", "reducer", "conditional edges", "START/END", "node"]
 ---
 
+:::note In one line
+**LangGraph is a state machine: nodes change state, edges decide what runs next.** Once you see that, the API reads itself.
+:::
+
 ## Why this matters
 
 An agent loop is a state machine whose transitions the model chooses. Writing that explicitly

@@ -9,6 +9,10 @@ prereqs: ["What Machine Learning Actually Is"]
 keyConcepts: ["linear regression", "logistic regression", "decision tree", "ensemble", "k-means"]
 ---
 
+:::note In one line
+**Start with the simple model.** Linear and tree-based models are fast, explainable, and beat a neural network on tabular data more often than people expect.
+:::
+
 ## Why this matters
 
 You need roughly seven algorithms to solve most tabular problems, and knowing *why* each one

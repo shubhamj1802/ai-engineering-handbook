@@ -9,6 +9,10 @@ prereqs: ["Functions"]
 keyConcepts: ["exception", "try/except", "raise", "custom exception", "traceback"]
 ---
 
+:::note In one line
+**Errors are messages, not disasters.** Read the last line of the traceback first, catch only the specific error you can actually handle, and never silence one you did not expect.
+:::
+
 ## Why this matters
 
 AI systems fail constantly and normally: rate limits, timeouts, malformed JSON from a

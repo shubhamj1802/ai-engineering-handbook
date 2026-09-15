@@ -9,6 +9,10 @@ prereqs: ["RAG from First Principles"]
 keyConcepts: ["PDF extraction", "metadata filtering", "page citations", "incremental ingest", "provenance"]
 ---
 
+:::note In one line
+**PDFs are the hardest input you will meet.** Tables, columns and scans all break naive text extraction.
+:::
+
 ## Why this matters
 
 Demo RAG uses clean markdown. Real RAG ingests a 200-page PDF policy document with headers

@@ -9,6 +9,10 @@ prereqs: ["Functions", "Generators, Iterators and Context Managers"]
 keyConcepts: ["async/await", "event loop", "gather", "semaphore", "GIL"]
 ---
 
+:::note In one line
+**Async helps when you are waiting, not when you are calculating.** Twenty API calls at once: yes. Crunching numbers faster: no.
+:::
+
 ## Why this matters
 
 AI workloads are **I/O bound**: you spend almost all your time waiting for an API. Embedding

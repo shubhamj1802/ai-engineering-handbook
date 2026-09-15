@@ -9,6 +9,10 @@ prereqs: ["LLM API Engineering", "RAG from First Principles"]
 keyConcepts: ["agent", "control flow", "tool use", "autonomy", "failure modes"]
 ---
 
+:::note In one line
+**An agent is a loop where the model decides what to do next and when to stop.** If you decide the steps, it is a workflow, and a workflow is usually the better choice.
+:::
+
 ## Why this matters
 
 "Agent" is the most overloaded word in the field. Teams build agents where a two-step
@@ -19,6 +23,56 @@ right at design time is worth more than any framework.
 ## Mental Model
 
 The whole distinction is **who decides what happens next**.
+
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 300" role="img" aria-label="Diagram: an agent loop. The model looks at the conversation and chooses either to call a tool, whose result is appended and sent back to the model, or to stop and answer. A step limit also ends the loop.">
+  <defs>
+    <marker id="ag-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--accent)"/>
+    </marker>
+    <marker id="ag-s" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+    <marker id="ag-o" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--ok)"/>
+    </marker>
+  </defs>
+
+  <rect x="28" y="120" width="112" height="56" rx="9" class="dg-box"/>
+  <text class="dg-label" x="84" y="144" text-anchor="middle">Your request</text>
+  <text class="dg-sub"   x="84" y="161" text-anchor="middle">one message</text>
+
+  <rect x="200" y="112" width="150" height="72" rx="11" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2.2"/>
+  <text class="dg-label" x="275" y="140" text-anchor="middle" fill="var(--accent)">The model decides</text>
+  <text class="dg-sub"   x="275" y="158" text-anchor="middle">tool? or finished?</text>
+  <text class="dg-sub"   x="275" y="174" text-anchor="middle">this is the whole idea</text>
+
+  <rect x="418" y="28" width="140" height="62" rx="10" class="dg-box"/>
+  <text class="dg-label" x="488" y="52" text-anchor="middle">Run a tool</text>
+  <text class="dg-sub"   x="488" y="70" text-anchor="middle">search, SQL, HTTP</text>
+
+  <rect x="418" y="208" width="140" height="62" rx="10" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.8"/>
+  <text class="dg-label" x="488" y="232" text-anchor="middle" fill="var(--ok)">Stop and answer</text>
+  <text class="dg-sub"   x="488" y="250" text-anchor="middle">the model chose to</text>
+
+  <path class="dg-arrow" d="M140,148 L194,148" marker-end="url(#ag-s)"/>
+  <path d="M350,132 Q390,132 412,90" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#ag-a)"/>
+  <path d="M350,166 Q390,166 412,210" stroke="var(--ok)" stroke-width="2" fill="none" marker-end="url(#ag-o)"/>
+  <path d="M418,59 Q300,59 275,106" stroke="var(--accent)" stroke-width="2" fill="none" stroke-dasharray="5 4" marker-end="url(#ag-a)"/>
+  <text class="dg-sub" x="306" y="46" text-anchor="middle" fill="var(--accent)">result goes back in</text>
+
+  <rect x="196" y="228" width="158" height="46" rx="9" fill="var(--panel)" stroke="var(--danger)" stroke-width="1.6" stroke-dasharray="4 3"/>
+  <text class="dg-sub" x="275" y="248" text-anchor="middle" fill="var(--danger)">step limit, budget cap</text>
+  <text class="dg-sub" x="275" y="264" text-anchor="middle">you must add these</text>
+  <path d="M275,228 L275,190" stroke="var(--danger)" stroke-width="1.4" fill="none" stroke-dasharray="3 3"/>
+</svg>
+<figcaption>
+<strong>An agent is a loop with the model in charge of the exit.</strong> Nothing more
+mystical than that. And because the model controls the exit, <em>you</em> must add the step
+limit and the budget cap, or the loop can run until the money runs out.
+</figcaption>
+</figure>
+
 
 ```mermaid
 flowchart LR

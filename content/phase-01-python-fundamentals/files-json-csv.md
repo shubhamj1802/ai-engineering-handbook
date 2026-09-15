@@ -9,6 +9,10 @@ prereqs: ["Errors and Exceptions", "Dictionaries and Sets"]
 keyConcepts: ["pathlib", "with", "json", "jsonl", "csv", "encoding"]
 ---
 
+:::note In one line
+**Always open files with `with`, and always say `encoding="utf-8"`.** That single habit prevents corrupted text and files left half-written when something goes wrong.
+:::
+
 ## Why this matters
 
 Your documents arrive as files. Your evaluation datasets are JSONL. Your chunk metadata is

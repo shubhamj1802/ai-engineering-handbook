@@ -9,6 +9,10 @@ prereqs: ["PDFs, Multiple Documents and Real Citations"]
 keyConcepts: ["query rewriting", "HyDE", "BM25", "reciprocal rank fusion", "reranking", "parent-child"]
 ---
 
+:::note In one line
+**The question a user types is rarely the best search query.** Rewrite it, search two ways, then rerank.
+:::
+
 ## Why this matters
 
 Basic RAG gets you to roughly 70–85% recall. The remaining gap is where user trust is lost:

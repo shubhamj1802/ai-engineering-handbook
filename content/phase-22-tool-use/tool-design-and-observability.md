@@ -9,6 +9,10 @@ prereqs: ["Build an Agent from Scratch", "Guardrails, Prompt Injection and Safet
 keyConcepts: ["tool schema", "tool description", "idempotency", "error recovery", "tool metrics"]
 ---
 
+:::note In one line
+**A tool is an API you expose to something that misreads instructions.** Narrow inputs, validate everything, log every call.
+:::
+
 ## Why this matters
 
 Agent quality is dominated by tool quality. A model with three well-designed tools

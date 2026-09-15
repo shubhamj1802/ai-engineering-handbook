@@ -9,6 +9,10 @@ prereqs: ["Functions", "Classes and Objects"]
 keyConcepts: ["type hints", "Optional", "Generic", "Protocol", "TypedDict", "mypy"]
 ---
 
+:::note In one line
+**Type hints are notes for humans and tools, not rules Python enforces.** They pay for themselves the moment a codebase outgrows one person.
+:::
+
 ## Why this matters
 
 Type hints are how a large Python codebase stays navigable. Your editor autocompletes,

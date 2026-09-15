@@ -9,6 +9,10 @@ prereqs: ["Aggregations, Linear Algebra and Random Numbers", "Transformers and A
 keyConcepts: ["embedding", "cosine similarity", "chunking", "semantic search", "recall@k"]
 ---
 
+:::note In one line
+**An embedding turns text into a point in space, and similar meanings land near each other.** That is what lets you search by meaning instead of by keyword.
+:::
+
 ## Why this matters
 
 Retrieval quality sets the ceiling on RAG quality: the model cannot answer from a chunk it
@@ -18,23 +22,70 @@ they require re-indexing everything.
 
 ## Mental Model
 
-An embedding maps text to a point in high-dimensional space such that **texts with similar
-meaning land near each other**.
+An embedding turns a piece of text into a list of numbers — a **point in space**.
+
+The useful part: text that *means* similar things lands in similar places, even when the
+words are completely different.
+
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 330" role="img" aria-label="Scatter diagram: two questions about passwords and logins sit close together despite sharing no words, while a question about refunds sits far away. Similarity is the angle between the arrows from the origin.">
+  <line x1="70" y1="270" x2="620" y2="270" stroke="var(--border-strong)" stroke-width="1.2"/>
+  <line x1="70" y1="270" x2="70"  y2="30"  stroke="var(--border-strong)" stroke-width="1.2"/>
+
+  <path d="M70,270 L300,90" stroke="var(--accent)" stroke-width="1.8" opacity="0.85"/>
+  <path d="M70,270 L350,120" stroke="var(--accent)" stroke-width="1.8" opacity="0.85"/>
+  <path d="M70,270 L560,215" stroke="var(--accent-2)" stroke-width="1.8" opacity="0.85"/>
+
+  <path d="M126,226 A72,72 0 0 1 137,241" fill="none" stroke="var(--accent)" stroke-width="1.4"/>
+  <text class="dg-sub" x="146" y="228" fill="var(--accent)">small angle = similar</text>
+
+  <circle cx="300" cy="90"  r="7" fill="var(--accent)"/>
+  <circle cx="350" cy="120" r="7" fill="var(--accent)"/>
+  <circle cx="560" cy="215" r="7" fill="var(--accent-2)"/>
+
+  <rect x="196" y="48" width="246" height="26" rx="6" fill="var(--panel-2)" stroke="var(--border)" stroke-width="1"/>
+  <text class="dg-sub" x="208" y="66">"How do I reset my password?"</text>
+
+  <rect x="250" y="126" width="246" height="26" rx="6" fill="var(--panel-2)" stroke="var(--border)" stroke-width="1"/>
+  <text class="dg-sub" x="262" y="144">"I forgot my login credentials"</text>
+
+  <rect x="400" y="230" width="230" height="26" rx="6" fill="var(--panel-2)" stroke="var(--border)" stroke-width="1"/>
+  <text class="dg-sub" x="412" y="248">"What is your refund policy?"</text>
+
+  <text class="dg-sub" x="300" y="300" text-anchor="middle">Zero words in common, yet the top two are neighbours.</text>
+  <text class="dg-sub" x="58" y="286" text-anchor="end">0</text>
+</svg>
+<figcaption>
+<strong>Meaning becomes geometry.</strong> The two password questions share no words at all,
+but they point in nearly the same direction. That is what lets you search by meaning instead
+of by keyword.
+</figcaption>
+</figure>
+
+Similarity is the **angle** between the arrows, not how far apart the points are:
+
+| Cosine similarity | Meaning |
+| --- | --- |
+| `1.0` | same direction — as close to identical meaning as it gets |
+| `0.8` | strongly related |
+| `0.3` | vaguely related |
+| `0.0` | unrelated |
+| `-1.0` | opposite directions |
 
 ```text
-  "How do I reset my password?"     ·
-  "I forgot my login credentials"    ·      ← close together (similar meaning)
-                                             different words entirely
-  "What is your refund policy?"                    ·   ← far away
-
-Similarity is measured by the ANGLE between vectors, not the distance:
-  cos(θ) = (a · b) / (|a| |b|)     →   1.0 identical direction
-                                       0.0 unrelated
-                                      -1.0 opposite
+cos(θ) = (a · b) / (|a| × |b|)
 ```
 
-Keyword search matches *strings*; embedding search matches *meaning*. Neither is universally
-better — which is why Phase 13 combines them.
+Angle rather than distance, because a long document and a short sentence can mean the same
+thing. Direction captures meaning; length mostly captures how much text there was.
+
+:::tip Keyword search vs meaning search
+Keyword search matches **letters**. Embedding search matches **meaning**.
+
+Search "password" and keyword search misses "login credentials" entirely. Embedding search
+finds it. But keyword search never misses an exact product code, and embedding search
+sometimes does — which is exactly why Phase 13 uses both together.
+:::
 
 ## Core Concepts
 
@@ -475,7 +526,7 @@ class CachedEmbedder:
         return int(self.model.get_sentence_embedding_dimension())
 
     def _key(self, text: str) -> str:
-        raw = f"{self.model_name} {text}"
+        raw = f"{self.model_name}\0{text}"
         return hashlib.sha256(raw.encode("utf-8")).hexdigest()
 
     def _path(self, key: str) -> Path:

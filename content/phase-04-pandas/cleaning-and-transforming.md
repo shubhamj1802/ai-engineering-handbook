@@ -9,6 +9,10 @@ prereqs: ["Series, DataFrames and Loading Data"]
 keyConcepts: ["NaN", "fillna", "dropna", "duplicates", "str accessor", "apply"]
 ---
 
+:::note In one line
+**Real data is always broken.** Missing values, wrong types, duplicates and inconsistent text - this lesson is the repair kit.
+:::
+
 ## Why this matters
 
 Real datasets are dirty: missing fields, three spellings of the same category, prices as

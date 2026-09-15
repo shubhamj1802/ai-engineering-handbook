@@ -9,6 +9,10 @@ prereqs: ["Aggregations, Linear Algebra and Random Numbers", "The Core Algorithm
 keyConcepts: ["neuron", "activation", "forward pass", "backpropagation", "gradient descent"]
 ---
 
+:::note In one line
+**A neural network is multiplication, addition and one bend, repeated.** Build one with no framework and the mystery disappears.
+:::
+
 ## Why this matters
 
 You will not train foundation models. You *will* read architecture diagrams, debug shape

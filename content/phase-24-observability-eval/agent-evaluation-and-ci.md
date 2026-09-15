@@ -9,6 +9,10 @@ prereqs: ["Tracing, Metrics and Cost Observability", "RAG Evaluation and Halluci
 keyConcepts: ["trajectory evaluation", "task completion", "RAGAS", "DeepEval", "regression gate"]
 ---
 
+:::note In one line
+**You cannot assert an exact answer, so you measure properties over a dataset.** Then you gate releases on the numbers.
+:::
+
 ## Why this matters
 
 You cannot assert on an agent's output — it varies run to run. What you *can* do is measure

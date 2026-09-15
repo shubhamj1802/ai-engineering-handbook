@@ -9,6 +9,10 @@ prereqs: ["Neural Networks from Scratch", "Tokens, Context, Temperature and Hall
 keyConcepts: ["self-attention", "Q/K/V", "multi-head", "positional encoding", "KV cache"]
 ---
 
+:::note In one line
+**Attention lets every word look at every other word and decide what matters.** That single mechanism is what made modern LLMs possible.
+:::
+
 ## Why this matters
 
 You will not implement a transformer at work. But attention explains directly why context

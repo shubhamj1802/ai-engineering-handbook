@@ -9,6 +9,10 @@ prereqs: ["Logging, Configuration, HTTP Clients and CLIs", "Build an Agent from 
 keyConcepts: ["trace", "span", "token accounting", "p95 latency", "cost attribution"]
 ---
 
+:::note In one line
+**If you cannot see what the system did, you cannot fix it.** A trace is the story of one request, step by step.
+:::
+
 ## Why this matters
 
 A traditional service fails loudly: a 500, a stack trace, an alert. An AI system fails

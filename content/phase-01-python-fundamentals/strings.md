@@ -9,6 +9,10 @@ prereqs: ["Variables and Data Types"]
 keyConcepts: ["str", "slicing", "join", "strip", "f-string", "encoding"]
 ---
 
+:::note In one line
+**Strings never change.** Every method that looks like it edits text actually hands you back a brand-new string. Forgetting to catch that return value is the classic beginner bug.
+:::
+
 ## Why this matters
 
 An LLM application is a string-processing application. You will build prompts from

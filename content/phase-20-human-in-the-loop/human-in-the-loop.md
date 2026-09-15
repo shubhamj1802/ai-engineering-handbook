@@ -9,6 +9,10 @@ prereqs: ["Guardrails, Prompt Injection and Safety", "LangGraph — Persistence,
 keyConcepts: ["approval gate", "escalation", "confidence threshold", "interrupt/resume", "review queue"]
 ---
 
+:::note In one line
+**Some actions should never happen without a person saying yes.** The skill is choosing which, and making the pause cheap.
+:::
+
 ## Why this matters
 
 Human-in-the-loop is what makes an AI system deployable in domains where mistakes are

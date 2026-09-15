@@ -9,6 +9,10 @@ prereqs: ["LLM API Engineering", "Build an Agent from Scratch"]
 keyConcepts: ["init_chat_model", "messages", "with_structured_output", "LCEL", "Runnable"]
 ---
 
+:::note In one line
+**LangChain is glue, not magic.** It standardises models, messages, tools and output parsing so you can swap parts out.
+:::
+
 ## Why this matters
 
 You have now built by hand everything LangChain provides: a client wrapper, a prompt

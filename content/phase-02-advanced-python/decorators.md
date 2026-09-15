@@ -9,6 +9,10 @@ prereqs: ["Functions", "Classes and Objects"]
 keyConcepts: ["decorator", "closure", "functools.wraps", "parameterised decorator", "registry"]
 ---
 
+:::note In one line
+**A decorator wraps a function to add behaviour without editing it.** Logging, timing, retries and caching are all the same trick.
+:::
+
 ## Why this matters
 
 `@app.get("/ask")`, `@tool`, `@pytest.fixture`, `@dataclass`, `@lru_cache` — decorators are

@@ -5,7 +5,7 @@ difficulty: Production
 duration: 12
 badges: ["Reference", "Read once, refer often"]
 summary: "Four maps of the whole handbook: the learning path, the technology dependency graph, the skill progression ladder, and the project sequence — for planning, and for checking where you are."
-prereqs: ["None — this is a reference page"]
+prereqs: []
 keyConcepts: ["roadmap", "dependencies", "skill levels", "project progression"]
 ---
 

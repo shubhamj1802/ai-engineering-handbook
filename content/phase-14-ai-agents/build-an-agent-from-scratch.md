@@ -9,6 +9,10 @@ prereqs: ["What Is an Agent, Really?", "Decorators", "LLM API Engineering"]
 keyConcepts: ["agent loop", "tool registry", "observation", "trajectory", "stop conditions"]
 ---
 
+:::note In one line
+**You can write a real agent in about forty lines, with no framework.** Doing it once means every framework afterwards looks like convenience rather than magic.
+:::
+
 ## Why this matters
 
 Every agent framework you will meet — LangChain, LangGraph, CrewAI — is this loop plus

@@ -9,6 +9,11 @@ prereqs: ["A computer with admin rights", "A terminal you can open"]
 keyConcepts: ["uv", "virtual environment", "pyproject.toml", "git", "Jupyter"]
 ---
 
+:::note In one line
+**Every project gets its own private box of packages.** That box is a `.venv` folder, `uv`
+creates it for you, and it is the single habit that prevents "it works on my machine".
+:::
+
 ## Why this matters
 
 Almost every "Python is broken" problem a beginner hits is really an environment problem:
@@ -18,23 +23,54 @@ what professional Python teams actually use in 2026.
 
 ## Mental Model
 
-```mermaid
-flowchart LR
-  PY["Python interpreter<br/>the language runtime"] --> VENV["Virtual environment<br/>.venv/ — one per project"]
-  VENV --> PKGS["Installed packages<br/>isolated from other projects"]
-  PROJ["pyproject.toml<br/>declares what you need"] --> LOCK["uv.lock<br/>pins exact versions"]
-  LOCK --> VENV
-  GIT["Git repository<br/>history of your code"] -.tracks.-> PROJ
-  GIT -.ignores.-> VENV
-```
+The confusing part is that **three different things** are all called "Python". Here they are,
+separated:
 
-Three separate ideas, often confused:
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 300" role="img" aria-label="Diagram: one Python interpreter installed on the computer is shared by two separate projects. Each project has its own .venv folder with its own packages, so their versions cannot clash.">
+  <rect x="200" y="10" width="250" height="52" rx="10" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="2"/>
+  <text class="dg-label" x="325" y="33" text-anchor="middle" fill="var(--accent-3)">Python itself</text>
+  <text class="dg-sub"   x="325" y="50" text-anchor="middle">installed once on your computer</text>
 
-1. **The interpreter** — the `python` program itself. You may have several versions.
-2. **The virtual environment** — a folder holding a link to one interpreter plus that
-   project's packages. Disposable; never committed.
-3. **The project declaration** — `pyproject.toml` lists dependencies; `uv.lock` records
-   exact resolved versions so a colleague gets byte-identical packages.
+  <path class="dg-arrow" d="M260,62 L150,104" stroke-dasharray="4 3"/>
+  <path class="dg-arrow" d="M390,62 L500,104" stroke-dasharray="4 3"/>
+
+  <rect x="16" y="106" width="290" height="170" rx="12" fill="none" stroke="var(--border-strong)" stroke-width="1.5"/>
+  <text class="dg-label" x="32" y="130">project-a/</text>
+  <rect x="32" y="144" width="258" height="56" rx="8" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
+  <text class="dg-mono" x="46" y="166" fill="var(--accent)">.venv/</text>
+  <text class="dg-sub"  x="46" y="184">pandas 2.1 · its own private copy</text>
+  <rect x="32" y="210" width="258" height="50" rx="8" fill="var(--panel)" stroke="var(--border)" stroke-width="1.2"/>
+  <text class="dg-mono" x="46" y="230">pyproject.toml</text>
+  <text class="dg-sub"  x="46" y="248">the list of what this project needs</text>
+
+  <rect x="354" y="106" width="290" height="170" rx="12" fill="none" stroke="var(--border-strong)" stroke-width="1.5"/>
+  <text class="dg-label" x="370" y="130">project-b/</text>
+  <rect x="370" y="144" width="258" height="56" rx="8" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
+  <text class="dg-mono" x="384" y="166" fill="var(--accent)">.venv/</text>
+  <text class="dg-sub"  x="384" y="184">pandas 1.5 · no conflict at all</text>
+  <rect x="370" y="210" width="258" height="50" rx="8" fill="var(--panel)" stroke="var(--border)" stroke-width="1.2"/>
+  <text class="dg-mono" x="384" y="230">pyproject.toml</text>
+  <text class="dg-sub"  x="384" y="248">a different list</text>
+
+  <text class="dg-sub" x="330" y="294" text-anchor="middle">Two versions of the same package, on one computer, peacefully.</text>
+</svg>
+<figcaption>
+<strong>This is the whole point of virtual environments.</strong> Without them, installing
+one project's packages breaks another's. The <code>.venv</code> folder is disposable — delete
+it any time and rebuild it from <code>pyproject.toml</code>.
+</figcaption>
+</figure>
+
+So, the three things:
+
+| Thing | What it is | Do you commit it to Git? |
+| --- | --- | --- |
+| **Python** | the `python` program itself | no — it's installed software |
+| **`.venv/`** | this project's private packages | **never** — it's rebuildable |
+| **`pyproject.toml`** | the *list* of packages you need | **yes** — this is the real source |
+
+The list is the truth. The `.venv` is just what the list built.
 
 ## Prerequisites
 

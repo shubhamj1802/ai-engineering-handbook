@@ -9,6 +9,10 @@ prereqs: ["Classes and Objects"]
 keyConcepts: ["dataclass", "frozen", "slots", "property", "Enum", "field"]
 ---
 
+:::note In one line
+**`@dataclass` writes the boring parts of a class for you.** You declare the fields; Python generates the constructor, the comparison and the printout.
+:::
+
 ## Why this matters
 
 Most classes in an AI codebase are *data with a little behaviour*: a chunk, a search hit, a

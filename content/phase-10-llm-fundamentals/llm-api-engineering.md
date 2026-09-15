@@ -9,6 +9,10 @@ prereqs: ["Transformers and Attention", "Your First Project — API Keys, .env a
 keyConcepts: ["Messages API", "structured output", "tool use", "streaming", "prompt caching", "cost control"]
 ---
 
+:::note In one line
+**Treat the model like any other flaky network service.** Timeouts, retries, cost tracking and a fallback - production needs all four.
+:::
+
 ## Why this matters
 
 Everything from here on — RAG, agents, LangGraph, CrewAI — is built on this one call. A
