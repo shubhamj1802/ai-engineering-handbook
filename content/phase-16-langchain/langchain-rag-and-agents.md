@@ -22,6 +22,36 @@ your own where the defaults do not fit.
 
 ## Mental Model
 
+Everything you built by hand in Phase 12 has a one-line equivalent here. Useful, provided you
+remember what each line is doing underneath.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 220" role="img" aria-label="Diagram mapping the hand-built RAG steps onto their LangChain equivalents: loading and splitting, embedding and storing, retrieving, and generating with citations.">
+  <text class="dg-label" x="14" y="22">What you wrote by hand</text>
+  <text class="dg-label" x="366" y="22" fill="var(--accent)">What LangChain calls it</text>
+  <rect x="14" y="32" width="326" height="32" rx="5" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.3"/>
+  <text class="dg-sub" x="28" y="52">read files, cut into chunks</text>
+  <rect x="366" y="32" width="280" height="32" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.4"/>
+  <text class="dg-mono" x="380" y="52" style="font-size:10.5px">DocumentLoader + TextSplitter</text>
+  <rect x="14" y="72" width="326" height="32" rx="5" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.3"/>
+  <text class="dg-sub" x="28" y="92">embed each chunk, keep the vectors</text>
+  <rect x="366" y="72" width="280" height="32" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.4"/>
+  <text class="dg-mono" x="380" y="92" style="font-size:10.5px">VectorStore.from_documents()</text>
+  <rect x="14" y="112" width="326" height="32" rx="5" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.3"/>
+  <text class="dg-sub" x="28" y="132">embed the question, find nearest</text>
+  <rect x="366" y="112" width="280" height="32" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.4"/>
+  <text class="dg-mono" x="380" y="132" style="font-size:10.5px">store.as_retriever()</text>
+  <rect x="14" y="152" width="326" height="32" rx="5" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.3"/>
+  <text class="dg-sub" x="28" y="172">build the prompt, call the model</text>
+  <rect x="366" y="152" width="280" height="32" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.4"/>
+  <text class="dg-mono" x="380" y="172" style="font-size:10.5px">prompt | model | parser</text>
+  <text class="dg-sub" x="330" y="206" text-anchor="middle">Same six steps. The framework saves typing, not understanding.</text>
+</svg>
+<figcaption>
+<strong>This mapping is why the handbook builds RAG by hand first.</strong> When a chain
+returns nothing useful, you need to know which of these six steps to go and inspect.
+</figcaption>
+</figure>
+
 ```mermaid
 flowchart LR
   L["DocumentLoader<br/>.load() → Document[]"] --> S["TextSplitter<br/>.split_documents()"]

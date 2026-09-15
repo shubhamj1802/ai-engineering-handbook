@@ -22,6 +22,49 @@ way to spend $400 in twenty minutes.
 
 ## Mental Model
 
+Guardrails sit on **both** sides of the model. Input checks stop attacks getting in; output
+checks stop damage getting out.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 240" role="img" aria-label="Diagram: a request passes through input guardrails before reaching the model, and the model output passes through output guardrails before any action is taken, with a separate limit on what tools the model can reach.">
+  <defs>
+    <marker id="gd-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+  </defs>
+  <rect x="14" y="76" width="82" height="48" rx="8" class="dg-box"/>
+  <text class="dg-sub" x="55" y="104" text-anchor="middle">request</text>
+  <rect x="112" y="66" width="122" height="68" rx="9" fill="var(--panel-2)" stroke="var(--warn)" stroke-width="2"/>
+  <text class="dg-label" x="173" y="88" text-anchor="middle" fill="var(--warn)">check input</text>
+  <text class="dg-sub"   x="173" y="106" text-anchor="middle">size, schema</text>
+  <text class="dg-sub"   x="173" y="122" text-anchor="middle">strip secrets</text>
+  <rect x="254" y="72" width="106" height="56" rx="9" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.9"/>
+  <text class="dg-label" x="307" y="96" text-anchor="middle" fill="var(--accent)">the model</text>
+  <text class="dg-sub"   x="307" y="114" text-anchor="middle">assume it can be tricked</text>
+  <rect x="380" y="66" width="130" height="68" rx="9" fill="var(--panel-2)" stroke="var(--warn)" stroke-width="2"/>
+  <text class="dg-label" x="445" y="88" text-anchor="middle" fill="var(--warn)">check output</text>
+  <text class="dg-sub"   x="445" y="106" text-anchor="middle">right shape?</text>
+  <text class="dg-sub"   x="445" y="122" text-anchor="middle">citations real?</text>
+  <rect x="530" y="76" width="116" height="48" rx="8" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.8"/>
+  <text class="dg-sub" x="588" y="97" text-anchor="middle" fill="var(--ok)">act or answer</text>
+  <text class="dg-sub" x="588" y="113" text-anchor="middle">only now</text>
+  <path class="dg-arrow" d="M96,100 L106,100" marker-end="url(#gd-a)"/>
+  <path class="dg-arrow" d="M234,100 L248,100" marker-end="url(#gd-a)"/>
+  <path class="dg-arrow" d="M360,100 L374,100" marker-end="url(#gd-a)"/>
+  <path class="dg-arrow" d="M510,100 L524,100" marker-end="url(#gd-a)"/>
+  <rect x="196" y="164" width="268" height="62" rx="9" fill="var(--panel)" stroke="var(--danger)" stroke-width="1.7"/>
+  <text class="dg-label" x="330" y="186" text-anchor="middle" fill="var(--danger)">and the real limit: capability</text>
+  <text class="dg-sub"   x="330" y="206" text-anchor="middle">a model with no delete tool cannot delete,</text>
+  <text class="dg-sub"   x="330" y="220" text-anchor="middle">however cleverly it is prompted</text>
+  <path d="M307,128 L320,158" stroke="var(--danger)" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+  <text class="dg-sub" x="14" y="40" fill="var(--danger)">Text from a document is UNTRUSTED input, exactly like text from a user.</text>
+  <text class="dg-sub" x="14" y="58">That is prompt injection: instructions hidden in the data you retrieved.</text>
+</svg>
+<figcaption>
+<strong>The strongest guardrail is not a filter — it is a missing capability.</strong> Every
+prompt-based defence can be argued around; a tool that does not exist cannot be called.
+</figcaption>
+</figure>
+
 ```mermaid
 flowchart LR
   U["input"] --> IG["INPUT GUARDRAILS<br/>schema · size · PII · injection · budget"]

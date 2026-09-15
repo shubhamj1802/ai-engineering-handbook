@@ -22,6 +22,41 @@ those is a decision you make weekly.
 
 ## Mental Model
 
+Attention lets **every word look at every other word** and decide which ones matter for
+understanding it.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 250" role="img" aria-label="Diagram: in the sentence the bank raised rates, the word bank attends strongly to rates and weakly to the, which is how the model decides bank means a financial institution rather than a riverside.">
+  <text class="dg-sub" x="14" y="22">When the model processes the word</text>
+  <rect x="236" y="8" width="70" height="24" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
+  <text class="dg-mono" x="271" y="25" text-anchor="middle" fill="var(--accent)" style="font-size:11.5px">bank</text>
+  <text class="dg-sub" x="316" y="22">it weighs every other word:</text>
+  <rect x="40" y="76" width="74" height="34" rx="6" class="dg-box"/>
+  <text class="dg-mono" x="77" y="98" text-anchor="middle" style="font-size:11.5px">The</text>
+  <rect x="142" y="76" width="84" height="34" rx="6" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2.2"/>
+  <text class="dg-mono" x="184" y="98" text-anchor="middle" fill="var(--accent)" style="font-size:11.5px">bank</text>
+  <rect x="254" y="76" width="92" height="34" rx="6" class="dg-box"/>
+  <text class="dg-mono" x="300" y="98" text-anchor="middle" style="font-size:11.5px">raised</text>
+  <rect x="374" y="76" width="86" height="34" rx="6" class="dg-box"/>
+  <text class="dg-mono" x="417" y="98" text-anchor="middle" style="font-size:11.5px">rates</text>
+  <path d="M176,110 Q120,150 82,114" fill="none" stroke="var(--text-muted)" stroke-width="1" opacity="0.7"/>
+  <text class="dg-sub" x="112" y="158" fill="var(--text-muted)">0.05</text>
+  <path d="M192,110 Q240,152 296,114" fill="none" stroke="var(--accent)" stroke-width="2.4"/>
+  <text class="dg-sub" x="238" y="168" fill="var(--accent)">0.35</text>
+  <path d="M196,110 Q300,196 414,114" fill="none" stroke="var(--accent)" stroke-width="3.6"/>
+  <text class="dg-sub" x="330" y="196" fill="var(--accent)">0.55  strongest</text>
+  <rect x="482" y="62" width="164" height="90" rx="9" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.8"/>
+  <text class="dg-sub" x="564" y="86" text-anchor="middle" fill="var(--ok)">so "bank" here means</text>
+  <text class="dg-sub" x="564" y="106" text-anchor="middle" fill="var(--ok)">a financial one</text>
+  <text class="dg-sub" x="564" y="130" text-anchor="middle">not a riverbank</text>
+  <text class="dg-sub" x="14" y="228">Thicker line = more attention. The weights are learned, not written by anyone.</text>
+  <text class="dg-sub" x="14" y="244">Swap "rates" for "river" and the weights shift, and so does the meaning.</text>
+</svg>
+<figcaption>
+<strong>This is why word order and context matter so much.</strong> Older models read words
+mostly in isolation; attention lets a word be understood by the company it keeps.
+</figcaption>
+</figure>
+
 Attention answers one question for every token: **"which other tokens should I look at, and
 how much?"**
 

@@ -22,6 +22,40 @@ different scale.
 
 ## Mental Model
 
+The algorithms differ in one thing: **the shape of the boundary they can draw.**
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 210" role="img" aria-label="Diagram: linear regression draws a straight boundary, a decision tree draws boxy right-angled steps, and a neural network draws a smooth curve. Each is shown separating two groups of points.">
+  <rect x="14" y="26" width="196" height="130" rx="9" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.6"/>
+  <text class="dg-label" x="28" y="46" fill="var(--accent-3)">Linear model</text>
+  <line x1="34" y1="140" x2="190" y2="66" stroke="var(--accent-3)" stroke-width="2.2"/>
+  <circle cx="54" cy="84" r="4" fill="var(--accent)"/><circle cx="76" cy="72" r="4" fill="var(--accent)"/>
+  <circle cx="98" cy="64" r="4" fill="var(--accent)"/><circle cx="120" cy="130" r="4" fill="var(--warn)"/>
+  <circle cx="148" cy="122" r="4" fill="var(--warn)"/><circle cx="170" cy="134" r="4" fill="var(--warn)"/>
+  <text class="dg-sub" x="28" y="152">a straight line. fast, explainable.</text>
+  <rect x="232" y="26" width="196" height="130" rx="9" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.6"/>
+  <text class="dg-label" x="246" y="46" fill="var(--accent-2)">Decision tree</text>
+  <polyline points="252,140 300,140 300,96 350,96 350,62 408,62" fill="none" stroke="var(--accent-2)" stroke-width="2.2"/>
+  <circle cx="268" cy="86" r="4" fill="var(--accent)"/><circle cx="292" cy="72" r="4" fill="var(--accent)"/>
+  <circle cx="322" cy="70" r="4" fill="var(--accent)"/><circle cx="330" cy="128" r="4" fill="var(--warn)"/>
+  <circle cx="366" cy="120" r="4" fill="var(--warn)"/><circle cx="392" cy="132" r="4" fill="var(--warn)"/>
+  <text class="dg-sub" x="246" y="152">right-angled steps. best on tables.</text>
+  <rect x="450" y="26" width="196" height="130" rx="9" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.6"/>
+  <text class="dg-label" x="464" y="46" fill="var(--accent)">Neural network</text>
+  <path d="M470,142 Q510,60 556,110 Q590,146 628,58" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+  <circle cx="486" cy="80" r="4" fill="var(--accent)"/><circle cx="520" cy="94" r="4" fill="var(--accent)"/>
+  <circle cx="566" cy="74" r="4" fill="var(--accent)"/><circle cx="540" cy="134" r="4" fill="var(--warn)"/>
+  <circle cx="596" cy="126" r="4" fill="var(--warn)"/><circle cx="614" cy="112" r="4" fill="var(--warn)"/>
+  <text class="dg-sub" x="464" y="152">any curve. needs lots of data.</text>
+  <text class="dg-sub" x="330" y="182" text-anchor="middle">More flexible is not better. A curve that fits every point has memorised the noise.</text>
+  <text class="dg-sub" x="330" y="200" text-anchor="middle">On ordinary spreadsheet data, the boxy tree usually wins.</text>
+</svg>
+<figcaption>
+<strong>Start with the straight line.</strong> If it is good enough you get speed and an
+explanation for free. Tree models handle tables best; neural networks earn their keep on
+images, audio and language.
+</figcaption>
+</figure>
+
 ```text
 Is there a label?
 ├── no  → UNSUPERVISED

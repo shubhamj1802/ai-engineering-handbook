@@ -22,6 +22,48 @@ rank 8 when you only take 5. Each technique here targets a specific one of those
 
 ## Mental Model
 
+The words a user types are rarely the best words to search with. Three fixes, applied in
+order.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 240" role="img" aria-label="Diagram: a vague user question is rewritten into a better query, searched by both keyword and meaning in parallel, the two result lists are merged, and a reranker puts the most relevant chunks on top.">
+  <defs>
+    <marker id="hs-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+  </defs>
+  <rect x="14" y="94" width="112" height="52" rx="8" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-sub" x="70" y="114" text-anchor="middle">"it broke again"</text>
+  <text class="dg-sub" x="70" y="132" text-anchor="middle">vague, no keywords</text>
+  <rect x="152" y="94" width="120" height="52" rx="8" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.8"/>
+  <text class="dg-label" x="212" y="114" text-anchor="middle" fill="var(--accent-2)">1 · rewrite</text>
+  <text class="dg-sub"   x="212" y="132" text-anchor="middle">use the chat history</text>
+  <rect x="300" y="52" width="130" height="44" rx="8" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.7"/>
+  <text class="dg-label" x="365" y="72" text-anchor="middle" fill="var(--accent-3)">2a · keywords</text>
+  <text class="dg-sub"   x="365" y="88" text-anchor="middle">exact codes, names</text>
+  <rect x="300" y="146" width="130" height="44" rx="8" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.7"/>
+  <text class="dg-label" x="365" y="166" text-anchor="middle" fill="var(--accent)">2b · meaning</text>
+  <text class="dg-sub"   x="365" y="182" text-anchor="middle">paraphrases</text>
+  <rect x="458" y="94" width="86" height="52" rx="8" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.5"/>
+  <text class="dg-sub" x="501" y="114" text-anchor="middle">merge</text>
+  <text class="dg-sub" x="501" y="132" text-anchor="middle">both lists</text>
+  <rect x="566" y="94" width="80" height="52" rx="8" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.9"/>
+  <text class="dg-label" x="606" y="114" text-anchor="middle" fill="var(--ok)">3 · rerank</text>
+  <text class="dg-sub"   x="606" y="132" text-anchor="middle">best on top</text>
+  <path class="dg-arrow" d="M126,120 L146,120" marker-end="url(#hs-a)"/>
+  <path class="dg-arrow" d="M272,108 L294,80" marker-end="url(#hs-a)"/>
+  <path class="dg-arrow" d="M272,132 L294,162" marker-end="url(#hs-a)"/>
+  <path class="dg-arrow" d="M430,78 L452,108" marker-end="url(#hs-a)"/>
+  <path class="dg-arrow" d="M430,164 L452,134" marker-end="url(#hs-a)"/>
+  <path class="dg-arrow" d="M544,120 L560,120" marker-end="url(#hs-a)"/>
+  <text class="dg-sub" x="330" y="222" text-anchor="middle">Keyword search never misses an exact part number. Meaning search never misses a paraphrase. Use both.</text>
+</svg>
+<figcaption>
+<strong>Reranking is the cheapest big win here.</strong> Retrieve twenty candidates loosely,
+then let a small cross-encoder pick the best four. Precision goes up without touching your
+index.
+</figcaption>
+</figure>
+
 ```mermaid
 flowchart TB
   Q["User question"] --> T["1. Transform<br/>rewrite · expand · HyDE"]

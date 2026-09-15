@@ -35,6 +35,53 @@ operating constraint cannot be evaluated.
 
 ## Architecture
 
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 200" role="img" aria-label="Pipeline diagram: raw data, cleaning, feature building, a train and test split, model training, evaluation, and a saved artefact, with most of the effort before the model.">
+  <defs>
+    <marker id="pm2-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+  </defs>
+  <rect x="10" y="56" width="82" height="48" rx="8" class="dg-box"/>
+  <text class="dg-sub" x="51" y="76" text-anchor="middle">raw data</text>
+  <text class="dg-sub" x="51" y="93" text-anchor="middle">messy</text>
+  <rect x="104" y="56" width="82" height="48" rx="8" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.6"/>
+  <text class="dg-sub" x="145" y="76" text-anchor="middle" fill="var(--accent-3)">clean</text>
+  <text class="dg-sub" x="145" y="93" text-anchor="middle">fix types</text>
+  <rect x="198" y="56" width="90" height="48" rx="8" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.6"/>
+  <text class="dg-sub" x="243" y="76" text-anchor="middle" fill="var(--accent-3)">features</text>
+  <text class="dg-sub" x="243" y="93" text-anchor="middle">what matters</text>
+  <rect x="300" y="56" width="82" height="48" rx="8" fill="var(--panel-2)" stroke="var(--warn)" stroke-width="1.7"/>
+  <text class="dg-sub" x="341" y="76" text-anchor="middle" fill="var(--warn)">split</text>
+  <text class="dg-sub" x="341" y="93" text-anchor="middle">before fitting!</text>
+  <rect x="394" y="56" width="82" height="48" rx="8" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.9"/>
+  <text class="dg-sub" x="435" y="76" text-anchor="middle" fill="var(--accent)">train</text>
+  <text class="dg-sub" x="435" y="93" text-anchor="middle">the small bit</text>
+  <rect x="488" y="56" width="76" height="48" rx="8" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.6"/>
+  <text class="dg-sub" x="526" y="76" text-anchor="middle" fill="var(--accent-2)">evaluate</text>
+  <text class="dg-sub" x="526" y="93" text-anchor="middle">honestly</text>
+  <rect x="576" y="56" width="74" height="48" rx="8" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.7"/>
+  <text class="dg-sub" x="613" y="76" text-anchor="middle" fill="var(--ok)">save it</text>
+  <text class="dg-sub" x="613" y="93" text-anchor="middle">one file</text>
+  <path class="dg-arrow" d="M92,80 L100,80" marker-end="url(#pm2-a)"/>
+  <path class="dg-arrow" d="M186,80 L194,80" marker-end="url(#pm2-a)"/>
+  <path class="dg-arrow" d="M288,80 L296,80" marker-end="url(#pm2-a)"/>
+  <path class="dg-arrow" d="M382,80 L390,80" marker-end="url(#pm2-a)"/>
+  <path class="dg-arrow" d="M476,80 L484,80" marker-end="url(#pm2-a)"/>
+  <path class="dg-arrow" d="M564,80 L572,80" marker-end="url(#pm2-a)"/>
+  <path d="M10,122 L288,122" stroke="var(--accent-3)" stroke-width="2"/>
+  <text class="dg-sub" x="148" y="142" text-anchor="middle" fill="var(--accent-3)">about 80% of the effort</text>
+  <path d="M394,122 L476,122" stroke="var(--accent)" stroke-width="2"/>
+  <text class="dg-sub" x="435" y="142" text-anchor="middle" fill="var(--accent)">about 10%</text>
+  <text class="dg-sub" x="14" y="178" fill="var(--warn)">Split BEFORE you fit anything — including scalers and encoders. Fitting on all the data leaks the answers.</text>
+</svg>
+<figcaption>
+<strong>That split marker is the one to remember.</strong> Fit a scaler on the whole dataset
+and information from the test set reaches your model — the score looks great and production
+disappoints.
+</figcaption>
+</figure>
+
 ```mermaid
 flowchart LR
   RAW["tickets.parquet<br/>raw export"] --> AUDIT["audit<br/>nulls · dupes · leakage"]

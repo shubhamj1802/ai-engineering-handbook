@@ -22,6 +22,40 @@ model learns and what your evaluation reports.
 
 ## Mental Model
 
+Real data arrives broken in a small number of predictable ways. Knowing the list turns
+cleaning from guesswork into a checklist.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 240" role="img" aria-label="Diagram listing the five common data problems - missing values, wrong types, duplicates, inconsistent text and outliers - each with the pandas method that addresses it.">
+  <text class="dg-label" x="14" y="22">What arrives</text>
+  <text class="dg-label" x="392" y="22" fill="var(--ok)">What fixes it</text>
+  <rect x="14" y="32" width="330" height="34" rx="6" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.4"/>
+  <text class="dg-sub" x="28" y="53">missing values — blanks, NaN, "N/A", "-"</text>
+  <rect x="392" y="32" width="254" height="34" rx="6" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.4"/>
+  <text class="dg-mono" x="406" y="53" style="font-size:11px">.isna() .fillna() .dropna()</text>
+  <rect x="14" y="74" width="330" height="34" rx="6" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.4"/>
+  <text class="dg-sub" x="28" y="95">wrong types — numbers stored as text</text>
+  <rect x="392" y="74" width="254" height="34" rx="6" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.4"/>
+  <text class="dg-mono" x="406" y="95" style="font-size:11px">pd.to_numeric() .astype()</text>
+  <rect x="14" y="116" width="330" height="34" rx="6" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.4"/>
+  <text class="dg-sub" x="28" y="137">duplicates — the same row twice</text>
+  <rect x="392" y="116" width="254" height="34" rx="6" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.4"/>
+  <text class="dg-mono" x="406" y="137" style="font-size:11px">.duplicated() .drop_duplicates()</text>
+  <rect x="14" y="158" width="330" height="34" rx="6" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.4"/>
+  <text class="dg-sub" x="28" y="179">messy text — " London", "london", "LONDON"</text>
+  <rect x="392" y="158" width="254" height="34" rx="6" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.4"/>
+  <text class="dg-mono" x="406" y="179" style="font-size:11px">.str.strip() .str.lower()</text>
+  <rect x="14" y="200" width="330" height="34" rx="6" fill="var(--panel-2)" stroke="var(--warn)" stroke-width="1.4"/>
+  <text class="dg-sub" x="28" y="221">outliers — an age of 999</text>
+  <rect x="392" y="200" width="254" height="34" rx="6" fill="var(--panel-2)" stroke="var(--warn)" stroke-width="1.4"/>
+  <text class="dg-sub" x="406" y="221">decide deliberately, never silently</text>
+</svg>
+<figcaption>
+<strong>Work down the list every time.</strong> The last row is the one that needs judgement:
+an outlier may be a data-entry error or your most important customer, and only you can
+decide which.
+</figcaption>
+</figure>
+
 ```text
 Missing data is a QUESTION, not a nuisance. Ask why it is missing:
 

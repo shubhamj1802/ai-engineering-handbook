@@ -22,6 +22,30 @@ choosing *which* decisions get a human, and making that review fast enough to ha
 
 ## Mental Model
 
+Not every action deserves a human. The skill is sorting them, and making the pause cheap when
+it is needed.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="Diagram sorting actions into three bands: reversible low-value actions run automatically, uncertain or costly ones need approval, and irreversible high-impact ones always need a human.">
+  <rect x="14" y="26" width="632" height="52" rx="9" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.8"/>
+  <text class="dg-label" x="30" y="48" fill="var(--ok)">Just do it</text>
+  <text class="dg-sub"   x="140" y="48">reversible, cheap, low impact — reading a document, drafting text, searching</text>
+  <text class="dg-sub"   x="140" y="68">asking a human here trains them to click yes without reading</text>
+  <rect x="14" y="88" width="632" height="52" rx="9" fill="var(--panel-2)" stroke="var(--warn)" stroke-width="1.9"/>
+  <text class="dg-label" x="30" y="110" fill="var(--warn)">Ask first</text>
+  <text class="dg-sub"   x="140" y="110">costly or uncertain — sending an email, a refund under £50, a bulk update</text>
+  <text class="dg-sub"   x="140" y="130">show the exact action, not a summary of it</text>
+  <rect x="14" y="150" width="632" height="52" rx="9" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="2"/>
+  <text class="dg-label" x="30" y="172" fill="var(--danger)">Always a human</text>
+  <text class="dg-sub"   x="140" y="172">irreversible or large — deleting data, moving money, anything to a customer at scale</text>
+  <text class="dg-sub"   x="140" y="192">no confidence score is high enough to skip this</text>
+  <text class="dg-sub" x="330" y="222" text-anchor="middle">Approval fatigue is a real failure mode: ask about everything and you get rubber-stamping, which is worse than no gate.</text>
+</svg>
+<figcaption>
+<strong>Two questions decide the band:</strong> can it be undone, and how bad is it at a
+hundred times the volume? Reversible and small goes automatic; irreversible never does.
+</figcaption>
+</figure>
+
 ```text
 Gate on EXPECTED COST OF BEING WRONG, not on how uncertain the model feels.
 

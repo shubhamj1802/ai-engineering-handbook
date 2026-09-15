@@ -22,6 +22,32 @@ tells you which ones did.
 
 ## Mental Model
 
+A prompt has parts that do different jobs. Getting the parts right matters far more than any
+clever phrasing.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 250" role="img" aria-label="Diagram of prompt anatomy: a role and task instruction, the context or retrieved documents, one worked example, the required output format, and finally the actual question.">
+  <rect x="14" y="20" width="632" height="38" rx="7" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.7"/>
+  <text class="dg-label" x="28" y="44" fill="var(--accent)">1 · the job</text>
+  <text class="dg-sub"   x="140" y="44">"You classify support tickets by urgency." Be specific, not flattering.</text>
+  <rect x="14" y="66" width="632" height="38" rx="7" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.7"/>
+  <text class="dg-label" x="28" y="90" fill="var(--accent-3)">2 · context</text>
+  <text class="dg-sub"   x="140" y="90">the documents, the account details, today's date — what it cannot know</text>
+  <rect x="14" y="112" width="632" height="38" rx="7" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.7"/>
+  <text class="dg-label" x="28" y="136" fill="var(--accent-2)">3 · one example</text>
+  <text class="dg-sub"   x="140" y="136">input and the exact output you want. This does more than any other single line.</text>
+  <rect x="14" y="158" width="632" height="38" rx="7" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.7"/>
+  <text class="dg-label" x="28" y="182" fill="var(--ok)">4 · the format</text>
+  <text class="dg-sub"   x="140" y="182">"Reply with JSON: {urgency, reason}" — or better, use structured output</text>
+  <rect x="14" y="204" width="632" height="38" rx="7" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.5"/>
+  <text class="dg-label" x="28" y="228">5 · the question</text>
+  <text class="dg-sub"   x="140" y="228">last, so it is the freshest thing in the model's view</text>
+</svg>
+<figcaption>
+<strong>The single example is the highest-value line in most prompts.</strong> Showing one
+correct input-output pair beats several paragraphs describing what you want.
+</figcaption>
+</figure>
+
 ```text
 A prompt is a SPECIFICATION, not a conversation.
 

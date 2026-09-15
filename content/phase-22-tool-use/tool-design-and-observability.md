@@ -22,6 +22,35 @@ simultaneously a usability problem and a security boundary.
 
 ## Mental Model
 
+A tool is an API you are exposing to something that **misreads instructions and can be
+tricked**. Design accordingly.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="Diagram contrasting a dangerous broad tool that runs arbitrary SQL with a safe narrow tool that takes a date range and a limit and can only read one table.">
+  <text class="dg-label" x="14" y="22" fill="var(--danger)">Too much power</text>
+  <rect x="14" y="34" width="304" height="86" rx="9" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.9"/>
+  <text class="dg-mono" x="28" y="56" style="font-size:11px">run_sql(query: str)</text>
+  <text class="dg-sub"  x="28" y="78">any query, any table, any operation</text>
+  <text class="dg-sub"  x="28" y="98" fill="var(--danger)">one clever instruction in a document</text>
+  <text class="dg-sub"  x="28" y="112" fill="var(--danger)">and your data is gone or leaked</text>
+  <text class="dg-label" x="342" y="22" fill="var(--ok)">Exactly enough</text>
+  <rect x="342" y="34" width="304" height="86" rx="9" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.9"/>
+  <text class="dg-mono" x="356" y="56" style="font-size:11px">sales_by_week(start, end, limit=100)</text>
+  <text class="dg-sub"  x="356" y="78">one table, read only, dates validated</text>
+  <text class="dg-sub"  x="356" y="98" fill="var(--ok)">the worst case is a slightly wrong</text>
+  <text class="dg-sub"  x="356" y="112" fill="var(--ok)">date range</text>
+  <rect x="14" y="140" width="632" height="80" rx="9" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-label" x="30" y="162">Four rules for every tool you write</text>
+  <text class="dg-sub" x="30" y="184">1 · narrow inputs — types and ranges, validated before anything runs</text>
+  <text class="dg-sub" x="30" y="200">2 · read-only unless it truly must write     3 · a timeout and a row limit, always</text>
+  <text class="dg-sub" x="30" y="214">4 · log every call with its arguments — this is how you find out what really happened</text>
+</svg>
+<figcaption>
+<strong>Write the tool you would expose to the public internet.</strong> That is effectively
+what you are doing: the arguments are chosen by a model that can be influenced by any text
+it reads.
+</figcaption>
+</figure>
+
 ```text
 A tool is an API whose only consumer reads documentation and never asks questions.
 

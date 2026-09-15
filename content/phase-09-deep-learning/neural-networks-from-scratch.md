@@ -22,6 +22,48 @@ of NumPy makes it permanent.
 
 ## Mental Model
 
+A neuron is three small steps: **multiply, add, bend**. Stack those and you have a network.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="Diagram of one neuron: inputs are each multiplied by a weight, the results are added together with a bias, and the total passes through an activation function that bends the line.">
+  <defs>
+    <marker id="nn-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+  </defs>
+  <circle cx="40" cy="48" r="17" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-mono" x="40" y="53" text-anchor="middle" style="font-size:11px">x1</text>
+  <circle cx="40" cy="105" r="17" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-mono" x="40" y="110" text-anchor="middle" style="font-size:11px">x2</text>
+  <circle cx="40" cy="162" r="17" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-mono" x="40" y="167" text-anchor="middle" style="font-size:11px">x3</text>
+  <text class="dg-sub" x="86" y="44" fill="var(--accent)">x w1</text>
+  <text class="dg-sub" x="86" y="101" fill="var(--accent)">x w2</text>
+  <text class="dg-sub" x="86" y="158" fill="var(--accent)">x w3</text>
+  <path class="dg-arrow" d="M57,52 L176,96" marker-end="url(#nn-a)"/>
+  <path class="dg-arrow" d="M57,105 L176,105" marker-end="url(#nn-a)"/>
+  <path class="dg-arrow" d="M57,158 L176,114" marker-end="url(#nn-a)"/>
+  <circle cx="204" cy="105" r="28" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="dg-label" x="204" y="102" text-anchor="middle" fill="var(--accent)">add</text>
+  <text class="dg-sub"   x="204" y="118" text-anchor="middle">+ bias</text>
+  <path class="dg-arrow" d="M232,105 L288,105" marker-end="url(#nn-a)"/>
+  <rect x="296" y="66" width="150" height="78" rx="9" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.9"/>
+  <text class="dg-label" x="371" y="88" text-anchor="middle" fill="var(--accent-2)">bend it</text>
+  <path d="M312,132 L352,132 Q356,132 360,124 L430,86" fill="none" stroke="var(--accent-2)" stroke-width="2.2"/>
+  <text class="dg-sub" x="371" y="138" text-anchor="middle">ReLU</text>
+  <path class="dg-arrow" d="M446,105 L500,105" marker-end="url(#nn-a)"/>
+  <circle cx="530" cy="105" r="20" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.8"/>
+  <text class="dg-sub" x="530" y="110" text-anchor="middle" fill="var(--ok)">out</text>
+  <text class="dg-sub" x="562" y="100">feeds the</text>
+  <text class="dg-sub" x="562" y="116">next layer</text>
+  <rect x="14" y="186" width="632" height="36" rx="8" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.3"/>
+  <text class="dg-sub" x="330" y="209" text-anchor="middle">Without the bend, stacking layers gives you one big straight line. The bend is what makes depth worth anything.</text>
+</svg>
+<figcaption>
+<strong>That is the entire unit.</strong> Training just means nudging the weights and the bias
+until the output stops being wrong — which is what the next lesson does in PyTorch.
+</figcaption>
+</figure>
+
 ```text
 ONE NEURON:   z = w·x + b          →   a = f(z)
               weighted sum             non-linearity

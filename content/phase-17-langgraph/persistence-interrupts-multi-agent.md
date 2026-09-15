@@ -22,6 +22,48 @@ can put in front of customers and auditors.
 
 ## Mental Model
 
+A **checkpoint** saves the state after every node. That one feature is what makes pausing for
+a human possible.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="Diagram: a graph runs through nodes saving a checkpoint after each, hits an interrupt before a risky action, waits for human approval which may be days later, then resumes from the saved state.">
+  <defs>
+    <marker id="ck-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+  <rect x="14" y="66" width="92" height="46" rx="8" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.6"/>
+  <text class="dg-sub" x="60" y="94" text-anchor="middle">draft it</text>
+  <rect x="130" y="66" width="92" height="46" rx="8" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.6"/>
+  <text class="dg-sub" x="176" y="94" text-anchor="middle">check it</text>
+  <rect x="246" y="60" width="112" height="58" rx="9" fill="var(--panel-2)" stroke="var(--warn)" stroke-width="2.1"/>
+  <text class="dg-label" x="302" y="82" text-anchor="middle" fill="var(--warn)">interrupt</text>
+  <text class="dg-sub"   x="302" y="100" text-anchor="middle">stop before the</text>
+  <text class="dg-sub"   x="302" y="112" text-anchor="middle">risky bit</text>
+  <rect x="404" y="66" width="112" height="46" rx="8" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.8"/>
+  <text class="dg-sub" x="460" y="88" text-anchor="middle" fill="var(--ok)">human says yes</text>
+  <text class="dg-sub" x="460" y="104" text-anchor="middle">hours or days later</text>
+  <rect x="540" y="66" width="106" height="46" rx="8" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.6"/>
+  <text class="dg-sub" x="593" y="94" text-anchor="middle">send it</text>
+  <path class="dg-arrow" d="M106,89 L124,89" marker-end="url(#ck-a)"/>
+  <path class="dg-arrow" d="M222,89 L240,89" marker-end="url(#ck-a)"/>
+  <path class="dg-arrow" d="M358,89 L398,89" marker-end="url(#ck-a)"/>
+  <path class="dg-arrow" d="M516,89 L534,89" marker-end="url(#ck-a)"/>
+  <circle cx="60" cy="134" r="5" fill="var(--accent-2)"/>
+  <circle cx="176" cy="134" r="5" fill="var(--accent-2)"/>
+  <circle cx="302" cy="134" r="5" fill="var(--accent-2)"/>
+  <circle cx="593" cy="134" r="5" fill="var(--accent-2)"/>
+  <line x1="40" y1="134" x2="620" y2="134" stroke="var(--accent-2)" stroke-width="1.2" stroke-dasharray="3 4"/>
+  <text class="dg-sub" x="14" y="160" fill="var(--accent-2)">a checkpoint saved after every node</text>
+  <rect x="14" y="176" width="632" height="44" rx="9" fill="var(--panel)" stroke="var(--accent-2)" stroke-width="1.5"/>
+  <text class="dg-sub" x="330" y="196" text-anchor="middle">Because the state is on disk, the process can die, restart, or wait a week.</text>
+  <text class="dg-sub" x="330" y="214" text-anchor="middle">Resuming is just loading the last checkpoint and carrying on — no in-memory session required.</text>
+</svg>
+<figcaption>
+<strong>Checkpointing is what separates a demo from a product.</strong> Approval gates,
+crash recovery and "come back tomorrow" workflows all fall out of the same saved state.
+</figcaption>
+</figure>
+
 ```text
 CHECKPOINTER   saves the full state after every node
 THREAD         a conversation, identified by thread_id; its checkpoints are its history

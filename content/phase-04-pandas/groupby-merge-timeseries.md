@@ -21,6 +21,54 @@ resample questions — and the answers drive real engineering decisions in Phase
 
 ## Mental Model
 
+`groupby` is always the same three beats: **split** the table into piles, **apply** something
+to each pile, **combine** the answers back into one result.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 250" role="img" aria-label="Diagram of split apply combine: one table of rows is split into three piles by city, each pile is summed, and the three answers are combined into a small result table with one row per city.">
+  <defs>
+    <marker id="gb-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+  </defs>
+  <text class="dg-label" x="14" y="22">1 · split</text>
+  <rect x="14" y="34" width="120" height="122" rx="8" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-sub" x="26" y="54" fill="var(--accent-3)">London  10</text>
+  <text class="dg-sub" x="26" y="74" fill="var(--accent)">Leeds   40</text>
+  <text class="dg-sub" x="26" y="94" fill="var(--accent-3)">London  20</text>
+  <text class="dg-sub" x="26" y="114" fill="var(--accent-2)">Bath    30</text>
+  <text class="dg-sub" x="26" y="134" fill="var(--accent-3)">London   5</text>
+  <text class="dg-sub" x="26" y="150">one messy table</text>
+  <path class="dg-arrow" d="M138,60 L182,44" marker-end="url(#gb-a)"/>
+  <path class="dg-arrow" d="M138,95 L182,95" marker-end="url(#gb-a)"/>
+  <path class="dg-arrow" d="M138,130 L182,146" marker-end="url(#gb-a)"/>
+  <text class="dg-label" x="190" y="22">2 · apply</text>
+  <rect x="190" y="30" width="150" height="44" rx="7" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.7"/>
+  <text class="dg-sub" x="204" y="48" fill="var(--accent-3)">London 10, 20, 5</text>
+  <text class="dg-sub" x="204" y="65">sum = 35</text>
+  <rect x="190" y="82" width="150" height="34" rx="7" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.7"/>
+  <text class="dg-sub" x="204" y="103" fill="var(--accent)">Leeds 40  sum = 40</text>
+  <rect x="190" y="124" width="150" height="34" rx="7" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.7"/>
+  <text class="dg-sub" x="204" y="145" fill="var(--accent-2)">Bath 30  sum = 30</text>
+  <path class="dg-arrow" d="M344,52 L392,84" marker-end="url(#gb-a)"/>
+  <path class="dg-arrow" d="M344,99 L392,99" marker-end="url(#gb-a)"/>
+  <path class="dg-arrow" d="M344,141 L392,114" marker-end="url(#gb-a)"/>
+  <text class="dg-label" x="400" y="22">3 · combine</text>
+  <rect x="400" y="60" width="160" height="82" rx="8" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="2"/>
+  <text class="dg-sub" x="414" y="82">Bath      30</text>
+  <text class="dg-sub" x="414" y="102">Leeds     40</text>
+  <text class="dg-sub" x="414" y="122">London    35</text>
+  <text class="dg-sub" x="400" y="160" fill="var(--ok)">one row per group</text>
+  <text class="dg-sub" x="400" y="178">the group becomes the index</text>
+  <rect x="14" y="196" width="632" height="46" rx="9" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.3"/>
+  <text class="dg-mono" x="330" y="216" text-anchor="middle" style="font-size:11.5px">df.groupby("city")["amount"].sum()</text>
+  <text class="dg-sub"  x="330" y="234" text-anchor="middle">split by city, take amount, add it up — all three beats in one line</text>
+</svg>
+<figcaption>
+<strong>Split, apply, combine.</strong> Every <code>groupby</code> you ever write is these
+three steps, and the thing you grouped by becomes the index of the result.
+</figcaption>
+</figure>
+
 ```text
 SPLIT–APPLY–COMBINE
 

@@ -22,6 +22,63 @@ right at the start removes most of them.
 
 ## Mental Model
 
+A **DataFrame** is a table. A **Series** is one column of it. And the **index** is not
+decoration — it is the thing that lines rows up when you combine tables.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 250" role="img" aria-label="Diagram of a DataFrame: an index column down the left labels each row, named columns run across the top, and a single column pulled out on its own is a Series that keeps the same index.">
+  <defs>
+    <marker id="pd-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+  <text class="dg-label" x="14" y="22">DataFrame — the whole table</text>
+  <rect x="14" y="34" width="60" height="28" rx="5" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.7"/>
+  <text class="dg-sub" x="44" y="53" text-anchor="middle" fill="var(--accent-2)">index</text>
+  <rect x="78" y="34" width="86" height="28" rx="5" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-sub" x="121" y="53" text-anchor="middle">name</text>
+  <rect x="168" y="34" width="86" height="28" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.9"/>
+  <text class="dg-sub" x="211" y="53" text-anchor="middle" fill="var(--accent)">amount</text>
+  <rect x="258" y="34" width="86" height="28" rx="5" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-sub" x="301" y="53" text-anchor="middle">city</text>
+  <rect x="14" y="66" width="60" height="28" rx="5" fill="var(--panel)" stroke="var(--accent-2)" stroke-width="1.3"/>
+  <text class="dg-mono" x="44" y="85" text-anchor="middle" style="font-size:11px">0</text>
+  <rect x="78" y="66" width="86" height="28" rx="5" class="dg-box"/>
+  <rect x="168" y="66" width="86" height="28" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.3"/>
+  <rect x="258" y="66" width="86" height="28" rx="5" class="dg-box"/>
+  <rect x="14" y="98" width="60" height="28" rx="5" fill="var(--panel)" stroke="var(--accent-2)" stroke-width="1.3"/>
+  <text class="dg-mono" x="44" y="117" text-anchor="middle" style="font-size:11px">1</text>
+  <rect x="78" y="98" width="86" height="28" rx="5" class="dg-box"/>
+  <rect x="168" y="98" width="86" height="28" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.3"/>
+  <rect x="258" y="98" width="86" height="28" rx="5" class="dg-box"/>
+  <rect x="14" y="130" width="60" height="28" rx="5" fill="var(--panel)" stroke="var(--accent-2)" stroke-width="1.3"/>
+  <text class="dg-mono" x="44" y="149" text-anchor="middle" style="font-size:11px">2</text>
+  <rect x="78" y="130" width="86" height="28" rx="5" class="dg-box"/>
+  <rect x="168" y="130" width="86" height="28" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.3"/>
+  <rect x="258" y="130" width="86" height="28" rx="5" class="dg-box"/>
+  <text class="dg-sub" x="14" y="180" fill="var(--accent-2)">the index labels the rows</text>
+  <path d="M352,100 L404,100" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#pd-a)"/>
+  <text class="dg-mono" x="356" y="90" style="font-size:10.5px">df["amount"]</text>
+  <text class="dg-label" x="424" y="22" fill="var(--accent)">Series — one column</text>
+  <rect x="424" y="34" width="52" height="28" rx="5" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.7"/>
+  <text class="dg-sub" x="450" y="53" text-anchor="middle" fill="var(--accent-2)">index</text>
+  <rect x="480" y="34" width="86" height="28" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.9"/>
+  <text class="dg-sub" x="523" y="53" text-anchor="middle" fill="var(--accent)">amount</text>
+  <rect x="424" y="66" width="52" height="28" rx="5" fill="var(--panel)" stroke="var(--accent-2)" stroke-width="1.3"/>
+  <rect x="480" y="66" width="86" height="28" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.3"/>
+  <rect x="424" y="98" width="52" height="28" rx="5" fill="var(--panel)" stroke="var(--accent-2)" stroke-width="1.3"/>
+  <rect x="480" y="98" width="86" height="28" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.3"/>
+  <rect x="424" y="130" width="52" height="28" rx="5" fill="var(--panel)" stroke="var(--accent-2)" stroke-width="1.3"/>
+  <rect x="480" y="130" width="86" height="28" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.3"/>
+  <text class="dg-sub" x="424" y="180">it keeps the same index</text>
+  <rect x="14" y="200" width="632" height="42" rx="9" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.5"/>
+  <text class="dg-sub" x="330" y="226" text-anchor="middle">That shared index is why two tables can be added, joined or aligned without you matching rows by hand.</text>
+</svg>
+<figcaption>
+<strong>The index is the whole point.</strong> Pull one column out and it still knows which
+row each value came from — which is how Pandas lines up data from different sources for you.
+</figcaption>
+</figure>
+
 ```text
 Series    = one labelled column     (a NumPy array + an index)
 DataFrame = a dict of Series sharing one index

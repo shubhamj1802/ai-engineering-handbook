@@ -22,6 +22,44 @@ production agent systems converge on it.
 
 ## Mental Model
 
+LangGraph is a **state machine**: nodes change a shared state, edges decide what runs next.
+Once you see that, the API reads itself.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 240" role="img" aria-label="Diagram: a shared state object passes through nodes. Each node returns an update which is merged in, and a conditional edge reads the state to decide which node runs next.">
+  <defs>
+    <marker id="lg2-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+  <rect x="14" y="88" width="104" height="56" rx="9" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="2"/>
+  <text class="dg-label" x="66" y="110" text-anchor="middle" fill="var(--accent-2)">state</text>
+  <text class="dg-sub"   x="66" y="128" text-anchor="middle">one dict</text>
+  <rect x="160" y="88" width="112" height="56" rx="9" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
+  <text class="dg-label" x="216" y="110" text-anchor="middle" fill="var(--accent)">node A</text>
+  <text class="dg-sub"   x="216" y="128" text-anchor="middle">returns an update</text>
+  <path d="M258,64 L318,64" stroke="var(--accent-2)" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+  <text class="dg-sub" x="288" y="56" text-anchor="middle" fill="var(--accent-2)">merged back into state</text>
+  <polygon points="314,116 366,90 418,116 366,142" fill="var(--panel-2)" stroke="var(--warn)" stroke-width="1.9"/>
+  <text class="dg-sub" x="366" y="112" text-anchor="middle" fill="var(--warn)">look at</text>
+  <text class="dg-sub" x="366" y="128" text-anchor="middle" fill="var(--warn)">the state</text>
+  <rect x="462" y="42" width="120" height="48" rx="8" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.6"/>
+  <text class="dg-sub" x="522" y="72" text-anchor="middle">node B</text>
+  <rect x="462" y="142" width="120" height="48" rx="8" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.7"/>
+  <text class="dg-sub" x="522" y="172" text-anchor="middle" fill="var(--ok)">END</text>
+  <path class="dg-arrow" d="M118,116 L154,116" marker-end="url(#lg2-a)"/>
+  <path class="dg-arrow" d="M272,116 L310,116" marker-end="url(#lg2-a)"/>
+  <path class="dg-arrow" d="M418,106 L456,76" marker-end="url(#lg2-a)"/>
+  <path class="dg-arrow" d="M418,126 L456,158" marker-end="url(#lg2-a)"/>
+  <path d="M522,90 Q522,214 216,214 L216,150" stroke="var(--accent)" stroke-width="1.6" fill="none" stroke-dasharray="5 4" marker-end="url(#lg2-a)"/>
+  <text class="dg-sub" x="330" y="232" text-anchor="middle">loops are just edges that point backwards</text>
+</svg>
+<figcaption>
+<strong>Three pieces only:</strong> a state shape, functions that return updates to it, and
+edges — some fixed, some that read the state to choose. Loops and branches are nothing
+special; they are just where the edges point.
+</figcaption>
+</figure>
+
 ```text
 STATE     a typed dict that flows through the graph; every node reads it and
           returns a partial update

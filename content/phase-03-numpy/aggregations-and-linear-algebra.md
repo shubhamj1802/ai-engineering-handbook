@@ -22,6 +22,54 @@ lesson.
 
 ## Mental Model
 
+One parameter causes most of the confusion in this lesson: **`axis`**. Picture it as the
+direction you collapse.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="Diagram: summing with axis zero collapses the rows and leaves one value per column, while axis one collapses the columns and leaves one value per row.">
+  <defs>
+    <marker id="ax-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+  <text class="dg-mono" x="14" y="22" fill="var(--accent)" style="font-size:12px">axis=0 — collapse downwards</text>
+  <rect x="14" y="34" width="36" height="32" rx="5" class="dg-box"/>
+  <rect x="54" y="34" width="36" height="32" rx="5" class="dg-box"/>
+  <rect x="94" y="34" width="36" height="32" rx="5" class="dg-box"/>
+  <rect x="14" y="70" width="36" height="32" rx="5" class="dg-box"/>
+  <rect x="54" y="70" width="36" height="32" rx="5" class="dg-box"/>
+  <rect x="94" y="70" width="36" height="32" rx="5" class="dg-box"/>
+  <path d="M32,108 L32,128" stroke="var(--accent)" stroke-width="1.7" marker-end="url(#ax-a)"/>
+  <path d="M72,108 L72,128" stroke="var(--accent)" stroke-width="1.7" marker-end="url(#ax-a)"/>
+  <path d="M112,108 L112,128" stroke="var(--accent)" stroke-width="1.7" marker-end="url(#ax-a)"/>
+  <rect x="14" y="134" width="36" height="32" rx="5" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.7"/>
+  <rect x="54" y="134" width="36" height="32" rx="5" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.7"/>
+  <rect x="94" y="134" width="36" height="32" rx="5" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.7"/>
+  <text class="dg-sub" x="14" y="188">one value PER COLUMN</text>
+  <text class="dg-mono" x="14" y="210" style="font-size:11px">(2,3).sum(axis=0) -> (3,)</text>
+  <line x1="290" y1="14" x2="290" y2="216" stroke="var(--border)" stroke-width="1"/>
+  <text class="dg-mono" x="320" y="22" fill="var(--accent)" style="font-size:12px">axis=1 — collapse across</text>
+  <rect x="320" y="34" width="36" height="32" rx="5" class="dg-box"/>
+  <rect x="360" y="34" width="36" height="32" rx="5" class="dg-box"/>
+  <rect x="400" y="34" width="36" height="32" rx="5" class="dg-box"/>
+  <rect x="320" y="70" width="36" height="32" rx="5" class="dg-box"/>
+  <rect x="360" y="70" width="36" height="32" rx="5" class="dg-box"/>
+  <rect x="400" y="70" width="36" height="32" rx="5" class="dg-box"/>
+  <path d="M442,50 L470,50" stroke="var(--accent)" stroke-width="1.7" marker-end="url(#ax-a)"/>
+  <path d="M442,86 L470,86" stroke="var(--accent)" stroke-width="1.7" marker-end="url(#ax-a)"/>
+  <rect x="478" y="34" width="36" height="32" rx="5" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.7"/>
+  <rect x="478" y="70" width="36" height="32" rx="5" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.7"/>
+  <text class="dg-sub" x="320" y="140">one value PER ROW</text>
+  <text class="dg-mono" x="320" y="162" style="font-size:11px">(2,3).sum(axis=1) -> (2,)</text>
+  <text class="dg-sub" x="320" y="196">The axis you name is the one</text>
+  <text class="dg-sub" x="320" y="212">that DISAPPEARS from the shape.</text>
+</svg>
+<figcaption>
+<strong>The trick that makes it stick:</strong> the axis you pass is the axis that vanishes.
+<code>sum(axis=0)</code> on a <code>(2, 3)</code> array removes the 2 and leaves
+<code>(3,)</code>. Check the output shape and you will never guess again.
+</figcaption>
+</figure>
+
 ```text
 AGGREGATION   many numbers → fewer numbers, along a named axis
 MATMUL        (n, k) @ (k, m) → (n, m)     inner dimensions must match

@@ -22,6 +22,52 @@ a cluttered one hides it entirely.
 
 ## Mental Model
 
+Before touching Matplotlib, answer one question: **what question is this chart answering?**
+The answer picks the chart type for you.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 240" role="img" aria-label="Diagram matching four questions to four chart types: comparing categories uses a bar chart, change over time uses a line chart, the shape of a spread uses a histogram, and the relationship between two numbers uses a scatter plot.">
+  <rect x="14" y="26" width="150" height="126" rx="9" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.7"/>
+  <text class="dg-sub" x="26" y="46">"which is biggest?"</text>
+  <rect x="34" y="96" width="18" height="40" fill="var(--accent)" opacity="0.8"/>
+  <rect x="60" y="76" width="18" height="60" fill="var(--accent)" opacity="0.8"/>
+  <rect x="86" y="110" width="18" height="26" fill="var(--accent)" opacity="0.8"/>
+  <rect x="112" y="88" width="18" height="48" fill="var(--accent)" opacity="0.8"/>
+  <line x1="28" y1="136" x2="140" y2="136" stroke="var(--border-strong)" stroke-width="1.3"/>
+  <text class="dg-label" x="26" y="66" fill="var(--accent)">bar chart</text>
+  <rect x="178" y="26" width="150" height="126" rx="9" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.7"/>
+  <text class="dg-sub" x="190" y="46">"is it going up?"</text>
+  <polyline points="192,128 220,110 248,118 276,86 304,92" fill="none" stroke="var(--accent-3)" stroke-width="2.2"/>
+  <line x1="192" y1="136" x2="304" y2="136" stroke="var(--border-strong)" stroke-width="1.3"/>
+  <text class="dg-label" x="190" y="66" fill="var(--accent-3)">line chart</text>
+  <rect x="342" y="26" width="150" height="126" rx="9" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.7"/>
+  <text class="dg-sub" x="354" y="46">"what is typical?"</text>
+  <rect x="356" y="120" width="16" height="16" fill="var(--accent-2)" opacity="0.8"/>
+  <rect x="374" y="104" width="16" height="32" fill="var(--accent-2)" opacity="0.8"/>
+  <rect x="392" y="84" width="16" height="52" fill="var(--accent-2)" opacity="0.8"/>
+  <rect x="410" y="96" width="16" height="40" fill="var(--accent-2)" opacity="0.8"/>
+  <rect x="428" y="116" width="16" height="20" fill="var(--accent-2)" opacity="0.8"/>
+  <line x1="352" y1="136" x2="468" y2="136" stroke="var(--border-strong)" stroke-width="1.3"/>
+  <text class="dg-label" x="354" y="66" fill="var(--accent-2)">histogram</text>
+  <rect x="506" y="26" width="140" height="126" rx="9" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.7"/>
+  <text class="dg-sub" x="518" y="46">"are they linked?"</text>
+  <circle cx="530" cy="126" r="3.5" fill="var(--ok)"/>
+  <circle cx="548" cy="114" r="3.5" fill="var(--ok)"/>
+  <circle cx="566" cy="118" r="3.5" fill="var(--ok)"/>
+  <circle cx="584" cy="98" r="3.5" fill="var(--ok)"/>
+  <circle cx="602" cy="88" r="3.5" fill="var(--ok)"/>
+  <circle cx="620" cy="94" r="3.5" fill="var(--ok)"/>
+  <line x1="524" y1="136" x2="634" y2="136" stroke="var(--border-strong)" stroke-width="1.3"/>
+  <text class="dg-label" x="518" y="66" fill="var(--ok)">scatter plot</text>
+  <rect x="14" y="170" width="632" height="60" rx="9" fill="var(--panel)" stroke="var(--danger)" stroke-width="1.4" stroke-dasharray="5 4"/>
+  <text class="dg-sub" x="330" y="192" text-anchor="middle" fill="var(--danger)">If you cannot say which question the chart answers, it is decoration.</text>
+  <text class="dg-sub" x="330" y="212" text-anchor="middle">Put the answer in the title: "Leeds leads on revenue" beats "Revenue by city".</text>
+</svg>
+<figcaption>
+<strong>Pick the chart from the question, not from the gallery.</strong> Four question shapes
+cover almost everything you will plot at work.
+</figcaption>
+</figure>
+
 ```text
 Figure          the canvas          fig, ax = plt.subplots()
  └── Axes       one plot area       ax.plot(...) ax.set_xlabel(...)

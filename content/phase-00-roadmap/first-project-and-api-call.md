@@ -23,6 +23,44 @@ single most common security incident in AI projects, and they are entirely preve
 
 ## Mental Model
 
+Secrets travel one way: from the environment, through one validated settings object, into your
+code. They never travel the other way into your source files.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="Diagram: a gitignored dotenv file locally, or real environment variables in production, both load into one validated settings object which the application reads. Hardcoding a key into source and committing it is shown as the failure path.">
+  <defs>
+    <marker id="se-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+  </defs>
+  <rect x="14" y="30" width="146" height="46" rx="8" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.7"/>
+  <text class="dg-mono" x="87" y="50" text-anchor="middle" fill="var(--accent-3)" style="font-size:11px">.env</text>
+  <text class="dg-sub"  x="87" y="66" text-anchor="middle">local, gitignored</text>
+  <rect x="14" y="96" width="146" height="46" rx="8" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.7"/>
+  <text class="dg-sub" x="87" y="116" text-anchor="middle" fill="var(--accent-2)">real env vars</text>
+  <text class="dg-sub" x="87" y="132" text-anchor="middle">production, CI, Docker</text>
+  <rect x="220" y="62" width="150" height="50" rx="9" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="dg-label" x="295" y="84" text-anchor="middle" fill="var(--accent)">settings object</text>
+  <text class="dg-sub"   x="295" y="102" text-anchor="middle">validated once, at startup</text>
+  <rect x="430" y="62" width="150" height="50" rx="9" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.8"/>
+  <text class="dg-sub" x="505" y="84" text-anchor="middle" fill="var(--ok)">your code</text>
+  <text class="dg-sub" x="505" y="102" text-anchor="middle">never reads os.environ</text>
+  <path class="dg-arrow" d="M160,56 L214,74" marker-end="url(#se-a)"/>
+  <path class="dg-arrow" d="M160,116 L214,100" marker-end="url(#se-a)"/>
+  <path class="dg-arrow" d="M370,87 L424,87" marker-end="url(#se-a)"/>
+  <text class="dg-sub" x="220" y="136" fill="var(--accent)">a missing key fails loudly here,</text>
+  <text class="dg-sub" x="220" y="150" fill="var(--accent)">not three minutes into a job</text>
+  <rect x="14" y="168" width="632" height="52" rx="9" fill="var(--panel)" stroke="var(--danger)" stroke-width="1.8"/>
+  <text class="dg-label" x="30" y="190" fill="var(--danger)">Never this</text>
+  <text class="dg-mono" x="128" y="190" style="font-size:11px">api_key = "sk-ant-abc123..."</text>
+  <text class="dg-sub"  x="30" y="210" fill="var(--danger)">Committed once, it is in the history forever. Deleting the line does not remove it — you must rotate the key.</text>
+</svg>
+<figcaption>
+<strong>One object, validated at startup.</strong> Application code imports settings and
+trusts them, so a missing or malformed value stops the process immediately with a clear
+message rather than failing somewhere deep in a batch job.
+</figcaption>
+</figure>
+
 ```mermaid
 flowchart LR
   ENV[".env file<br/>(never committed)"] --> LOAD["load_dotenv()"]

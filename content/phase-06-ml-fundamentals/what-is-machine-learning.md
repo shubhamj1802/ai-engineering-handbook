@@ -23,6 +23,48 @@ leakage manufactures results that evaporate in production.
 
 ## Mental Model
 
+Ordinary programming and machine learning go in opposite directions.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="Diagram: in normal programming you write rules and data goes in to produce answers. In machine learning you supply data and the answers, and training produces the rules.">
+  <defs>
+    <marker id="ml-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+  </defs>
+  <text class="dg-label" x="14" y="22">Normal programming</text>
+  <rect x="14" y="34" width="120" height="34" rx="6" class="dg-box"/>
+  <text class="dg-sub" x="74" y="55" text-anchor="middle">rules you wrote</text>
+  <rect x="14" y="76" width="120" height="34" rx="6" class="dg-box"/>
+  <text class="dg-sub" x="74" y="97" text-anchor="middle">data</text>
+  <rect x="190" y="52" width="110" height="40" rx="7" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.6"/>
+  <text class="dg-sub" x="245" y="77" text-anchor="middle">the computer</text>
+  <rect x="340" y="52" width="110" height="40" rx="7" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.7"/>
+  <text class="dg-sub" x="395" y="77" text-anchor="middle" fill="var(--ok)">answers</text>
+  <path class="dg-arrow" d="M134,51 L184,64" marker-end="url(#ml-a)"/>
+  <path class="dg-arrow" d="M134,93 L184,80" marker-end="url(#ml-a)"/>
+  <path class="dg-arrow" d="M300,72 L334,72" marker-end="url(#ml-a)"/>
+  <line x1="14" y1="126" x2="646" y2="126" stroke="var(--border)" stroke-width="1"/>
+  <text class="dg-label" x="14" y="152" fill="var(--accent)">Machine learning — flipped</text>
+  <rect x="14" y="162" width="120" height="30" rx="6" class="dg-box"/>
+  <text class="dg-sub" x="74" y="181" text-anchor="middle">data</text>
+  <rect x="14" y="198" width="120" height="30" rx="6" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.6"/>
+  <text class="dg-sub" x="74" y="217" text-anchor="middle" fill="var(--accent)">the answers too</text>
+  <rect x="190" y="178" width="110" height="40" rx="7" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="dg-sub" x="245" y="203" text-anchor="middle" fill="var(--accent)">training</text>
+  <rect x="340" y="178" width="130" height="40" rx="7" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.7"/>
+  <text class="dg-sub" x="405" y="203" text-anchor="middle" fill="var(--ok)">the rules</text>
+  <path class="dg-arrow" d="M134,178 L184,190" marker-end="url(#ml-a)"/>
+  <path class="dg-arrow" d="M134,212 L184,206" marker-end="url(#ml-a)"/>
+  <path class="dg-arrow" d="M300,198 L334,198" marker-end="url(#ml-a)"/>
+  <text class="dg-sub" x="490" y="193">and you apply those</text>
+  <text class="dg-sub" x="490" y="210">rules to new data</text>
+</svg>
+<figcaption>
+<strong>You supply the answers, the computer works out the rules.</strong> Which is why
+labelled data is the expensive part of machine learning, not the algorithm.
+</figcaption>
+</figure>
+
 Traditional programming and machine learning run in opposite directions.
 
 ```mermaid

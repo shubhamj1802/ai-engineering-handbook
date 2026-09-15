@@ -22,6 +22,37 @@ evaluate RAG systems and agents with the same discipline.
 
 ## Mental Model
 
+Everything in evaluation rests on one discipline: **the model must be judged on data it has
+never seen**.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 240" role="img" aria-label="Diagram: the dataset is split into a training portion, a validation portion used for tuning, and a test portion held back until the very end. Evaluating on training data gives a falsely high score.">
+  <text class="dg-label" x="14" y="22">Split once, up front</text>
+  <rect x="14" y="34" width="330" height="44" rx="7" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.8"/>
+  <text class="dg-sub" x="179" y="54" text-anchor="middle" fill="var(--accent-3)">TRAIN — 60%</text>
+  <text class="dg-sub" x="179" y="71" text-anchor="middle">the model learns from this</text>
+  <rect x="352" y="34" width="140" height="44" rx="7" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.8"/>
+  <text class="dg-sub" x="422" y="54" text-anchor="middle" fill="var(--accent-2)">VALIDATION — 20%</text>
+  <text class="dg-sub" x="422" y="71" text-anchor="middle">tune settings here</text>
+  <rect x="500" y="34" width="146" height="44" rx="7" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="2"/>
+  <text class="dg-sub" x="573" y="54" text-anchor="middle" fill="var(--ok)">TEST — 20%</text>
+  <text class="dg-sub" x="573" y="71" text-anchor="middle">touch ONCE, at the end</text>
+  <rect x="14" y="100" width="632" height="52" rx="9" fill="var(--panel)" stroke="var(--danger)" stroke-width="1.6"/>
+  <text class="dg-label" x="30" y="122" fill="var(--danger)">The trap</text>
+  <text class="dg-sub"   x="120" y="122">scoring on the training data. It looks brilliant and means nothing —</text>
+  <text class="dg-sub"   x="30" y="142">like marking your own exam with the answer sheet open. A memorising model scores 100%.</text>
+  <rect x="14" y="166" width="632" height="62" rx="9" fill="var(--panel-2)" stroke="var(--warn)" stroke-width="1.5"/>
+  <text class="dg-label" x="30" y="188" fill="var(--warn)">The subtle trap</text>
+  <text class="dg-sub"   x="164" y="188">tuning against the test set, a little at a time.</text>
+  <text class="dg-sub"   x="30" y="208">Every peek leaks information. That is what the validation split is for — so the test set</text>
+  <text class="dg-sub"   x="30" y="222">stays genuinely unseen until you are finished.</text>
+</svg>
+<figcaption>
+<strong>Three splits, three jobs.</strong> Train to learn, validate to choose, test to
+report. If you tune against the test set, your final number is optimistic and you will not
+know by how much.
+</figcaption>
+</figure>
+
 ```text
                    PREDICTED
                  positive   negative

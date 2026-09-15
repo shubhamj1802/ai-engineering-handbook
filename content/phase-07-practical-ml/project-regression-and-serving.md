@@ -15,6 +15,44 @@ keyConcepts: ["regression", "quantile loss", "FastAPI", "model serving", "drift"
 
 ## Why this matters
 
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 210" role="img" aria-label="Diagram: an offline training job produces a saved model file, which a web service loads once at startup and then uses to answer prediction requests over HTTP.">
+  <defs>
+    <marker id="sv2-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+  </defs>
+  <rect x="14" y="26" width="290" height="80" rx="10" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.7"/>
+  <text class="dg-label" x="30" y="48" fill="var(--accent-3)">Offline — runs occasionally</text>
+  <text class="dg-sub"   x="30" y="70">train on history, evaluate, save</text>
+  <text class="dg-mono"  x="30" y="92" style="font-size:10.5px">joblib.dump(pipeline, "model.joblib")</text>
+  <rect x="330" y="46" width="112" height="44" rx="8" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="2"/>
+  <text class="dg-sub" x="386" y="66" text-anchor="middle" fill="var(--ok)">model.joblib</text>
+  <text class="dg-sub" x="386" y="82" text-anchor="middle">the whole pipeline</text>
+  <path class="dg-arrow" d="M304,68 L324,68" marker-end="url(#sv2-a)"/>
+  <rect x="14" y="124" width="632" height="76" rx="10" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
+  <text class="dg-label" x="30" y="146" fill="var(--accent)">Online — runs on every request</text>
+  <rect x="30" y="156" width="130" height="34" rx="6" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.2"/>
+  <text class="dg-sub" x="95" y="177" text-anchor="middle">load ONCE at startup</text>
+  <rect x="180" y="156" width="120" height="34" rx="6" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.2"/>
+  <text class="dg-sub" x="240" y="177" text-anchor="middle">validate input</text>
+  <rect x="320" y="156" width="120" height="34" rx="6" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.2"/>
+  <text class="dg-sub" x="380" y="177" text-anchor="middle">predict</text>
+  <rect x="460" y="156" width="170" height="34" rx="6" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.2"/>
+  <text class="dg-sub" x="545" y="177" text-anchor="middle">return JSON + log it</text>
+  <path class="dg-arrow" d="M160,173 L176,173"/>
+  <path class="dg-arrow" d="M300,173 L316,173"/>
+  <path class="dg-arrow" d="M440,173 L456,173"/>
+  <path class="dg-arrow" d="M386,90 Q386,112 200,112 L95,112 L95,150" stroke="var(--ok)" stroke-width="1.5" fill="none" stroke-dasharray="4 3" marker-end="url(#sv2-a)"/>
+  <text class="dg-sub" x="470" y="114" fill="var(--danger)">Loading the model per request is the classic mistake — it makes every call far slower.</text>
+</svg>
+<figcaption>
+<strong>Save the whole pipeline, not just the model.</strong> The scaler and encoders must
+travel with it, or serving applies different transformations than training did — and the
+predictions quietly go wrong.
+</figcaption>
+</figure>
+
 A model in a notebook has produced no value. This lesson closes the loop: a second project
 that predicts a *number* (with the different metrics and failure modes that implies), and
 then the service that makes both models usable — with input validation, versioning, latency

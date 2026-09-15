@@ -23,6 +23,37 @@ framework examples omit.
 
 ## Mental Model
 
+The whole agent is a `while` loop around one decision. Here is the shape before any code.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="Diagram of the message list growing through an agent loop: user message, then the model asks for a tool, the tool result is appended, the model reads the longer list and finally answers.">
+  <defs>
+    <marker id="as-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+  <text class="dg-label" x="14" y="22">The message list is the agent&apos;s whole memory. It only ever grows:</text>
+  <rect x="14" y="36" width="150" height="30" rx="5" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.3"/>
+  <text class="dg-sub" x="26" y="56">user: "sales last week?"</text>
+  <rect x="14" y="74" width="230" height="30" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.6"/>
+  <text class="dg-sub" x="26" y="94" fill="var(--accent)">model: call run_sql(...)</text>
+  <rect x="14" y="112" width="300" height="30" rx="5" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.6"/>
+  <text class="dg-sub" x="26" y="132" fill="var(--accent-3)">tool: [{"total": 41200}]</text>
+  <rect x="14" y="150" width="370" height="30" rx="5" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.8"/>
+  <text class="dg-sub" x="26" y="170" fill="var(--ok)">model: "Sales were £41,200." — no tool call, so stop</text>
+  <path class="dg-arrow" d="M400,89 Q436,89 436,58" marker-end="url(#as-a)"/>
+  <text class="dg-sub" x="446" y="52">each turn the model sees</text>
+  <text class="dg-sub" x="446" y="70">the whole list again</text>
+  <text class="dg-sub" x="446" y="96" fill="var(--danger)">which is why long loops</text>
+  <text class="dg-sub" x="446" y="114" fill="var(--danger)">get expensive fast</text>
+  <rect x="14" y="196" width="632" height="28" rx="6" fill="var(--panel)" stroke="var(--ok)" stroke-width="1.4"/>
+  <text class="dg-sub" x="330" y="215" text-anchor="middle">The exit condition: a reply with no tool call. That single check is the whole loop.</text>
+</svg>
+<figcaption>
+<strong>Cost grows with the square of the loop length.</strong> Every turn re-sends the whole
+conversation, so a twenty-step agent is far more than twice the price of a ten-step one.
+</figcaption>
+</figure>
+
 ```mermaid
 flowchart TB
   START([goal]) --> CHECK{"limits ok?<br/>iterations · cost · time"}

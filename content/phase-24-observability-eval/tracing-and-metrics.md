@@ -22,6 +22,34 @@ Tracing is how you see it at all.
 
 ## Mental Model
 
+A **trace** is the story of one request, step by step, with timings. Without it you are
+guessing.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="A trace waterfall for one request showing nested spans with durations: the whole request, then retrieval, embedding, vector search, reranking and the model call, revealing that reranking took most of the time.">
+  <text class="dg-sub" x="14" y="20">One request, broken into spans. Length = time spent.</text>
+  <rect x="14" y="32" width="600" height="22" rx="4" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.6"/>
+  <text class="dg-sub" x="22" y="48">request  2,310ms</text>
+  <rect x="34" y="60" width="300" height="20" rx="4" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.4"/>
+  <text class="dg-sub" x="42" y="75">retrieve  1,150ms</text>
+  <rect x="54" y="86" width="60" height="18" rx="3" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.1"/>
+  <text class="dg-sub" x="120" y="100">embed  90ms</text>
+  <rect x="54" y="110" width="80" height="18" rx="3" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.1"/>
+  <text class="dg-sub" x="140" y="124">vector search  140ms</text>
+  <rect x="54" y="134" width="270" height="18" rx="3" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.8"/>
+  <text class="dg-sub" x="330" y="148" fill="var(--danger)">rerank  920ms  &lt;- the real problem</text>
+  <rect x="340" y="60" width="272" height="20" rx="4" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.4"/>
+  <text class="dg-sub" x="348" y="75">model call  1,120ms  ·  1,850 tokens  ·  $0.004</text>
+  <rect x="14" y="166" width="632" height="56" rx="9" fill="var(--panel)" stroke="var(--ok)" stroke-width="1.5"/>
+  <text class="dg-sub" x="30" y="188">Without a trace: "the app feels slow" and you guess it is the model, because the model is the new thing.</text>
+  <text class="dg-sub" x="30" y="210" fill="var(--ok)">With a trace: reranking is 40% of the request. Now you know what to fix, in one glance.</text>
+</svg>
+<figcaption>
+<strong>Attach three numbers to every span: tokens, cost and duration.</strong> Cost per
+request is the metric that decides whether your system can scale, and nobody can estimate it
+without this.
+</figcaption>
+</figure>
+
 ```text
 TRACE    one user request, end to end
  └ SPAN  one operation inside it, with timing, inputs, outputs and attributes

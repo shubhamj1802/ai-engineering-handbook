@@ -22,6 +22,46 @@ retrieval, tools and agents exist at all: they are answers to specific, known fa
 
 ## Mental Model
 
+AI has swung between two ideas for seventy years: **write the rules** or **learn from data**.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 220" role="img" aria-label="Timeline of AI from the 1950s to today, alternating between rule-writing approaches and learning-from-data approaches, ending with foundation models.">
+  <line x1="24" y1="120" x2="640" y2="120" stroke="var(--border-strong)" stroke-width="1.6"/>
+  <circle cx="70" cy="120" r="6" fill="var(--accent-2)"/>
+  <text class="dg-sub" x="70" y="146" text-anchor="middle">1950s-70s</text>
+  <rect x="24" y="52" width="106" height="54" rx="8" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.6"/>
+  <text class="dg-sub" x="77" y="72" text-anchor="middle" fill="var(--accent-2)">write rules</text>
+  <text class="dg-sub" x="77" y="90" text-anchor="middle">logic, search</text>
+  <circle cx="230" cy="120" r="6" fill="var(--accent-2)"/>
+  <text class="dg-sub" x="230" y="146" text-anchor="middle">1980s</text>
+  <rect x="176" y="52" width="108" height="54" rx="8" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.6"/>
+  <text class="dg-sub" x="230" y="72" text-anchor="middle" fill="var(--accent-2)">expert systems</text>
+  <text class="dg-sub" x="230" y="90" text-anchor="middle">thousands of ifs</text>
+  <circle cx="390" cy="120" r="6" fill="var(--accent-3)"/>
+  <text class="dg-sub" x="390" y="146" text-anchor="middle">1990s-2000s</text>
+  <rect x="336" y="148" width="110" height="54" rx="8" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.6"/>
+  <text class="dg-sub" x="391" y="168" text-anchor="middle" fill="var(--accent-3)">learn from data</text>
+  <text class="dg-sub" x="391" y="186" text-anchor="middle">statistical ML</text>
+  <circle cx="520" cy="120" r="6" fill="var(--accent-3)"/>
+  <text class="dg-sub" x="520" y="146" text-anchor="middle">2012+</text>
+  <rect x="466" y="148" width="108" height="54" rx="8" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.6"/>
+  <text class="dg-sub" x="520" y="168" text-anchor="middle" fill="var(--accent-3)">deep learning</text>
+  <text class="dg-sub" x="520" y="186" text-anchor="middle">data + GPUs</text>
+  <circle cx="614" cy="120" r="7" fill="var(--accent)"/>
+  <text class="dg-sub" x="614" y="146" text-anchor="middle">2020s</text>
+  <rect x="552" y="40" width="96" height="66" rx="8" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="dg-sub" x="600" y="60" text-anchor="middle" fill="var(--accent)">foundation</text>
+  <text class="dg-sub" x="600" y="76" text-anchor="middle" fill="var(--accent)">models</text>
+  <text class="dg-sub" x="600" y="94" text-anchor="middle">you are here</text>
+  <text class="dg-sub" x="24" y="30" fill="var(--accent-2)">rules above the line</text>
+  <text class="dg-sub" x="336" y="216" fill="var(--accent-3)">learning below the line</text>
+</svg>
+<figcaption>
+<strong>Each swing followed a disappointment.</strong> Rules could not cope with messy
+reality; learning needed data and computing power that did not exist yet. Today's models are
+the learning side finally having both.
+</figcaption>
+</figure>
+
 ```mermaid
 flowchart LR
   S["1950s–80s<br/>SYMBOLIC<br/>humans write the rules"] --> M["1990s–2010s<br/>STATISTICAL ML<br/>humans write the features,<br/>machines learn the weights"]

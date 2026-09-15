@@ -22,6 +22,42 @@ hallucination by "telling the model not to make things up".
 
 ## Mental Model
 
+Two words explain most billing and most "why did it forget?" confusion: **tokens** and the
+**context window**.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 240" role="img" aria-label="Diagram: a sentence split into tokens showing that tokens are pieces of words, and a context window bar showing the system prompt, retrieved documents, conversation history and the reply all competing for the same space.">
+  <text class="dg-sub" x="14" y="20">Text is chopped into tokens — roughly three quarters of a word each:</text>
+  <rect x="14" y="32" width="66" height="30" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="dg-mono" x="47" y="52" text-anchor="middle" style="font-size:11px">retrie</text>
+  <rect x="84" y="32" width="46" height="30" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="dg-mono" x="107" y="52" text-anchor="middle" style="font-size:11px">val</text>
+  <rect x="134" y="32" width="40" height="30" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="dg-mono" x="154" y="52" text-anchor="middle" style="font-size:11px">is</text>
+  <rect x="178" y="32" width="66" height="30" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="dg-mono" x="211" y="52" text-anchor="middle" style="font-size:11px">import</text>
+  <rect x="248" y="32" width="40" height="30" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="dg-mono" x="268" y="52" text-anchor="middle" style="font-size:11px">ant</text>
+  <text class="dg-sub" x="306" y="52">5 tokens, 3 words. You are billed per token, both in and out.</text>
+  <text class="dg-sub" x="14" y="100">The context window is one fixed-size shelf that everything shares:</text>
+  <rect x="14" y="112" width="632" height="46" rx="8" fill="none" stroke="var(--accent-2)" stroke-width="2"/>
+  <rect x="18" y="116" width="96" height="38" rx="5" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.2"/>
+  <text class="dg-sub" x="66" y="139" text-anchor="middle">system</text>
+  <rect x="118" y="116" width="226" height="38" rx="5" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.5"/>
+  <text class="dg-sub" x="231" y="139" text-anchor="middle" fill="var(--accent-3)">retrieved documents</text>
+  <rect x="348" y="116" width="170" height="38" rx="5" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.5"/>
+  <text class="dg-sub" x="433" y="139" text-anchor="middle" fill="var(--accent-2)">conversation so far</text>
+  <rect x="522" y="116" width="120" height="38" rx="5" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.5"/>
+  <text class="dg-sub" x="582" y="139" text-anchor="middle" fill="var(--ok)">room to reply</text>
+  <text class="dg-sub" x="14" y="184" fill="var(--danger)">Fill the shelf and something must go. That is why a long chat "forgets" the beginning:</text>
+  <text class="dg-sub" x="14" y="202" fill="var(--danger)">the oldest turns were dropped to make room. Nothing broke; the shelf was full.</text>
+  <text class="dg-sub" x="14" y="228">Count tokens with the provider's own counter — never guess, and never use another model's tokeniser.</text>
+</svg>
+<figcaption>
+<strong>Tokens are the unit of both cost and memory.</strong> Every design decision in RAG
+and memory later is really a decision about what deserves space on this shelf.
+</figcaption>
+</figure>
+
 ```mermaid
 flowchart LR
   T["Your text"] --> TOK["Tokenizer<br/>text → token ids"]

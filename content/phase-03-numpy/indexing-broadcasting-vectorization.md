@@ -22,6 +22,61 @@ becomes trivial once you know the two rules.
 
 ## Mental Model
 
+Broadcasting is NumPy **stretching a smaller array so the shapes line up**, without actually
+copying the data.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 240" role="img" aria-label="Diagram: adding a single row of three values to a two by three array. NumPy repeats the row down to match the shape, so the addition applies to every row without writing a loop.">
+  <defs>
+    <marker id="bc-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+  <text class="dg-mono" x="14" y="24" style="font-size:11.5px">shape (3, 3)</text>
+  <rect x="14" y="34" width="34" height="34" rx="5" class="dg-box"/>
+  <rect x="52" y="34" width="34" height="34" rx="5" class="dg-box"/>
+  <rect x="90" y="34" width="34" height="34" rx="5" class="dg-box"/>
+  <rect x="14" y="72" width="34" height="34" rx="5" class="dg-box"/>
+  <rect x="52" y="72" width="34" height="34" rx="5" class="dg-box"/>
+  <rect x="90" y="72" width="34" height="34" rx="5" class="dg-box"/>
+  <rect x="14" y="110" width="34" height="34" rx="5" class="dg-box"/>
+  <rect x="52" y="110" width="34" height="34" rx="5" class="dg-box"/>
+  <rect x="90" y="110" width="34" height="34" rx="5" class="dg-box"/>
+  <text class="dg-label" x="142" y="92">+</text>
+  <text class="dg-mono" x="176" y="24" style="font-size:11.5px">shape (3,)</text>
+  <rect x="176" y="34" width="34" height="34" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
+  <rect x="214" y="34" width="34" height="34" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
+  <rect x="252" y="34" width="34" height="34" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
+  <rect x="176" y="72" width="34" height="34" rx="5" fill="var(--panel)" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="3 3"/>
+  <rect x="214" y="72" width="34" height="34" rx="5" fill="var(--panel)" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="3 3"/>
+  <rect x="252" y="72" width="34" height="34" rx="5" fill="var(--panel)" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="3 3"/>
+  <rect x="176" y="110" width="34" height="34" rx="5" fill="var(--panel)" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="3 3"/>
+  <rect x="214" y="110" width="34" height="34" rx="5" fill="var(--panel)" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="3 3"/>
+  <rect x="252" y="110" width="34" height="34" rx="5" fill="var(--panel)" stroke="var(--accent)" stroke-width="1.2" stroke-dasharray="3 3"/>
+  <path d="M300,51 L300,130" stroke="var(--accent)" stroke-width="1.6" fill="none" marker-end="url(#bc-a)"/>
+  <text class="dg-sub" x="308" y="96" fill="var(--accent)">stretched down</text>
+  <text class="dg-sub" x="308" y="112">no copy is made</text>
+  <text class="dg-label" x="430" y="92">=</text>
+  <text class="dg-mono" x="462" y="24" style="font-size:11.5px">shape (3, 3)</text>
+  <rect x="462" y="34" width="34" height="34" rx="5" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.5"/>
+  <rect x="500" y="34" width="34" height="34" rx="5" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.5"/>
+  <rect x="538" y="34" width="34" height="34" rx="5" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.5"/>
+  <rect x="462" y="72" width="34" height="34" rx="5" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.5"/>
+  <rect x="500" y="72" width="34" height="34" rx="5" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.5"/>
+  <rect x="538" y="72" width="34" height="34" rx="5" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.5"/>
+  <rect x="462" y="110" width="34" height="34" rx="5" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.5"/>
+  <rect x="500" y="110" width="34" height="34" rx="5" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.5"/>
+  <rect x="538" y="110" width="34" height="34" rx="5" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.5"/>
+  <rect x="14" y="166" width="632" height="62" rx="9" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-sub" x="30" y="188">The rule: compare shapes from the RIGHT. Each pair must be equal, or one of them must be 1.</text>
+  <text class="dg-mono" x="30" y="210" style="font-size:11px">(3, 3) and (3,)  ->  ok, the 3s line up      (3, 3) and (2,)  ->  error, 3 vs 2</text>
+</svg>
+<figcaption>
+<strong>This is how you delete loops.</strong> NumPy never builds the stretched copy — it
+just reads the same three numbers repeatedly, which is why broadcasting is both shorter to
+write and dramatically faster than a Python loop.
+</figcaption>
+</figure>
+
 ```text
 BROADCASTING: line the shapes up from the RIGHT, then for each pair of axes
   1. equal            → fine

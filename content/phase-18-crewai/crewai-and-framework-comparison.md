@@ -29,6 +29,40 @@ imports before copying anything.
 
 ## Mental Model
 
+The three frameworks are not competing for the same job. Pick by how much control you need.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="Diagram comparing CrewAI, LangChain and LangGraph on how much structure they impose and how much control they give, with guidance on when each fits.">
+  <rect x="14" y="30" width="200" height="130" rx="10" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.8"/>
+  <text class="dg-label" x="30" y="54" fill="var(--accent-2)">CrewAI</text>
+  <text class="dg-sub"   x="30" y="76">roles and tasks</text>
+  <text class="dg-sub"   x="30" y="94">fastest to a demo</text>
+  <text class="dg-sub"   x="30" y="118">good when your problem</text>
+  <text class="dg-sub"   x="30" y="134">IS a team of specialists</text>
+  <text class="dg-sub"   x="30" y="152" fill="var(--warn)">awkward outside that shape</text>
+  <rect x="230" y="30" width="200" height="130" rx="10" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.8"/>
+  <text class="dg-label" x="246" y="54" fill="var(--accent-3)">LangChain</text>
+  <text class="dg-sub"   x="246" y="76">standard pieces</text>
+  <text class="dg-sub"   x="246" y="94">swap providers freely</text>
+  <text class="dg-sub"   x="246" y="118">good for RAG and</text>
+  <text class="dg-sub"   x="246" y="134">straightforward agents</text>
+  <text class="dg-sub"   x="246" y="152" fill="var(--warn)">layers to learn</text>
+  <rect x="446" y="30" width="200" height="130" rx="10" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="dg-label" x="462" y="54" fill="var(--accent)">LangGraph</text>
+  <text class="dg-sub"   x="462" y="76">explicit state machine</text>
+  <text class="dg-sub"   x="462" y="94">most control</text>
+  <text class="dg-sub"   x="462" y="118">good when you need loops,</text>
+  <text class="dg-sub"   x="462" y="134">approvals, resume-after-crash</text>
+  <text class="dg-sub"   x="462" y="152" fill="var(--warn)">most code to write</text>
+  <rect x="14" y="176" width="632" height="46" rx="9" fill="var(--panel)" stroke="var(--ok)" stroke-width="1.5"/>
+  <text class="dg-sub" x="330" y="196" text-anchor="middle" fill="var(--ok)">And the fourth option people forget: no framework at all.</text>
+  <text class="dg-sub" x="330" y="214" text-anchor="middle">A loop, an SDK and Pydantic covers a surprising amount of production work.</text>
+</svg>
+<figcaption>
+<strong>Choose by the shape of your problem, not by popularity.</strong> The cost of a
+framework is paid on the day it does not fit and you have to fight it.
+</figcaption>
+</figure>
+
 ```text
 LangGraph:  "here is the state machine"     nodes, edges, state, explicit transitions
 CrewAI:     "here is the team"              roles, goals, tasks, a process

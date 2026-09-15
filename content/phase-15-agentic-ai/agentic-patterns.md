@@ -22,6 +22,48 @@ paying for capabilities you never use.
 
 ## Mental Model
 
+Five patterns cover nearly everything. They are ordered by how much freedom you hand the
+model — and you should always pick the smallest one that works.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 240" role="img" aria-label="Diagram of five patterns in increasing order of model freedom: a single prompt, a fixed chain, a workflow with branches your code chooses, an agent where the model chooses, and multiple agents.">
+  <defs>
+    <marker id="pt-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+  </defs>
+  <rect x="14" y="40" width="112" height="70" rx="8" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.8"/>
+  <text class="dg-label" x="70" y="62" text-anchor="middle" fill="var(--ok)">1 prompt</text>
+  <text class="dg-sub"   x="70" y="82" text-anchor="middle">one call</text>
+  <text class="dg-sub"   x="70" y="98" text-anchor="middle">fully testable</text>
+  <rect x="140" y="40" width="112" height="70" rx="8" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.6"/>
+  <text class="dg-label" x="196" y="62" text-anchor="middle" fill="var(--ok)">2 chain</text>
+  <text class="dg-sub"   x="196" y="82" text-anchor="middle">fixed steps</text>
+  <text class="dg-sub"   x="196" y="98" text-anchor="middle">predictable</text>
+  <rect x="266" y="40" width="112" height="70" rx="8" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.7"/>
+  <text class="dg-label" x="322" y="62" text-anchor="middle" fill="var(--accent-3)">3 workflow</text>
+  <text class="dg-sub"   x="322" y="82" text-anchor="middle">YOU branch</text>
+  <text class="dg-sub"   x="322" y="98" text-anchor="middle">still debuggable</text>
+  <rect x="392" y="40" width="112" height="70" rx="8" fill="var(--panel-2)" stroke="var(--warn)" stroke-width="1.9"/>
+  <text class="dg-label" x="448" y="62" text-anchor="middle" fill="var(--warn)">4 agent</text>
+  <text class="dg-sub"   x="448" y="82" text-anchor="middle">MODEL branches</text>
+  <text class="dg-sub"   x="448" y="98" text-anchor="middle">needs limits</text>
+  <rect x="518" y="40" width="128" height="70" rx="8" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.9"/>
+  <text class="dg-label" x="582" y="62" text-anchor="middle" fill="var(--danger)">5 multi-agent</text>
+  <text class="dg-sub"   x="582" y="82" text-anchor="middle">many models</text>
+  <text class="dg-sub"   x="582" y="98" text-anchor="middle">hard to debug</text>
+  <path class="dg-arrow" d="M20,134 L640,134" marker-end="url(#pt-a)"/>
+  <text class="dg-sub" x="20" y="154" fill="var(--ok)">cheap, fast, predictable</text>
+  <text class="dg-sub" x="640" y="154" text-anchor="end" fill="var(--danger)">flexible, slow, expensive</text>
+  <rect x="14" y="174" width="632" height="54" rx="9" fill="var(--panel)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="dg-sub" x="330" y="196" text-anchor="middle">Start at the left. Move right only when you can say exactly what the simpler pattern could not do.</text>
+  <text class="dg-sub" x="330" y="216" text-anchor="middle">Most production systems that call themselves agents are really pattern 3 — and are better for it.</text>
+</svg>
+<figcaption>
+<strong>Freedom is a cost, not a feature.</strong> Each step right buys flexibility and pays
+for it in latency, money and the difficulty of working out what went wrong.
+</figcaption>
+</figure>
+
 ```mermaid
 flowchart TB
   subgraph SINGLE["Single-agent patterns"]

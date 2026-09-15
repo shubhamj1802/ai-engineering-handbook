@@ -22,6 +22,46 @@ weekly without quietly breaking the product.
 
 ## Mental Model
 
+You cannot assert an exact answer, so you measure **properties over a dataset** — then let
+those numbers block a release.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="Diagram: a change is proposed, run against an evaluation dataset, scored on several properties, and compared with the previous scores. A drop blocks the merge.">
+  <defs>
+    <marker id="ev-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+  </defs>
+  <rect x="14" y="84" width="96" height="48" rx="8" class="dg-box"/>
+  <text class="dg-sub" x="62" y="104" text-anchor="middle">a change</text>
+  <text class="dg-sub" x="62" y="121" text-anchor="middle">new prompt</text>
+  <rect x="134" y="84" width="118" height="48" rx="8" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.7"/>
+  <text class="dg-label" x="193" y="104" text-anchor="middle" fill="var(--accent-3)">run the set</text>
+  <text class="dg-sub"   x="193" y="121" text-anchor="middle">120 saved cases</text>
+  <rect x="276" y="52" width="184" height="112" rx="9" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
+  <text class="dg-label" x="290" y="74" fill="var(--accent)">score properties</text>
+  <text class="dg-sub" x="290" y="96">faithful to sources</text>
+  <text class="dg-sub" x="290" y="114">right output shape</text>
+  <text class="dg-sub" x="290" y="132">refuses when it should</text>
+  <text class="dg-sub" x="290" y="152">cost per request</text>
+  <rect x="484" y="46" width="162" height="52" rx="8" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.8"/>
+  <text class="dg-sub" x="565" y="68" text-anchor="middle" fill="var(--ok)">as good or better</text>
+  <text class="dg-sub" x="565" y="86" text-anchor="middle" fill="var(--ok)">merge it</text>
+  <rect x="484" y="118" width="162" height="52" rx="8" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.9"/>
+  <text class="dg-sub" x="565" y="140" text-anchor="middle" fill="var(--danger)">something dropped</text>
+  <text class="dg-sub" x="565" y="158" text-anchor="middle" fill="var(--danger)">block the merge</text>
+  <path class="dg-arrow" d="M110,108 L128,108" marker-end="url(#ev-a)"/>
+  <path class="dg-arrow" d="M252,108 L270,108" marker-end="url(#ev-a)"/>
+  <path class="dg-arrow" d="M460,96 L478,76" marker-end="url(#ev-a)"/>
+  <path class="dg-arrow" d="M460,120 L478,140" marker-end="url(#ev-a)"/>
+  <text class="dg-sub" x="14" y="196">Every real production bug becomes a new case in the set. The set only ever grows.</text>
+  <text class="dg-sub" x="14" y="216" fill="var(--warn)">Judge scores move run to run, so compare against your last score, not a fixed target.</text>
+</svg>
+<figcaption>
+<strong>Prompt changes are code changes.</strong> They deserve the same gate, because a
+rewording that helps one case routinely breaks three others — silently, without this.
+</figcaption>
+</figure>
+
 ```text
 Three evaluation layers, three cadences:
 

@@ -22,6 +22,46 @@ citations are what make the system trustworthy enough for anyone to rely on.
 
 ## Mental Model
 
+PDFs are the hardest input you will meet, because a PDF describes **where ink goes**, not
+what the text means.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="Diagram showing three PDF layouts that break naive extraction: two columns read across instead of down, a table flattened into a meaningless line, and a scanned page containing an image rather than text.">
+  <rect x="14" y="26" width="196" height="132" rx="9" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.5"/>
+  <text class="dg-label" x="28" y="46" fill="var(--danger)">Two columns</text>
+  <rect x="28" y="56" width="80" height="60" rx="4" fill="var(--panel)" stroke="var(--border)" stroke-width="1"/>
+  <rect x="116" y="56" width="80" height="60" rx="4" fill="var(--panel)" stroke="var(--border)" stroke-width="1"/>
+  <line x1="34" y1="68" x2="100" y2="68" stroke="var(--text-muted)" stroke-width="1.4"/>
+  <line x1="34" y1="80" x2="100" y2="80" stroke="var(--text-muted)" stroke-width="1.4"/>
+  <line x1="122" y1="68" x2="188" y2="68" stroke="var(--text-muted)" stroke-width="1.4"/>
+  <line x1="122" y1="80" x2="188" y2="80" stroke="var(--text-muted)" stroke-width="1.4"/>
+  <path d="M34,74 L188,74" stroke="var(--danger)" stroke-width="1.6" stroke-dasharray="4 3"/>
+  <text class="dg-sub" x="28" y="136">reads ACROSS the gap</text>
+  <text class="dg-sub" x="28" y="152">sentences interleave into nonsense</text>
+  <rect x="232" y="26" width="196" height="132" rx="9" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.5"/>
+  <text class="dg-label" x="246" y="46" fill="var(--danger)">Tables</text>
+  <rect x="246" y="56" width="168" height="54" rx="4" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1"/>
+  <line x1="246" y1="74" x2="414" y2="74" stroke="var(--border-strong)" stroke-width="1"/>
+  <line x1="246" y1="92" x2="414" y2="92" stroke="var(--border-strong)" stroke-width="1"/>
+  <line x1="302" y1="56" x2="302" y2="110" stroke="var(--border-strong)" stroke-width="1"/>
+  <line x1="358" y1="56" x2="358" y2="110" stroke="var(--border-strong)" stroke-width="1"/>
+  <text class="dg-mono" x="246" y="130" style="font-size:10px">"Q1 12 40 Q2 18 55 Q3..."</text>
+  <text class="dg-sub" x="246" y="150">rows and columns lost</text>
+  <rect x="450" y="26" width="196" height="132" rx="9" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.5"/>
+  <text class="dg-label" x="464" y="46" fill="var(--danger)">Scans</text>
+  <rect x="464" y="56" width="168" height="60" rx="4" fill="var(--panel)" stroke="var(--border)" stroke-width="1"/>
+  <text class="dg-sub" x="548" y="92" text-anchor="middle">[ a picture ]</text>
+  <text class="dg-sub" x="464" y="136">zero extractable text</text>
+  <text class="dg-sub" x="464" y="152">needs OCR before anything else</text>
+  <rect x="14" y="174" width="632" height="46" rx="9" fill="var(--panel)" stroke="var(--ok)" stroke-width="1.5"/>
+  <text class="dg-sub" x="330" y="194" text-anchor="middle" fill="var(--ok)">Always read the extracted text before you build on it.</text>
+  <text class="dg-sub" x="330" y="212" text-anchor="middle">Ten minutes of eyeballing saves a week of blaming the model for garbage it was handed.</text>
+</svg>
+<figcaption>
+<strong>Most "our RAG is bad" problems start here.</strong> The retrieval and the model are
+fine; the text was already scrambled before it reached them.
+</figcaption>
+</figure>
+
 ```mermaid
 flowchart LR
   subgraph SRC["Sources"]

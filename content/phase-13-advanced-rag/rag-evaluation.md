@@ -21,6 +21,35 @@ and you can answer them in CI, before a release, rather than from support ticket
 
 ## Mental Model
 
+RAG has two halves, and they fail differently. Measure them **separately** or you will spend
+weeks fixing the wrong one.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="Diagram: retrieval is measured by whether the right chunk was found, generation by whether the answer is faithful to those chunks. A table maps each symptom to the half that is broken.">
+  <rect x="14" y="26" width="300" height="80" rx="9" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.8"/>
+  <text class="dg-label" x="30" y="50" fill="var(--accent-3)">Half 1 — retrieval</text>
+  <text class="dg-sub"   x="30" y="72">Did the right chunk come back at all?</text>
+  <text class="dg-mono"  x="30" y="92" style="font-size:10.5px">recall@k · precision@k · MRR</text>
+  <rect x="346" y="26" width="300" height="80" rx="9" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
+  <text class="dg-label" x="362" y="50" fill="var(--accent)">Half 2 — generation</text>
+  <text class="dg-sub"   x="362" y="72">Did the answer stick to those chunks?</text>
+  <text class="dg-mono"  x="362" y="92" style="font-size:10.5px">faithfulness · answer relevance</text>
+  <rect x="14" y="122" width="632" height="96" rx="9" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-label" x="30" y="144">What the user sees</text>
+  <text class="dg-label" x="420" y="144">Which half is broken</text>
+  <line x1="30" y1="152" x2="630" y2="152" stroke="var(--border)" stroke-width="1"/>
+  <text class="dg-sub" x="30" y="170">"I do not have that information"</text>
+  <text class="dg-sub" x="420" y="170" fill="var(--accent-3)">retrieval — it never saw it</text>
+  <text class="dg-sub" x="30" y="190">confident, detailed, and wrong</text>
+  <text class="dg-sub" x="420" y="190" fill="var(--accent-3)">retrieval — wrong chunks</text>
+  <text class="dg-sub" x="30" y="210">right facts, invented citation</text>
+  <text class="dg-sub" x="420" y="210" fill="var(--accent)">generation — check citations</text>
+</svg>
+<figcaption>
+<strong>Two of those three symptoms are retrieval problems.</strong> That ratio holds in
+practice, which is why prompt-tweaking so often fails to fix a RAG system.
+</figcaption>
+</figure>
+
 ```text
 Evaluate the two stages SEPARATELY, then the whole:
 

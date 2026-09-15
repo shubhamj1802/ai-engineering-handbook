@@ -22,6 +22,44 @@ small classifier, and understand what a framework is doing on your behalf.
 
 ## Mental Model
 
+Every training loop you will ever read is the same five steps, in the same order.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="Diagram of the five steps in a training loop: forward pass to predict, compute the loss, zero the gradients, backward pass, then the optimiser step, repeating for each batch.">
+  <defs>
+    <marker id="tr-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+  <rect x="14" y="52" width="112" height="56" rx="9" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.7"/>
+  <text class="dg-label" x="70" y="74" text-anchor="middle" fill="var(--accent)">1 · forward</text>
+  <text class="dg-sub"   x="70" y="92" text-anchor="middle">predict</text>
+  <rect x="146" y="52" width="112" height="56" rx="9" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.7"/>
+  <text class="dg-label" x="202" y="74" text-anchor="middle" fill="var(--accent)">2 · loss</text>
+  <text class="dg-sub"   x="202" y="92" text-anchor="middle">how wrong?</text>
+  <rect x="278" y="52" width="112" height="56" rx="9" fill="var(--panel-2)" stroke="var(--warn)" stroke-width="1.8"/>
+  <text class="dg-label" x="334" y="74" text-anchor="middle" fill="var(--warn)">3 · zero</text>
+  <text class="dg-sub"   x="334" y="92" text-anchor="middle">clear old grads</text>
+  <rect x="410" y="52" width="112" height="56" rx="9" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.7"/>
+  <text class="dg-label" x="466" y="74" text-anchor="middle" fill="var(--accent)">4 · backward</text>
+  <text class="dg-sub"   x="466" y="92" text-anchor="middle">who to blame</text>
+  <rect x="542" y="52" width="104" height="56" rx="9" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.8"/>
+  <text class="dg-label" x="594" y="74" text-anchor="middle" fill="var(--ok)">5 · step</text>
+  <text class="dg-sub"   x="594" y="92" text-anchor="middle">nudge weights</text>
+  <path class="dg-arrow" d="M126,80 L142,80" marker-end="url(#tr-a)"/>
+  <path class="dg-arrow" d="M258,80 L274,80" marker-end="url(#tr-a)"/>
+  <path class="dg-arrow" d="M390,80 L406,80" marker-end="url(#tr-a)"/>
+  <path class="dg-arrow" d="M522,80 L538,80" marker-end="url(#tr-a)"/>
+  <path d="M594,108 Q594,146 330,146 L70,146 L70,114" stroke="var(--accent)" stroke-width="1.8" fill="none" stroke-dasharray="5 4" marker-end="url(#tr-a)"/>
+  <text class="dg-sub" x="330" y="164" text-anchor="middle" fill="var(--accent)">repeat, once per batch</text>
+  <rect x="14" y="182" width="632" height="40" rx="8" fill="var(--panel)" stroke="var(--danger)" stroke-width="1.4" stroke-dasharray="5 4"/>
+  <text class="dg-sub" x="330" y="206" text-anchor="middle" fill="var(--danger)">Forget step 3 and gradients pile up across batches. Training quietly goes wrong with no error message.</text>
+</svg>
+<figcaption>
+<strong>Five lines, every time.</strong> Once you recognise this shape, any PyTorch training
+script becomes readable — everything around it is data loading and logging.
+</figcaption>
+</figure>
+
 ```text
 NumPy array        + gradient tracking  + GPU support   =  torch.Tensor
 

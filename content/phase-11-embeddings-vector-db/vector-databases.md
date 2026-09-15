@@ -22,6 +22,54 @@ and cheaper than people expect.
 
 ## Mental Model
 
+A vector database does one job: given a query vector, find the nearest stored vectors fast.
+The interesting part is what it trades away to be fast.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="Diagram comparing exact search which checks every vector, with approximate search which follows a graph of neighbours to reach a close answer in far fewer comparisons.">
+  <text class="dg-label" x="14" y="22" fill="var(--accent-3)">Exact — check everything</text>
+  <circle cx="40" cy="60" r="4" fill="var(--text-muted)"/><circle cx="70" cy="78" r="4" fill="var(--text-muted)"/>
+  <circle cx="100" cy="52" r="4" fill="var(--text-muted)"/><circle cx="130" cy="86" r="4" fill="var(--text-muted)"/>
+  <circle cx="58" cy="104" r="4" fill="var(--text-muted)"/><circle cx="112" cy="112" r="4" fill="var(--text-muted)"/>
+  <circle cx="86" cy="134" r="4" fill="var(--text-muted)"/><circle cx="140" cy="140" r="4" fill="var(--text-muted)"/>
+  <circle cx="44" cy="146" r="4" fill="var(--text-muted)"/>
+  <circle cx="96" cy="90" r="7" fill="var(--accent)"/>
+  <path d="M96,90 L40,60" stroke="var(--accent-3)" stroke-width="0.9" opacity="0.6"/>
+  <path d="M96,90 L70,78" stroke="var(--accent-3)" stroke-width="0.9" opacity="0.6"/>
+  <path d="M96,90 L100,52" stroke="var(--accent-3)" stroke-width="0.9" opacity="0.6"/>
+  <path d="M96,90 L130,86" stroke="var(--accent-3)" stroke-width="0.9" opacity="0.6"/>
+  <path d="M96,90 L58,104" stroke="var(--accent-3)" stroke-width="0.9" opacity="0.6"/>
+  <path d="M96,90 L112,112" stroke="var(--accent-3)" stroke-width="0.9" opacity="0.6"/>
+  <path d="M96,90 L86,134" stroke="var(--accent-3)" stroke-width="0.9" opacity="0.6"/>
+  <path d="M96,90 L140,140" stroke="var(--accent-3)" stroke-width="0.9" opacity="0.6"/>
+  <path d="M96,90 L44,146" stroke="var(--accent-3)" stroke-width="0.9" opacity="0.6"/>
+  <text class="dg-sub" x="14" y="180">perfect answer, every time</text>
+  <text class="dg-sub" x="14" y="198" fill="var(--danger)">but slower as your data grows</text>
+  <line x1="240" y1="14" x2="240" y2="216" stroke="var(--border)" stroke-width="1"/>
+  <text class="dg-label" x="266" y="22" fill="var(--ok)">Approximate — follow a graph</text>
+  <circle cx="300" cy="60" r="4" fill="var(--text-muted)"/><circle cx="352" cy="50" r="4" fill="var(--text-muted)"/>
+  <circle cx="404" cy="72" r="4" fill="var(--text-muted)"/><circle cx="330" cy="104" r="4" fill="var(--text-muted)"/>
+  <circle cx="386" cy="122" r="4" fill="var(--text-muted)"/><circle cx="440" cy="104" r="4" fill="var(--text-muted)"/>
+  <circle cx="312" cy="146" r="4" fill="var(--text-muted)"/><circle cx="420" cy="152" r="4" fill="var(--text-muted)"/>
+  <circle cx="366" cy="86" r="7" fill="var(--accent)"/>
+  <path d="M300,60 L352,50" stroke="var(--ok)" stroke-width="2"/>
+  <path d="M352,50 L366,86" stroke="var(--ok)" stroke-width="2"/>
+  <path d="M366,86 L386,122" stroke="var(--ok)" stroke-width="2"/>
+  <text class="dg-sub" x="266" y="180">about 99% as good</text>
+  <text class="dg-sub" x="266" y="198" fill="var(--ok)">and thousands of times faster</text>
+  <rect x="478" y="40" width="168" height="130" rx="9" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-label" x="492" y="64">How to choose</text>
+  <text class="dg-sub" x="492" y="88">under 100k vectors:</text>
+  <text class="dg-mono" x="492" y="104" style="font-size:10.5px">any of them. really.</text>
+  <text class="dg-sub" x="492" y="128">already run Postgres?</text>
+  <text class="dg-mono" x="492" y="144" style="font-size:10.5px">pgvector. one less thing.</text>
+  <text class="dg-sub" x="492" y="164">start simple, move later</text>
+</svg>
+<figcaption>
+<strong>Approximate search is the right default.</strong> Losing the occasional borderline
+neighbour costs you almost nothing in answer quality, and buys orders of magnitude in speed.
+</figcaption>
+</figure>
+
 ```text
 A vector database is three things:
 

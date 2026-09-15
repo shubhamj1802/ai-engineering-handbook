@@ -22,6 +22,60 @@ can diagnose.
 
 ## Mental Model
 
+Every agent you add multiplies both cost and the number of ways things break.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="Diagram of four multi-agent topologies - single agent, router, supervisor with workers, and peer-to-peer - with the cost and debugging difficulty rising across them.">
+  <defs>
+    <marker id="ma-a" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+  </defs>
+  <text class="dg-label" x="14" y="22" fill="var(--ok)">one agent</text>
+  <circle cx="60" cy="86" r="20" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="2"/>
+  <text class="dg-sub" x="14" y="142">start here.</text>
+  <text class="dg-sub" x="14" y="158">usually enough.</text>
+  <text class="dg-label" x="162" y="22" fill="var(--accent-3)">router</text>
+  <circle cx="200" cy="54" r="15" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.7"/>
+  <circle cx="170" cy="112" r="13" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <circle cx="230" cy="112" r="13" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <path class="dg-arrow" d="M192,68 L176,98" marker-end="url(#ma-a)"/>
+  <path class="dg-arrow" d="M208,68 L224,98" marker-end="url(#ma-a)"/>
+  <text class="dg-sub" x="150" y="142">pick one and</text>
+  <text class="dg-sub" x="150" y="158">hand off. cheap.</text>
+  <text class="dg-label" x="330" y="22" fill="var(--warn)">supervisor</text>
+  <circle cx="380" cy="50" r="15" fill="var(--panel-2)" stroke="var(--warn)" stroke-width="1.8"/>
+  <circle cx="340" cy="112" r="13" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <circle cx="380" cy="112" r="13" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <circle cx="420" cy="112" r="13" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <path class="dg-arrow" d="M370,63 L346,99" marker-end="url(#ma-a)"/>
+  <path class="dg-arrow" d="M380,65 L380,97" marker-end="url(#ma-a)"/>
+  <path class="dg-arrow" d="M390,63 L414,99" marker-end="url(#ma-a)"/>
+  <text class="dg-sub" x="318" y="142">one boss delegates,</text>
+  <text class="dg-sub" x="318" y="158">then combines.</text>
+  <text class="dg-label" x="520" y="22" fill="var(--danger)">peer to peer</text>
+  <circle cx="540" cy="56" r="13" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.6"/>
+  <circle cx="606" cy="56" r="13" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.6"/>
+  <circle cx="540" cy="112" r="13" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.6"/>
+  <circle cx="606" cy="112" r="13" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.6"/>
+  <path d="M553,56 L593,56" stroke="var(--danger)" stroke-width="1.2"/>
+  <path d="M553,112 L593,112" stroke="var(--danger)" stroke-width="1.2"/>
+  <path d="M540,69 L540,99" stroke="var(--danger)" stroke-width="1.2"/>
+  <path d="M606,69 L606,99" stroke="var(--danger)" stroke-width="1.2"/>
+  <path d="M551,66 L595,102" stroke="var(--danger)" stroke-width="1.2"/>
+  <path d="M595,66 L551,102" stroke="var(--danger)" stroke-width="1.2"/>
+  <text class="dg-sub" x="500" y="142" fill="var(--danger)">everyone talks.</text>
+  <text class="dg-sub" x="500" y="158" fill="var(--danger)">avoid unless forced.</text>
+  <rect x="14" y="178" width="632" height="44" rx="9" fill="var(--panel)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="dg-sub" x="330" y="198" text-anchor="middle">The test: can you name a task ONE agent provably cannot do?</text>
+  <text class="dg-sub" x="330" y="216" text-anchor="middle">If not, you are paying several times over for the same answer, and debugging got much harder.</text>
+</svg>
+<figcaption>
+<strong>Most multi-agent systems should be a router.</strong> Handing the request to one
+specialist is cheap, easy to trace, and solves the problem people usually reach for a whole
+crew to solve.
+</figcaption>
+</figure>
+
 ```mermaid
 flowchart TB
   subgraph T1["Pipeline — fixed order"]

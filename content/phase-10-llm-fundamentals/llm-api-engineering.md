@@ -30,6 +30,47 @@ Phase 16 shows the same operations through LangChain's provider-agnostic interfa
 
 ## Mental Model
 
+Treat the model like any other unreliable network service. Four things wrap every real call.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 240" role="img" aria-label="Diagram: a model call wrapped in a timeout, retries with backoff, a fallback to a second model, and cost tracking, with the raw unwrapped call shown as the fragile version.">
+  <defs>
+    <marker id="ap-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+  </defs>
+  <text class="dg-label" x="14" y="22" fill="var(--danger)">Fragile</text>
+  <rect x="86" y="8" width="180" height="30" rx="6" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.5"/>
+  <text class="dg-mono" x="176" y="28" text-anchor="middle" style="font-size:11px">client.messages.create(...)</text>
+  <text class="dg-sub" x="282" y="28" fill="var(--danger)">one hiccup and your request dies</text>
+  <line x1="14" y1="52" x2="646" y2="52" stroke="var(--border)" stroke-width="1"/>
+  <text class="dg-label" x="14" y="76" fill="var(--ok)">Production</text>
+  <rect x="14" y="88" width="632" height="136" rx="11" fill="none" stroke="var(--accent)" stroke-width="1.7" stroke-dasharray="6 4"/>
+  <rect x="32" y="104" width="136" height="48" rx="8" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.6"/>
+  <text class="dg-label" x="100" y="124" text-anchor="middle" fill="var(--accent-3)">timeout</text>
+  <text class="dg-sub"   x="100" y="142" text-anchor="middle">never hang forever</text>
+  <rect x="184" y="104" width="136" height="48" rx="8" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.6"/>
+  <text class="dg-label" x="252" y="124" text-anchor="middle" fill="var(--accent-2)">retry</text>
+  <text class="dg-sub"   x="252" y="142" text-anchor="middle">with backoff</text>
+  <rect x="336" y="104" width="136" height="48" rx="8" fill="var(--panel-2)" stroke="var(--warn)" stroke-width="1.6"/>
+  <text class="dg-label" x="404" y="124" text-anchor="middle" fill="var(--warn)">fallback</text>
+  <text class="dg-sub"   x="404" y="142" text-anchor="middle">a second model</text>
+  <rect x="488" y="104" width="140" height="48" rx="8" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.6"/>
+  <text class="dg-label" x="558" y="124" text-anchor="middle" fill="var(--ok)">count cost</text>
+  <text class="dg-sub"   x="558" y="142" text-anchor="middle">tokens per request</text>
+  <rect x="184" y="168" width="288" height="42" rx="8" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-mono" x="328" y="194" text-anchor="middle" style="font-size:11px">the actual model call</text>
+  <path class="dg-arrow" d="M100,152 L200,166" marker-end="url(#ap-a)"/>
+  <path class="dg-arrow" d="M252,152 L280,164" marker-end="url(#ap-a)"/>
+  <path class="dg-arrow" d="M404,152 L376,164" marker-end="url(#ap-a)"/>
+  <path class="dg-arrow" d="M556,152 L458,166" marker-end="url(#ap-a)"/>
+</svg>
+<figcaption>
+<strong>None of these four are optional.</strong> Rate limits, overloaded providers and
+half-finished streams are everyday events, not rare failures — and without cost tracking you
+find out what you spent at the end of the month.
+</figcaption>
+</figure>
+
 ```mermaid
 flowchart LR
   IN["messages[]<br/>system + history + user"] --> CALL["client.messages.create()"]

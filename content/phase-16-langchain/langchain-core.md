@@ -41,6 +41,54 @@ dependencies = [
 
 ## Mental Model
 
+LangChain is **glue**, not magic. It gives one shape to things every provider does slightly
+differently.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="Diagram: without LangChain each provider needs its own calling code, while with LangChain one interface sits in front of them all so swapping providers is a one-line change.">
+  <defs>
+    <marker id="lc-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+  </defs>
+  <text class="dg-label" x="14" y="22" fill="var(--danger)">Without it — one adapter each</text>
+  <rect x="14" y="34" width="86" height="28" rx="5" class="dg-box"/>
+  <text class="dg-sub" x="57" y="53" text-anchor="middle">your code</text>
+  <rect x="124" y="30" width="76" height="22" rx="4" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.2"/>
+  <text class="dg-sub" x="162" y="46" text-anchor="middle">provider A</text>
+  <rect x="124" y="56" width="76" height="22" rx="4" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.2"/>
+  <text class="dg-sub" x="162" y="72" text-anchor="middle">provider B</text>
+  <rect x="124" y="82" width="76" height="22" rx="4" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.2"/>
+  <text class="dg-sub" x="162" y="98" text-anchor="middle">provider C</text>
+  <path class="dg-arrow" d="M100,46 L118,41"/>
+  <path class="dg-arrow" d="M100,50 L118,67"/>
+  <path class="dg-arrow" d="M100,54 L118,93"/>
+  <text class="dg-sub" x="212" y="70" fill="var(--danger)">three code paths to maintain</text>
+  <line x1="14" y1="122" x2="646" y2="122" stroke="var(--border)" stroke-width="1"/>
+  <text class="dg-label" x="14" y="146" fill="var(--ok)">With it — one shape</text>
+  <rect x="14" y="158" width="86" height="34" rx="6" class="dg-box"/>
+  <text class="dg-sub" x="57" y="180" text-anchor="middle">your code</text>
+  <rect x="126" y="152" width="148" height="46" rx="8" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="dg-label" x="200" y="172" text-anchor="middle" fill="var(--accent)">one interface</text>
+  <text class="dg-mono"  x="200" y="190" text-anchor="middle" style="font-size:10px">init_chat_model()</text>
+  <rect x="300" y="150" width="76" height="22" rx="4" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.2"/>
+  <text class="dg-sub" x="338" y="166" text-anchor="middle">provider A</text>
+  <rect x="300" y="176" width="76" height="22" rx="4" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.2"/>
+  <text class="dg-sub" x="338" y="192" text-anchor="middle">provider B</text>
+  <path class="dg-arrow" d="M100,175 L120,175" marker-end="url(#lc-a)"/>
+  <path class="dg-arrow" d="M274,170 L294,161"/>
+  <path class="dg-arrow" d="M274,180 L294,187"/>
+  <rect x="404" y="148" width="242" height="54" rx="8" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="dg-sub" x="418" y="168">It also standardises messages, tools,</text>
+  <text class="dg-sub" x="418" y="186">structured output and streaming.</text>
+  <text class="dg-sub" x="14" y="218">The cost: another dependency, and its own abstractions to learn when something breaks.</text>
+</svg>
+<figcaption>
+<strong>Worth it when you will swap parts.</strong> If you only ever call one provider one
+way, the raw SDK is simpler — and this handbook teaches the raw version first for exactly
+that reason.
+</figcaption>
+</figure>
+
 ```text
 Everything in LangChain is a RUNNABLE: something with .invoke / .stream / .batch / .ainvoke
 

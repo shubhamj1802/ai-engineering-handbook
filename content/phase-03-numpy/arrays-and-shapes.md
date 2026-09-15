@@ -22,6 +22,52 @@ moment you can read a shape tuple fluently.
 
 ## Mental Model
 
+Everything in NumPy comes back to one question: **what shape is this?** Most errors you will
+hit are shape errors, so it pays to be able to picture them.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 250" role="img" aria-label="Diagram showing a one-dimensional array of four values with shape four, a two-dimensional array of two rows by three columns with shape two by three, and a three-dimensional array of two stacked two by two blocks.">
+  <text class="dg-label" x="14" y="22">1-D — a row</text>
+  <text class="dg-mono"  x="14" y="42" fill="var(--accent)" style="font-size:11.5px">shape (4,)</text>
+  <rect x="14"  y="54" width="38" height="38" rx="5" class="dg-box"/>
+  <rect x="56"  y="54" width="38" height="38" rx="5" class="dg-box"/>
+  <rect x="98"  y="54" width="38" height="38" rx="5" class="dg-box"/>
+  <rect x="140" y="54" width="38" height="38" rx="5" class="dg-box"/>
+  <text class="dg-sub" x="14" y="112">4 values, one axis</text>
+  <text class="dg-label" x="240" y="22">2-D — a table</text>
+  <text class="dg-mono"  x="240" y="42" fill="var(--accent)" style="font-size:11.5px">shape (2, 3)</text>
+  <rect x="240" y="54" width="38" height="38" rx="5" class="dg-box"/>
+  <rect x="282" y="54" width="38" height="38" rx="5" class="dg-box"/>
+  <rect x="324" y="54" width="38" height="38" rx="5" class="dg-box"/>
+  <rect x="240" y="96" width="38" height="38" rx="5" class="dg-box"/>
+  <rect x="282" y="96" width="38" height="38" rx="5" class="dg-box"/>
+  <rect x="324" y="96" width="38" height="38" rx="5" class="dg-box"/>
+  <text class="dg-sub" x="240" y="154">2 rows, 3 columns</text>
+  <text class="dg-sub" x="376" y="78">axis 0</text>
+  <text class="dg-sub" x="376" y="94">goes down</text>
+  <text class="dg-sub" x="240" y="174">axis 1 goes across</text>
+  <text class="dg-label" x="470" y="22">3-D — a stack</text>
+  <text class="dg-mono"  x="470" y="42" fill="var(--accent)" style="font-size:11.5px">shape (2, 2, 2)</text>
+  <rect x="482" y="54" width="34" height="34" rx="5" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.2"/>
+  <rect x="520" y="54" width="34" height="34" rx="5" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.2"/>
+  <rect x="482" y="92" width="34" height="34" rx="5" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.2"/>
+  <rect x="520" y="92" width="34" height="34" rx="5" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.2"/>
+  <rect x="470" y="66" width="34" height="34" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.6"/>
+  <rect x="508" y="66" width="34" height="34" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.6"/>
+  <rect x="470" y="104" width="34" height="34" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.6"/>
+  <rect x="508" y="104" width="34" height="34" rx="5" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.6"/>
+  <text class="dg-sub" x="470" y="160">2 blocks of 2x2</text>
+  <text class="dg-sub" x="470" y="178">batch of images, for example</text>
+  <rect x="14" y="196" width="632" height="44" rx="9" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.6"/>
+  <text class="dg-sub" x="330" y="216" text-anchor="middle">Read a shape left to right as "outermost to innermost".</text>
+  <text class="dg-sub" x="330" y="234" text-anchor="middle">(32, 128, 768) = 32 sequences, each 128 tokens, each token a 768-number vector.</text>
+</svg>
+<figcaption>
+<strong>Print the shape before you debug anything else.</strong> <code>print(a.shape)</code>
+answers most NumPy questions instantly, and that last example is the exact shape you will
+meet again in Phase 10 when you look at transformer inputs.
+</figcaption>
+</figure>
+
 ```text
 shape (3,)          1-D  vector          one embedding of 3 dimensions
 shape (4, 3)        2-D  matrix          4 embeddings × 3 dimensions

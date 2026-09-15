@@ -22,6 +22,39 @@ what is worth that cost.
 
 ## Mental Model
 
+"Memory" is three different things with three different lifetimes. Mixing them up causes both
+bugs and privacy problems.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="Diagram of three memory layers: the current conversation which lasts minutes, a durable user profile which lasts months, and the shared knowledge base which is not per-user at all.">
+  <rect x="14" y="30" width="200" height="120" rx="10" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.8"/>
+  <text class="dg-label" x="30" y="54" fill="var(--accent-3)">1 · this conversation</text>
+  <text class="dg-sub"   x="30" y="76">the last few turns</text>
+  <text class="dg-sub"   x="30" y="96">lives: minutes</text>
+  <text class="dg-sub"   x="30" y="116">lost when the chat ends</text>
+  <text class="dg-mono"  x="30" y="138" style="font-size:10px">checkpoint / thread id</text>
+  <rect x="230" y="30" width="200" height="120" rx="10" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.8"/>
+  <text class="dg-label" x="246" y="54" fill="var(--accent-2)">2 · about this user</text>
+  <text class="dg-sub"   x="246" y="76">preferences, their plan</text>
+  <text class="dg-sub"   x="246" y="96">lives: months</text>
+  <text class="dg-sub"   x="246" y="116">needs deletion on request</text>
+  <text class="dg-mono"  x="246" y="138" style="font-size:10px">a real database row</text>
+  <rect x="446" y="30" width="200" height="120" rx="10" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
+  <text class="dg-label" x="462" y="54" fill="var(--accent)">3 · shared knowledge</text>
+  <text class="dg-sub"   x="462" y="76">your docs and policies</text>
+  <text class="dg-sub"   x="462" y="96">lives: until edited</text>
+  <text class="dg-sub"   x="462" y="116">NOT per-user at all</text>
+  <text class="dg-mono"  x="462" y="138" style="font-size:10px">the vector store</text>
+  <rect x="14" y="166" width="632" height="56" rx="9" fill="var(--panel)" stroke="var(--danger)" stroke-width="1.6"/>
+  <text class="dg-label" x="30" y="188" fill="var(--danger)">Never store in any of them</text>
+  <text class="dg-sub"   x="230" y="188">passwords, card numbers, full personal records, API keys</text>
+  <text class="dg-sub"   x="30" y="210">Store an identifier and look the sensitive thing up when you actually need it. Memory gets logged, backed up and exported.</text>
+</svg>
+<figcaption>
+<strong>Layer 2 is where the legal obligations live.</strong> The moment you keep something
+about a person past the session, you own deletion, export and retention for it.
+</figcaption>
+</figure>
+
 ```text
 WORKING MEMORY      this turn's context window        seconds        ephemeral
 SHORT-TERM          this conversation's messages       hours-days     checkpointer/thread

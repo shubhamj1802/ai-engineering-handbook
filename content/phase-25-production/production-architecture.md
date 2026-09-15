@@ -21,6 +21,53 @@ small fraction of it — which is exactly why the engineering discipline of Phas
 
 ## Mental Model
 
+Everything from the handbook, assembled. The parts that are not the model are most of the
+work.
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 240" role="img" aria-label="Deployment diagram: clients hit an API behind rate limits and authentication, fast requests answer inline while slow ones go on a queue to workers, with a cache in front of the model and Postgres and the vector store behind.">
+  <defs>
+    <marker id="pr-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+  </defs>
+  <rect x="14" y="98" width="76" height="44" rx="8" class="dg-box"/>
+  <text class="dg-sub" x="52" y="125" text-anchor="middle">clients</text>
+  <rect x="106" y="92" width="110" height="56" rx="9" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.9"/>
+  <text class="dg-label" x="161" y="114" text-anchor="middle" fill="var(--accent)">API</text>
+  <text class="dg-sub"   x="161" y="132" text-anchor="middle">auth, rate limit</text>
+  <rect x="240" y="44" width="120" height="46" rx="8" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.6"/>
+  <text class="dg-sub" x="300" y="64" text-anchor="middle" fill="var(--ok)">quick path</text>
+  <text class="dg-sub" x="300" y="80" text-anchor="middle">answer inline</text>
+  <rect x="240" y="150" width="120" height="46" rx="8" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.6"/>
+  <text class="dg-sub" x="300" y="170" text-anchor="middle" fill="var(--accent-2)">queue</text>
+  <text class="dg-sub" x="300" y="186" text-anchor="middle">slow jobs, workers</text>
+  <rect x="392" y="92" width="104" height="56" rx="9" fill="var(--panel-2)" stroke="var(--warn)" stroke-width="1.8"/>
+  <text class="dg-label" x="444" y="114" text-anchor="middle" fill="var(--warn)">cache</text>
+  <text class="dg-sub"   x="444" y="132" text-anchor="middle">skip repeat calls</text>
+  <rect x="524" y="44" width="122" height="46" rx="8" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
+  <text class="dg-sub" x="585" y="64" text-anchor="middle" fill="var(--accent)">model</text>
+  <text class="dg-sub" x="585" y="80" text-anchor="middle">+ a fallback one</text>
+  <rect x="524" y="104" width="122" height="40" rx="8" class="dg-box"/>
+  <text class="dg-sub" x="585" y="129" text-anchor="middle">Postgres</text>
+  <rect x="524" y="156" width="122" height="40" rx="8" class="dg-box"/>
+  <text class="dg-sub" x="585" y="181" text-anchor="middle">vector store</text>
+  <path class="dg-arrow" d="M90,120 L100,120" marker-end="url(#pr-a)"/>
+  <path class="dg-arrow" d="M216,108 L234,80" marker-end="url(#pr-a)"/>
+  <path class="dg-arrow" d="M216,132 L234,166" marker-end="url(#pr-a)"/>
+  <path class="dg-arrow" d="M360,72 L390,104" marker-end="url(#pr-a)"/>
+  <path class="dg-arrow" d="M360,170 L390,140" marker-end="url(#pr-a)"/>
+  <path class="dg-arrow" d="M496,108 L518,80" marker-end="url(#pr-a)"/>
+  <path class="dg-arrow" d="M496,120 L518,124" marker-end="url(#pr-a)"/>
+  <path class="dg-arrow" d="M496,132 L518,168" marker-end="url(#pr-a)"/>
+  <text class="dg-sub" x="14" y="224">Only one box here is the model. The other seven are why production work takes the time it does.</text>
+</svg>
+<figcaption>
+<strong>The queue is the part people skip and regret.</strong> A request that takes ninety
+seconds cannot be answered inline — it needs a job id the client can poll, or the first
+traffic spike takes the whole service down.
+</figcaption>
+</figure>
+
 ```mermaid
 flowchart TB
   C["Client<br/>web · Slack · API"] --> LB["Load balancer / ingress"]
