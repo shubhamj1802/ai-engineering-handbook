@@ -2,7 +2,7 @@
 
 **Python → ML → LLMs → RAG → Agents → Agentic AI → Production**
 
-A free, open, interactive learning platform: **82 lessons across 29 phases**, taking a reader
+A free, open, interactive learning platform: **90 lessons across 29 phases**, taking a reader
 from zero Python to building and operating production-grade agentic AI systems.
 
 Every lesson has runnable code, real architecture diagrams, exercises with worked solutions,
@@ -38,7 +38,7 @@ needs five minutes of setup — see below.
 | LLM engineering | 10–11 | 5 |
 | RAG | 12–13 | 4 |
 | Agents | 14–15 | 3 |
-| Frameworks | 16–18 | 5 |
+| Frameworks | 16–18 | 13 |
 | Production | 19–25 | 8 |
 | Capstone projects | 26 | 5 |
 | Multi-agent labs | 28 | 6 |
@@ -49,7 +49,7 @@ syntax, minimal example, real-world example, common mistakes, debugging, best pr
 security and performance notes, a hands-on exercise with a worked solution, a challenge,
 interview questions, a quiz, a cheat sheet, and a summary.
 
-Framework code is written against **LangChain 1.4**, **LangGraph 1.2** and **CrewAI 1.15**,
+Framework code is written against **LangChain 1.4.0**, **LangGraph 1.2.11** and **CrewAI 1.15.21**,
 with the Anthropic Python SDK for direct model calls. Versions are stated in the lessons
 because these APIs change often.
 
@@ -260,7 +260,7 @@ folder under `content/`. Phases with no lessons are hidden automatically.
 │       ├── progress/               per-account progress read/write
 │       └── search/                 lazy-loaded search index
 ├── components/                     sidebar, top bar, search, quizzes, article body
-├── content/                        82 markdown lessons across 29 phase folders
+├── content/                        90 markdown lessons across 29 phase folders
 ├── lib/
 │   ├── curriculum.ts               phases, groups, difficulty styles
 │   ├── content.ts                  markdown discovery, nav tree, search index

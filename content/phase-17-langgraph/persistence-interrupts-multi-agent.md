@@ -1,6 +1,6 @@
 ---
 title: "LangGraph — Persistence, Interrupts and Multi-Agent Graphs"
-order: 2
+order: 4
 difficulty: Expert
 duration: 20
 badges: ["Hands-on", "Production"]

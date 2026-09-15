@@ -1,6 +1,6 @@
 ---
 title: "LangChain — Retrieval, Agents and Middleware"
-order: 2
+order: 4
 difficulty: Expert
 duration: 20
 badges: ["Hands-on", "Project"]

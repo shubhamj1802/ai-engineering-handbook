@@ -1,6 +1,6 @@
 ---
 title: "LangChain — Models, Messages, Structured Output and LCEL"
-order: 1
+order: 2
 difficulty: Expert
 duration: 20
 badges: ["Hands-on"]

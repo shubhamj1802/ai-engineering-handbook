@@ -1,6 +1,6 @@
 ---
 title: "LangGraph — State, Nodes, Edges and Reducers"
-order: 1
+order: 2
 difficulty: Expert
 duration: 20
 badges: ["Hands-on", "Start here"]
