@@ -22,22 +22,78 @@ current working directory is not always what you think.
 
 ## Mental Model
 
-```text
-module   = one .py file                        retrieval.py       → import retrieval
-package  = a directory of modules              retrieval/         → import retrieval.vector
-                                                 __init__.py
-                                                 vector.py
-                                                 keyword.py
+- A **module** is one `.py` file.
+- A **package** is a folder of them.
+- An **import** makes Python go looking for one.
 
-import X   →  Python searches sys.path in order:
-              1. the directory of the script being run (or cwd for -m / REPL)
-              2. installed packages in the current environment (.venv/lib/...)
-              3. the standard library
+The confusing part is *where* it looks. It is not magic — it is a list, checked in order,
+and the first match wins.
+
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 250" role="img" aria-label="Diagram: when you write an import, Python checks a list of locations in order. First built-in modules, then the folder you ran the script from, then installed packages in the virtual environment. The first match wins.">
+  <defs>
+    <marker id="md-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+  </defs>
+
+  <rect x="14" y="28" width="150" height="48" rx="9" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="dg-mono" x="89" y="50" text-anchor="middle" fill="var(--accent)">import json</text>
+  <text class="dg-sub"  x="89" y="68" text-anchor="middle">where is it?</text>
+
+  <path class="dg-arrow" d="M164,52 L204,52" marker-end="url(#md-a)"/>
+
+  <rect x="214" y="16" width="200" height="44" rx="8" class="dg-box"/>
+  <text class="dg-label" x="230" y="36">1. built into Python</text>
+  <text class="dg-sub"   x="230" y="52">json, os, pathlib, csv</text>
+
+  <rect x="214" y="70" width="200" height="44" rx="8" class="dg-box"/>
+  <text class="dg-label" x="230" y="90">2. your own folder</text>
+  <text class="dg-sub"   x="230" y="106">where you ran the script</text>
+
+  <rect x="214" y="124" width="200" height="44" rx="8" class="dg-box"/>
+  <text class="dg-label" x="230" y="144">3. your .venv</text>
+  <text class="dg-sub"   x="230" y="160">pip / uv installed things</text>
+
+  <rect x="214" y="178" width="200" height="40" rx="8" fill="var(--panel)" stroke="var(--danger)" stroke-width="1.6"/>
+  <text class="dg-sub" x="230" y="203" fill="var(--danger)">not found: ModuleNotFoundError</text>
+
+  <path class="dg-arrow" d="M314,60 L314,66" marker-end="url(#md-a)"/>
+  <path class="dg-arrow" d="M314,114 L314,120" marker-end="url(#md-a)"/>
+  <path class="dg-arrow" d="M314,168 L314,174" marker-end="url(#md-a)"/>
+
+  <rect x="450" y="60" width="196" height="60" rx="9" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.8"/>
+  <text class="dg-label" x="548" y="84" text-anchor="middle" fill="var(--ok)">first match wins</text>
+  <text class="dg-sub"   x="548" y="104" text-anchor="middle">it stops looking</text>
+  <path d="M414,38 Q440,38 448,74" stroke="var(--ok)" stroke-width="1.6" fill="none" marker-end="url(#md-a)"/>
+
+  <text class="dg-sub" x="330" y="240" text-anchor="middle">You can see the real list any time with: import sys; print(sys.path)</text>
+</svg>
+<figcaption>
+<strong>Your own folder is checked before installed packages.</strong> Which is exactly why
+naming a file <code>json.py</code> breaks everything — your file is found first, and the real
+<code>json</code> module becomes unreachable.
+</figcaption>
+</figure>
+
+```python
+import json                      # the whole module
+from pathlib import Path         # one name out of a module
+from . import helpers            # a sibling file in the same package
 ```
 
-The fix for almost every import problem: **install your own project into the environment**
-(`uv sync` with a proper `pyproject.toml`), so it is found the same way any other package
-is, from any working directory.
+:::mistake Never name a file after a library
+```text
+my_project/
+  json.py        <- you just broke every import of json in this project
+  main.py
+```
+Your `json.py` sits in the folder Python checks *before* its own libraries, so
+`import json` finds yours. The error it produces looks completely unrelated and people lose
+hours to it.
+
+Same trap: `csv.py`, `email.py`, `logging.py`, `types.py`, `test.py`.
+:::
 
 ## Core Concepts
 

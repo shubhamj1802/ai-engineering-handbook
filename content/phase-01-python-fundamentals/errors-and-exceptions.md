@@ -22,23 +22,75 @@ retried, surfaced and logged.
 
 ## Mental Model
 
-```mermaid
-flowchart TD
-  T["try:<br/>risky work"] -->|no exception| E["else:<br/>runs on success"]
-  T -->|exception raised| C{"matching except?"}
-  C -->|yes| H["except:<br/>handle it"]
-  C -->|no| P["propagates up the call stack"]
-  E --> F["finally:<br/>always runs"]
-  H --> F
-  P --> F
+A traceback looks like a wall of text. It is actually a very tidy report, and you read it
+**from the bottom up**.
+
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 260" role="img" aria-label="Diagram of a Python traceback. The top lines show the chain of calls that led to the error. The bottom line names the error type and the message, and this is the line to read first.">
+  <defs>
+    <marker id="er-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--danger)"/>
+    </marker>
+  </defs>
+
+  <rect x="150" y="14" width="500" height="182" rx="10" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+
+  <text class="dg-mono" x="166" y="38" style="font-size:11.5px">Traceback (most recent call last):</text>
+  <text class="dg-mono" x="166" y="60" style="font-size:11.5px">  File "app.py", line 42, in main</text>
+  <text class="dg-mono" x="166" y="78" style="font-size:11.5px">    total = summarise(rows)</text>
+  <text class="dg-mono" x="166" y="100" style="font-size:11.5px">  File "report.py", line 7, in summarise</text>
+  <text class="dg-mono" x="166" y="118" style="font-size:11.5px">    return sum(r["amount"] for r in rows)</text>
+
+  <rect x="158" y="136" width="484" height="50" rx="8" fill="var(--panel)" stroke="var(--danger)" stroke-width="2"/>
+  <text class="dg-mono" x="172" y="157" style="font-size:12px" fill="var(--danger)">KeyError: &apos;amount&apos;</text>
+  <text class="dg-sub"  x="172" y="176">what went wrong, and with which value</text>
+
+  <text class="dg-sub" x="14" y="40" fill="var(--text-muted)">how you</text>
+  <text class="dg-sub" x="14" y="56" fill="var(--text-muted)">got there</text>
+  <text class="dg-sub" x="14" y="76">read this</text>
+  <text class="dg-sub" x="14" y="92">second</text>
+
+  <text class="dg-label" x="14" y="152" fill="var(--danger)">START HERE</text>
+  <text class="dg-sub"   x="14" y="170">read this first</text>
+  <path d="M110,148 L152,158" stroke="var(--danger)" stroke-width="1.8" fill="none" marker-end="url(#er-a)"/>
+
+  <text class="dg-sub" x="330" y="222" text-anchor="middle">The last line says WHAT broke. The lines above say WHERE you came from.</text>
+  <text class="dg-sub" x="330" y="244" text-anchor="middle">The deepest file listed, second from the bottom, is usually where your bug lives.</text>
+</svg>
+<figcaption>
+<strong>Bottom line first, always.</strong> <code>KeyError: &apos;amount&apos;</code> tells
+you a dictionary had no key called <code>amount</code>. Then look just above it to see which
+line asked for it. Everything higher up is just the path that got you there.
+</figcaption>
+</figure>
+
+So the reading order is:
+
+1. **Last line** — what kind of error, and the offending value
+2. **Just above it** — the line of code that actually failed
+3. **Higher up** — only if you need to know how you got there
+
+Once you read tracebacks this way they stop being scary and become the most useful output
+Python produces.
+
+:::warning Catch only what you can actually handle
+```python
+# WRONG - hides every bug, including your typos
+try:
+    total = summarise(rows)
+except Exception:
+    total = 0
+
+# RIGHT - handles the one thing you expected, lets everything else shout
+try:
+    total = summarise(rows)
+except KeyError as error:
+    logger.warning("row missing field %s, skipping", error)
+    total = 0
 ```
-
-Three questions to ask at every `except`:
-
-1. **Can I fix it here?** If not, do not catch it.
-2. **Is this expected?** Expected failures (a 429, a missing file) get handled; unexpected
-   ones (a `TypeError` in your own code) should crash loudly so you fix the bug.
-3. **Does the caller need to know?** If yes, re-raise — possibly as your own exception type.
+A bare `except Exception` will swallow a misspelled variable name and leave you debugging
+for an hour. Catch the specific error you know how to deal with.
+:::
 
 ## Core Concepts
 

@@ -22,16 +22,82 @@ the streaming pattern that lets you process a file larger than RAM.
 
 ## Mental Model
 
-```text
-open(path)  →  file object  →  read/write  →  close   ← forgetting this leaks handles
-with open(path) as f:  ...                            ← closes automatically, even on error
+Opening a file is like opening a door. **Something has to close it**, even if the code
+inside crashes.
 
-FORMAT      SHAPE                       USE
-.txt        free text                   documents to chunk
-.json       one object/array            config, metadata, API payloads
-.jsonl      one JSON object per line    datasets, logs, evals ← stream-friendly
-.csv        rows and columns            tabular data, results, spreadsheets
+That is what `with` does, and it is why you should never open a file any other way.
+
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="Diagram comparing opening a file manually, where a crash leaves the file open, with a with-block, which always closes the file even when the code inside raises an error.">
+  <defs>
+    <marker id="fl-b" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--danger)"/>
+    </marker>
+    <marker id="fl-g" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--ok)"/>
+    </marker>
+  </defs>
+
+  <text class="dg-label" x="14" y="22" fill="var(--danger)">By hand — risky</text>
+  <rect x="14" y="34" width="86" height="34" rx="7" class="dg-box"/>
+  <text class="dg-sub" x="57" y="56" text-anchor="middle">open</text>
+  <rect x="122" y="34" width="86" height="34" rx="7" class="dg-box"/>
+  <text class="dg-sub" x="165" y="56" text-anchor="middle">read</text>
+  <rect x="230" y="30" width="96" height="42" rx="7" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="2"/>
+  <text class="dg-sub" x="278" y="46" text-anchor="middle" fill="var(--danger)">crash!</text>
+  <text class="dg-sub" x="278" y="62" text-anchor="middle">bad row</text>
+  <rect x="348" y="34" width="96" height="34" rx="7" fill="var(--panel)" stroke="var(--border)" stroke-width="1.2" stroke-dasharray="4 3"/>
+  <text class="dg-sub" x="396" y="56" text-anchor="middle">close (skipped)</text>
+
+  <path d="M100,51 L116,51" stroke="var(--danger)" stroke-width="1.5" marker-end="url(#fl-b)"/>
+  <path d="M208,51 L224,51" stroke="var(--danger)" stroke-width="1.5" marker-end="url(#fl-b)"/>
+  <text class="dg-sub" x="470" y="48" fill="var(--danger)">file left open</text>
+  <text class="dg-sub" x="470" y="66">data possibly half-written</text>
+
+  <line x1="14" y1="98" x2="646" y2="98" stroke="var(--border)" stroke-width="1"/>
+
+  <text class="dg-label" x="14" y="126" fill="var(--ok)">With a `with` block — safe</text>
+  <rect x="14" y="140" width="430" height="60" rx="10" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="2"/>
+  <text class="dg-mono" x="30" y="162" style="font-size:11.5px">with open(path, encoding="utf-8") as handle:</text>
+  <text class="dg-mono" x="30" y="182" style="font-size:11.5px">    process(handle)      # crash or not...</text>
+
+  <rect x="470" y="142" width="176" height="56" rx="9" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.8"/>
+  <text class="dg-sub" x="558" y="164" text-anchor="middle" fill="var(--ok)">closed either way</text>
+  <text class="dg-sub" x="558" y="182" text-anchor="middle">guaranteed, automatically</text>
+  <path d="M444,170 L464,170" stroke="var(--ok)" stroke-width="1.8" marker-end="url(#fl-g)"/>
+
+  <text class="dg-sub" x="14" y="222">The block ends, the door shuts. Even on the way out through an exception.</text>
+</svg>
+<figcaption>
+<strong>Use <code>with</code>, always.</strong> And always pass
+<code>encoding="utf-8"</code> — without it, Python picks a default that differs between
+Windows and Linux, and the same code produces different text on different machines.
+</figcaption>
+</figure>
+
+Two habits, and this topic mostly stops causing problems:
+
+```python
+# 1. Always `with`. 2. Always an explicit encoding.
+with open("notes.txt", encoding="utf-8") as handle:
+    text = handle.read()
 ```
+
+| Format | Use it for | Gotcha |
+| --- | --- | --- |
+| `.txt` | logs, prompts, notes | encoding |
+| `.json` | nested data, configs, API bodies | no dates or sets — convert first |
+| `.csv` | tables, spreadsheet exports | **everything reads back as a string** |
+
+:::mistake Every CSV value is text
+```python
+row = {"amount": "42"}         # what the csv module actually gives you
+row["amount"] + 1              # TypeError!
+int(row["amount"]) + 1         # 43
+```
+CSV files carry no type information at all. Numbers, dates and booleans all come back as
+strings, and converting them is your job. This is the single most common CSV bug.
+:::
 
 ## Core Concepts
 

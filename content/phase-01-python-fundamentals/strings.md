@@ -23,20 +23,102 @@ count.
 
 ## Mental Model
 
-A string is an **immutable sequence of characters**. Immutable means every "modification"
-returns a new string; the original is untouched.
+A string is a **row of characters, numbered from zero**.
 
-```text
+And it never changes. Every method that looks like it edits text actually returns a *new*
+string and leaves the original alone.
+
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="Diagram: the word retrieval with each letter in a box. Below each letter is its position counting from zero going forwards, and its negative position counting from minus one going backwards. A highlight shows that slicing from zero to four returns the first four letters.">
+  <text class="dg-mono" x="8" y="79" style="font-size:15px">text =</text>
+
+  <rect x="60" y="46" width="52" height="52" rx="7" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-mono" x="86" y="79" text-anchor="middle" style="font-size:19px">r</text>
+  <text class="dg-sub" x="86" y="118" text-anchor="middle" fill="var(--accent)">0</text>
+  <text class="dg-sub" x="86" y="140" text-anchor="middle">-9</text>
+  <rect x="118" y="46" width="52" height="52" rx="7" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-mono" x="144" y="79" text-anchor="middle" style="font-size:19px">e</text>
+  <text class="dg-sub" x="144" y="118" text-anchor="middle" fill="var(--accent)">1</text>
+  <text class="dg-sub" x="144" y="140" text-anchor="middle">-8</text>
+  <rect x="176" y="46" width="52" height="52" rx="7" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-mono" x="202" y="79" text-anchor="middle" style="font-size:19px">t</text>
+  <text class="dg-sub" x="202" y="118" text-anchor="middle" fill="var(--accent)">2</text>
+  <text class="dg-sub" x="202" y="140" text-anchor="middle">-7</text>
+  <rect x="234" y="46" width="52" height="52" rx="7" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-mono" x="260" y="79" text-anchor="middle" style="font-size:19px">r</text>
+  <text class="dg-sub" x="260" y="118" text-anchor="middle" fill="var(--accent)">3</text>
+  <text class="dg-sub" x="260" y="140" text-anchor="middle">-6</text>
+  <rect x="292" y="46" width="52" height="52" rx="7" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-mono" x="318" y="79" text-anchor="middle" style="font-size:19px">i</text>
+  <text class="dg-sub" x="318" y="118" text-anchor="middle" fill="var(--accent)">4</text>
+  <text class="dg-sub" x="318" y="140" text-anchor="middle">-5</text>
+  <rect x="350" y="46" width="52" height="52" rx="7" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-mono" x="376" y="79" text-anchor="middle" style="font-size:19px">e</text>
+  <text class="dg-sub" x="376" y="118" text-anchor="middle" fill="var(--accent)">5</text>
+  <text class="dg-sub" x="376" y="140" text-anchor="middle">-4</text>
+  <rect x="408" y="46" width="52" height="52" rx="7" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-mono" x="434" y="79" text-anchor="middle" style="font-size:19px">v</text>
+  <text class="dg-sub" x="434" y="118" text-anchor="middle" fill="var(--accent)">6</text>
+  <text class="dg-sub" x="434" y="140" text-anchor="middle">-3</text>
+  <rect x="466" y="46" width="52" height="52" rx="7" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-mono" x="492" y="79" text-anchor="middle" style="font-size:19px">a</text>
+  <text class="dg-sub" x="492" y="118" text-anchor="middle" fill="var(--accent)">7</text>
+  <text class="dg-sub" x="492" y="140" text-anchor="middle">-2</text>
+  <rect x="524" y="46" width="52" height="52" rx="7" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-mono" x="550" y="79" text-anchor="middle" style="font-size:19px">l</text>
+  <text class="dg-sub" x="550" y="118" text-anchor="middle" fill="var(--accent)">8</text>
+  <text class="dg-sub" x="550" y="140" text-anchor="middle">-1</text>
+
+  <text class="dg-sub" x="8" y="118" fill="var(--accent)">from the start</text>
+  <text class="dg-sub" x="8" y="140">from the end</text>
+
+  <rect x="58" y="42" width="234" height="60" rx="9" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+  <text class="dg-mono" x="175" y="176" text-anchor="middle" fill="var(--accent)">text[0:4]</text>
+  <text class="dg-sub"  x="175" y="196" text-anchor="middle">gives "retr"</text>
+  <text class="dg-sub"  x="175" y="214" text-anchor="middle">4 is where it stops, not what it takes</text>
+
+  <text class="dg-mono" x="470" y="176" text-anchor="middle">text[-1]</text>
+  <text class="dg-sub"  x="470" y="196" text-anchor="middle">gives "l" - the last letter</text>
+  <text class="dg-sub"  x="470" y="214" text-anchor="middle">no need to know the length</text>
+</svg>
+<figcaption>
+<strong>Two rulers over the same letters.</strong> Count forwards from <code>0</code>, or
+backwards from <code>-1</code>. A slice <code>[a:b]</code> starts at <code>a</code> and stops
+<em>just before</em> <code>b</code> — which is why <code>[0:4]</code> gives you four letters,
+not five.
+</figcaption>
+</figure>
+
+The stop-before rule looks odd until you see what it buys you:
+
+```python
 text = "retrieval"
-        r  e  t  r  i  e  v  a  l
-        0  1  2  3  4  5  6  7  8      ← positive indices
-       -9 -8 -7 -6 -5 -4 -3 -2 -1      ← negative indices
 
-text[0]      -> 'r'
-text[-1]     -> 'l'
-text[0:4]    -> 'retr'      start inclusive, stop exclusive
-text[::-1]   -> 'laveirter' reversed
+text[0:4]        # 'retr'      starts at 0, stops before 4
+text[4:]         # 'ieval'     from 4 to the end
+text[:4]         # 'retr'      from the start to 4
+text[-1]         # 'l'         last character
+text[::-1]       # 'laveirter' the whole thing, backwards
+
+# The halves join back up perfectly, with no off-by-one:
+text[:4] + text[4:] == text      # True
 ```
+
+That last line is the reason Python works this way. Split anywhere and the pieces fit back
+together.
+
+:::warning Strings never change
+```python
+name = "  Ada  "
+name.strip()        # returns "Ada" - but throws it away!
+print(name)         # "  Ada  "   <- unchanged
+
+name = name.strip() # you have to catch the result
+print(name)         # "Ada"
+```
+This catches nearly everybody once. If a string method seems to have done nothing, you
+forgot to assign the result.
+:::
 
 ## Core Concepts
 

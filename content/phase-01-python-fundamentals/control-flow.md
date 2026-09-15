@@ -22,21 +22,85 @@ and that style produces slower, buggier code.
 
 ## Mental Model
 
-```mermaid
-flowchart TD
-  START([Start]) --> COND{"condition?"}
-  COND -->|True| A["branch A"]
-  COND -->|False| B["branch B"]
-  A --> LOOP{"more items?"}
-  B --> LOOP
-  LOOP -->|yes| BODY["loop body"]
-  BODY --> LOOP
-  LOOP -->|no| END([Continue])
+Python gives you three tools for deciding what happens, and that is genuinely all of them.
+
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="Diagram of three control-flow tools: if chooses between branches once, for repeats once per item in a collection, and while repeats until a condition becomes false.">
+  <defs>
+    <marker id="cf-a" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+    <marker id="cf-c" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+
+  <text class="dg-mono" x="14" y="26" style="font-size:14px" fill="var(--accent)">if</text>
+  <text class="dg-sub"  x="42" y="26">choose one path, once</text>
+
+  <path d="M120,58 L152,44 L184,58 L152,72 z" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
+  <text class="dg-sub" x="152" y="62" text-anchor="middle">yes?</text>
+  <rect x="222" y="30" width="96" height="28" rx="6" class="dg-box"/>
+  <text class="dg-sub" x="270" y="49" text-anchor="middle">do this</text>
+  <rect x="222" y="62" width="96" height="28" rx="6" class="dg-box"/>
+  <text class="dg-sub" x="270" y="81" text-anchor="middle">else that</text>
+  <path class="dg-arrow" d="M184,52 L216,45" marker-end="url(#cf-a)"/>
+  <path class="dg-arrow" d="M184,64 L216,73" marker-end="url(#cf-a)"/>
+
+  <text class="dg-mono" x="380" y="26" style="font-size:14px" fill="var(--accent)">for</text>
+  <text class="dg-sub"  x="414" y="26">once per item</text>
+  <rect x="380" y="40" width="44" height="30" rx="6" class="dg-box"/>
+  <rect x="432" y="40" width="44" height="30" rx="6" class="dg-box"/>
+  <rect x="484" y="40" width="44" height="30" rx="6" class="dg-box"/>
+  <rect x="536" y="40" width="44" height="30" rx="6" class="dg-box"/>
+  <text class="dg-sub" x="596" y="60">done</text>
+  <path class="dg-arrow" d="M424,55 L430,55"/>
+  <path class="dg-arrow" d="M476,55 L482,55"/>
+  <path class="dg-arrow" d="M528,55 L534,55"/>
+  <path class="dg-arrow" d="M580,55 L586,55" marker-end="url(#cf-a)"/>
+  <text class="dg-sub" x="380" y="88">you know how many rounds</text>
+
+  <line x1="14" y1="112" x2="646" y2="112" stroke="var(--border)" stroke-width="1"/>
+
+  <text class="dg-mono" x="14" y="142" style="font-size:14px" fill="var(--accent)">while</text>
+  <text class="dg-sub"  x="70" y="142">keep going until something changes</text>
+
+  <rect x="150" y="156" width="130" height="44" rx="8" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
+  <text class="dg-sub" x="215" y="182" text-anchor="middle" fill="var(--accent)">do the work</text>
+  <path d="M280,178 Q330,178 330,150 Q330,134 215,134 L215,150" stroke="var(--accent)" stroke-width="1.8" fill="none" marker-end="url(#cf-c)"/>
+  <text class="dg-sub" x="330" y="128" text-anchor="middle" fill="var(--accent)">still true? go again</text>
+
+  <rect x="430" y="156" width="150" height="44" rx="8" fill="var(--panel)" stroke="var(--danger)" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <text class="dg-sub" x="505" y="176" text-anchor="middle" fill="var(--danger)">always add a limit</text>
+  <text class="dg-sub" x="505" y="192" text-anchor="middle">or it may never stop</text>
+
+  <text class="dg-sub" x="150" y="220">you do not know how many rounds</text>
+</svg>
+<figcaption>
+<strong>Pick by whether you know the number of rounds.</strong> Iterating a list? Use
+<code>for</code>. Waiting for something to become true? Use <code>while</code> — and give it
+a maximum, because an agent loop is a <code>while</code> loop and a runaway one costs real
+money.
+</figcaption>
+</figure>
+
+```python
+# for: you have a collection, visit each item
+for message in messages:
+    print(message["role"])
+
+# while: you do not know how many rounds - so cap it
+steps = 0
+while not done and steps < 10:        # the cap is not optional
+    done = take_one_step()
+    steps += 1
 ```
 
-Python has exactly two loops: `for` (iterate over a collection — you know the items) and
-`while` (repeat until a condition changes — you do not know how many rounds). Agent loops
-are `while` loops with a safety cap; everything else is usually a `for`.
+:::tip This is the shape of every agent
+That `while` loop with a step cap **is** the agent loop from Phase 14. You are already
+looking at it. The only thing that changes later is that a model decides whether `done` is
+true.
+:::
 
 ## Core Concepts
 

@@ -22,21 +22,81 @@ without running out of memory.
 
 ## Mental Model
 
-Read a comprehension **right to left, then left**:
+A comprehension is **a `for` loop that builds a list, folded onto one line**.
+
+Read it left to right in the same order you would say it out loud: *give me this, for each
+of those, if it passes this test.*
+
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 240" role="img" aria-label="Diagram showing a four-line for loop that builds a list being folded into a single-line comprehension, with the three parts labelled: what to keep, what to loop over, and the filter condition.">
+  <defs>
+    <marker id="cp-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+
+  <text class="dg-sub" x="14" y="22">the long way</text>
+  <rect x="14" y="32" width="300" height="94" rx="9" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.3"/>
+  <text class="dg-mono" x="28" y="54" style="font-size:11.5px">names = []</text>
+  <text class="dg-mono" x="28" y="72" style="font-size:11.5px">for user in users:</text>
+  <text class="dg-mono" x="28" y="90" style="font-size:11.5px">    if user.active:</text>
+  <text class="dg-mono" x="28" y="108" style="font-size:11.5px">        names.append(user.name)</text>
+
+  <path d="M322,79 L364,79" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#cp-a)"/>
+
+  <text class="dg-sub" x="376" y="22">the short way</text>
+  <rect x="376" y="32" width="270" height="94" rx="9" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="dg-mono" x="390" y="66" style="font-size:11.5px">names = [</text>
+  <text class="dg-mono" x="390" y="86" style="font-size:11.5px">  user.name</text>
+  <text class="dg-mono" x="390" y="104" style="font-size:11.5px">  for user in users</text>
+  <text class="dg-mono" x="390" y="122" style="font-size:11.5px">  if user.active ]</text>
+
+  <rect x="14" y="152" width="196" height="56" rx="8" fill="var(--panel)" stroke="var(--accent)" stroke-width="1.5"/>
+  <text class="dg-label" x="28" y="174" fill="var(--accent)">1. what to keep</text>
+  <text class="dg-mono"  x="28" y="196" style="font-size:11.5px">user.name</text>
+
+  <rect x="230" y="152" width="196" height="56" rx="8" fill="var(--panel)" stroke="var(--accent-3)" stroke-width="1.5"/>
+  <text class="dg-label" x="244" y="174" fill="var(--accent-3)">2. what to loop over</text>
+  <text class="dg-mono"  x="244" y="196" style="font-size:11.5px">for user in users</text>
+
+  <rect x="446" y="152" width="200" height="56" rx="8" fill="var(--panel)" stroke="var(--accent-2)" stroke-width="1.5"/>
+  <text class="dg-label" x="460" y="174" fill="var(--accent-2)">3. which ones (optional)</text>
+  <text class="dg-mono"  x="460" y="196" style="font-size:11.5px">if user.active</text>
+
+  <text class="dg-sub" x="330" y="232" text-anchor="middle">Always these three parts, always in this order.</text>
+</svg>
+<figcaption>
+<strong>Same three parts, rearranged.</strong> The thing you want comes first, then the loop,
+then the filter. Once you see the three slots, any comprehension becomes readable.
+</figcaption>
+</figure>
 
 ```python
-[transform(x) for x in items if condition(x)]
-#  3. what to produce      1. source   2. filter
+# All three shapes work the same way
+[user.name for user in users]                      # just transform
+[user.name for user in users if user.active]       # transform + filter
+{user.name for user in users}                      # a set: unique names
+{user.id: user.name for user in users}             # a dict
 ```
 
-It is the same as this loop, but the intent is visible at a glance:
+:::warning Stop when it stops being readable
+Comprehensions are good for **one** loop and **one** condition. Past that, a plain loop is
+clearer and there is no prize for cramming it onto one line:
 
 ```python
+# Nobody can read this
+result = [f(x, y) for x in xs if x > 0 for y in ys if y != x and g(y)]
+
+# This is better code, even though it is longer
 result = []
-for x in items:
-    if condition(x):
-        result.append(transform(x))
+for x in xs:
+    if x <= 0:
+        continue
+    for y in ys:
+        if y != x and g(y):
+            result.append(f(x, y))
 ```
+:::
 
 ## Core Concepts
 

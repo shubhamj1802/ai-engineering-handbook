@@ -22,17 +22,86 @@ difference between an instant answer and a slow one.
 
 ## Mental Model
 
-```text
-DICT  {key: value}   unordered by concept, insertion-ordered in practice, O(1) lookup
-SET   {value}        unique values, O(1) membership, no order, no duplicates
+A **dict** stores things under a name, and finds them again instantly.
 
-dict = "look this up by name"        {"role": "user", "content": "hi"}
-set  = "have I seen this before?"    {"chunk_1", "chunk_7"}
-```
+A **set** stores things and remembers only whether it has seen them before.
 
-Both are backed by a hash table, which is why keys and set elements must be **hashable**
-(immutable): `str`, `int`, `float`, `bool`, `tuple` of hashables. Lists and dicts cannot be
-keys.
+The "instantly" part is the whole reason these exist. Compare how each one finds something:
+
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 260" role="img" aria-label="Diagram comparing a list and a dict. Searching a list means checking each item one after another. A dict computes the location from the key and jumps straight to it in a single step.">
+  <defs>
+    <marker id="dc-s" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--danger)"/>
+    </marker>
+    <marker id="dc-f" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+
+  <text class="dg-label" x="14" y="22" fill="var(--danger)">A list: look at every item</text>
+  <text class="dg-sub"   x="14" y="40">slower and slower as it grows</text>
+
+  <rect x="150" y="52" width="66" height="38" rx="7" class="dg-box"/>
+  <text class="dg-sub" x="183" y="76" text-anchor="middle">nope</text>
+  <rect x="230" y="52" width="66" height="38" rx="7" class="dg-box"/>
+  <text class="dg-sub" x="263" y="76" text-anchor="middle">nope</text>
+  <rect x="310" y="52" width="66" height="38" rx="7" class="dg-box"/>
+  <text class="dg-sub" x="343" y="76" text-anchor="middle">nope</text>
+  <rect x="390" y="52" width="66" height="38" rx="7" class="dg-box"/>
+  <text class="dg-sub" x="423" y="76" text-anchor="middle">nope</text>
+  <rect x="470" y="48" width="86" height="46" rx="8" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="2"/>
+  <text class="dg-sub" x="513" y="76" text-anchor="middle" fill="var(--danger)">found it</text>
+
+  <path d="M120,71 L144,71" stroke="var(--danger)" stroke-width="1.6" marker-end="url(#dc-s)"/>
+  <path d="M216,71 L224,71" stroke="var(--danger)" stroke-width="1.6" marker-end="url(#dc-s)"/>
+  <path d="M296,71 L304,71" stroke="var(--danger)" stroke-width="1.6" marker-end="url(#dc-s)"/>
+  <path d="M376,71 L384,71" stroke="var(--danger)" stroke-width="1.6" marker-end="url(#dc-s)"/>
+  <path d="M456,71 L464,71" stroke="var(--danger)" stroke-width="1.6" marker-end="url(#dc-s)"/>
+  <text class="dg-sub" x="580" y="76">5 steps</text>
+
+  <line x1="14" y1="120" x2="646" y2="120" stroke="var(--border)" stroke-width="1"/>
+
+  <text class="dg-label" x="14" y="152" fill="var(--accent)">A dict: work out where it is</text>
+  <text class="dg-sub"   x="14" y="170">same speed with 10 items or 10 million</text>
+
+  <rect x="150" y="186" width="120" height="48" rx="8" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
+  <text class="dg-mono" x="210" y="206" text-anchor="middle" fill="var(--accent)">"role"</text>
+  <text class="dg-sub"  x="210" y="224" text-anchor="middle">the key</text>
+
+  <rect x="330" y="182" width="150" height="56" rx="9" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.5"/>
+  <text class="dg-sub"  x="405" y="204" text-anchor="middle">hash it to a slot</text>
+  <text class="dg-sub"  x="405" y="222" text-anchor="middle">a bit of arithmetic</text>
+
+  <rect x="530" y="182" width="116" height="56" rx="9" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="dg-mono" x="588" y="204" text-anchor="middle" fill="var(--accent)">"user"</text>
+  <text class="dg-sub"  x="588" y="222" text-anchor="middle">1 step</text>
+
+  <path d="M270,210 L324,210" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#dc-f)"/>
+  <path d="M480,210 L524,210" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#dc-f)"/>
+</svg>
+<figcaption>
+<strong>A dict does not search. It calculates.</strong> It turns the key into a number, and
+that number says where to look. This is why looking something up in a dict of ten million
+items is just as fast as in a dict of ten.
+</figcaption>
+</figure>
+
+Which is why you reach for each one:
+
+| You want to... | Use | Looks like |
+| --- | --- | --- |
+| store things under a name | `dict` | `{"role": "user", "content": "hi"}` |
+| ask "have I seen this?" | `set` | `{"chunk_1", "chunk_7"}` |
+| keep things in order | `list` | `[1, 2, 3]` |
+
+:::tip Why some things cannot be dict keys
+To calculate a slot, Python has to hash the key — and it can only hash things that never
+change. So `str`, `int`, `float`, `bool` and tuples of those all work as keys.
+
+Lists and dicts do **not** work as keys. If they could change after being filed away, the
+stored location would be wrong and the value would be lost.
+:::
 
 ## Core Concepts
 

@@ -22,20 +22,104 @@ badly shaped one is neither.
 
 ## Mental Model
 
-```text
-        inputs                    output
-  ┌──────────────────┐     ┌────────────────┐
-  │ required args    │ ──▶ │  return value  │
-  │ defaults         │     └────────────────┘
-  │ *args  **kwargs  │            │
-  └──────────────────┘            ▼
-                            side effects (files, network, prints)
-                            ← minimise these; they are what makes testing hard
+A function is **a name for a job**. Things go in, one thing comes out.
+
+The trouble starts when a function also *reaches outside itself* — writes a file, prints,
+calls the network, changes a global. Those are **side effects**, and they are what make code
+hard to test.
+
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 250" role="img" aria-label="Diagram: arguments go into a function and a return value comes out. Side effects such as files, network calls and printing leak out of the bottom, and these are what make a function hard to test.">
+  <defs>
+    <marker id="fn-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+    <marker id="fn-w" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--warn)"/>
+    </marker>
+  </defs>
+
+  <rect x="14" y="40" width="150" height="96" rx="10" class="dg-box"/>
+  <text class="dg-label" x="30" y="64">Goes in</text>
+  <text class="dg-sub"   x="30" y="86">values you pass</text>
+  <text class="dg-sub"   x="30" y="104">defaults if you don't</text>
+  <text class="dg-sub"   x="30" y="122">*args, **kwargs</text>
+
+  <rect x="238" y="30" width="170" height="116" rx="12" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2.2"/>
+  <text class="dg-label" x="323" y="66" text-anchor="middle" fill="var(--accent)">The function</text>
+  <text class="dg-sub"   x="323" y="88" text-anchor="middle">does one job</text>
+  <text class="dg-sub"   x="323" y="106" text-anchor="middle">has a name that</text>
+  <text class="dg-sub"   x="323" y="122" text-anchor="middle">says what it does</text>
+
+  <rect x="482" y="40" width="164" height="96" rx="10" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.8"/>
+  <text class="dg-label" x="564" y="72" text-anchor="middle" fill="var(--ok)">Comes out</text>
+  <text class="dg-sub"   x="564" y="94" text-anchor="middle">one return value</text>
+  <text class="dg-sub"   x="564" y="112" text-anchor="middle">easy to check</text>
+
+  <path class="dg-arrow" d="M164,88 L232,88" marker-end="url(#fn-a)"/>
+  <path class="dg-arrow" d="M408,88 L476,88" marker-end="url(#fn-a)"/>
+
+  <rect x="238" y="182" width="170" height="52" rx="9" fill="var(--panel)" stroke="var(--warn)" stroke-width="1.6" stroke-dasharray="5 4"/>
+  <text class="dg-sub" x="323" y="204" text-anchor="middle" fill="var(--warn)">files, network, print</text>
+  <text class="dg-sub" x="323" y="222" text-anchor="middle">these leak out the bottom</text>
+  <path d="M323,146 L323,176" stroke="var(--warn)" stroke-width="1.6" fill="none" marker-end="url(#fn-w)"/>
+
+  <text class="dg-sub" x="470" y="212">Fewer of these = easier tests</text>
+</svg>
+<figcaption>
+<strong>Keep the arrows going left to right.</strong> A function whose answer depends only on
+what you passed in can be tested with one line. One that reads a file or calls an API needs
+a whole test setup.
+</figcaption>
+</figure>
+
+Put the messy parts at the edges of your program and keep the middle clean:
+
+```python
+# Hard to test: it decides AND fetches AND prints
+def report():
+    data = requests.get("https://api.example.com/sales").json()   # network
+    total = sum(row["amount"] for row in data)
+    print(f"Total: {total}")                                       # printing
+    return total
+
+# Easy to test: the thinking is separated from the messy parts
+def total_sales(rows: list[dict]) -> float:
+    return sum(row["amount"] for row in rows)
+
+# The messy part stays small and lives at the edge
+def report():
+    rows = requests.get("https://api.example.com/sales").json()
+    print(f"Total: {total_sales(rows)}")
 ```
 
-A **pure function** returns the same output for the same input and changes nothing outside
-itself. Push impurity (I/O, randomness, clocks) to the edges of your program and keep the
-core pure — this single habit is why some codebases are easy to test and others are not.
+Now `total_sales` can be tested with `total_sales([{"amount": 5}]) == 5`. No network, no
+mocking, no waiting.
+
+:::mistake The default argument trap
+This one surprises everyone, and it is worth seeing before it bites you:
+
+```python
+def add_item(item, basket=[]):        # WRONG
+    basket.append(item)
+    return basket
+
+add_item("apple")     # ['apple']
+add_item("pear")      # ['apple', 'pear']   <- the SAME list came back!
+```
+
+The default list is created **once**, when the function is defined — not each time you call
+it. So every call shares it. The fix:
+
+```python
+def add_item(item, basket=None):      # RIGHT
+    if basket is None:
+        basket = []
+    basket.append(item)
+    return basket
+```
+Rule: **never use a list, dict or set as a default value.** Use `None` and build it inside.
+:::
 
 ## Core Concepts
 
