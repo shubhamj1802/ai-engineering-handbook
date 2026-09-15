@@ -22,14 +22,68 @@ make the shape of your data obvious at a glance.
 
 ## Mental Model
 
-```text
-@dataclass              generates __init__, __repr__, __eq__ from the annotations
-frozen=True             immutable + hashable → safe to share, usable as a dict key
-slots=True              no per-instance __dict__ → less memory, faster attribute access
-field(default_factory)  per-instance mutable defaults (the list/dict bug, solved)
-@property               a computed attribute: looks like data, runs code
-Enum                    a closed set of named values, checkable and autocompleted
+`@dataclass` writes the boring parts of a class for you. You declare the fields; Python
+generates the constructor, the printout and the comparison.
+
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 230" role="img" aria-label="Diagram: a hand-written class needs a long init method plus repr and eq, while a dataclass declares three fields and Python generates all of that automatically.">
+  <defs>
+    <marker id="dz-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+  <text class="dg-sub" x="14" y="20">by hand</text>
+  <rect x="14" y="30" width="264" height="136" rx="9" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.3"/>
+  <text class="dg-mono" x="28" y="52" style="font-size:11px">class Chunk:</text>
+  <text class="dg-mono" x="28" y="70" style="font-size:11px">  def __init__(self, text, page, score):</text>
+  <text class="dg-mono" x="28" y="86" style="font-size:11px">    self.text = text</text>
+  <text class="dg-mono" x="28" y="102" style="font-size:11px">    self.page = page</text>
+  <text class="dg-mono" x="28" y="118" style="font-size:11px">    self.score = score</text>
+  <text class="dg-mono" x="28" y="136" style="font-size:11px">  def __repr__(self): ...</text>
+  <text class="dg-mono" x="28" y="154" style="font-size:11px">  def __eq__(self, other): ...</text>
+  <path d="M286,98 L332,98" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#dz-a)"/>
+  <text class="dg-sub" x="352" y="20">with @dataclass</text>
+  <rect x="352" y="30" width="294" height="82" rx="9" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="dg-mono" x="366" y="52" style="font-size:11px">@dataclass(frozen=True, slots=True)</text>
+  <text class="dg-mono" x="366" y="70" style="font-size:11px">class Chunk:</text>
+  <text class="dg-mono" x="366" y="86" style="font-size:11px">  text: str</text>
+  <text class="dg-mono" x="366" y="102" style="font-size:11px">  page: int</text>
+  <rect x="352" y="124" width="294" height="42" rx="8" fill="var(--panel)" stroke="var(--ok)" stroke-width="1.6"/>
+  <text class="dg-sub" x="499" y="142" text-anchor="middle" fill="var(--ok)">__init__, __repr__, __eq__</text>
+  <text class="dg-sub" x="499" y="159" text-anchor="middle">all generated for you</text>
+  <text class="dg-sub" x="330" y="200" text-anchor="middle">frozen=True makes it unchangeable. slots=True makes it smaller and faster.</text>
+  <text class="dg-sub" x="330" y="218" text-anchor="middle">Both are good defaults for data that travels through a system.</text>
+</svg>
+<figcaption>
+<strong>Same object, a quarter of the code.</strong> And because the fields carry types, your
+editor can autocomplete them and a type checker can catch mistakes before you run anything.
+</figcaption>
+</figure>
+
+```python
+from dataclasses import dataclass
+
+@dataclass(frozen=True, slots=True)
+class Chunk:
+    text: str
+    page: int
+    score: float = 0.0          # a default, like any function argument
+
+chunk = Chunk("hello", page=3)
+print(chunk)                    # Chunk(text='hello', page=3, score=0.0)
+chunk == Chunk("hello", 3)      # True - compares by value, not identity
 ```
+
+:::warning Why frozen=True is worth the small inconvenience
+An unfrozen dataclass can be changed by anything that holds a reference to it — the same
+"two labels, one object" problem from Phase 1, but now across your whole program.
+
+```python
+chunk.score = 0.9        # FrozenInstanceError - and that is a good thing
+new = replace(chunk, score=0.9)   # make a changed copy instead
+```
+Frozen objects are also hashable, so they work as dict keys and set members.
+:::
 
 ## Core Concepts
 

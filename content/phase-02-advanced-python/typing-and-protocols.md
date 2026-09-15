@@ -22,18 +22,71 @@ annotations: request validation, JSON schemas, and the tool schemas an LLM reads
 
 ## Mental Model
 
-```text
-Type hints are checked by a TOOL, not by Python at runtime.
+Type hints are **notes for humans and tools**. Python itself ignores them completely at
+runtime.
 
-def f(x: int) -> str: ...
-f("not an int")      # runs happily; mypy reports an error
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 220" role="img" aria-label="Diagram: type hints are read by your editor and by a type checker before the code runs, but Python discards them at runtime, so validation of external data still needs a runtime check.">
+  <defs>
+    <marker id="ty-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+  </defs>
+  <rect x="14" y="76" width="140" height="56" rx="9" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="dg-mono" x="84" y="100" text-anchor="middle" fill="var(--accent)" style="font-size:11.5px">k: int = 5</text>
+  <text class="dg-sub"  x="84" y="119" text-anchor="middle">a type hint</text>
+  <rect x="222" y="16" width="190" height="48" rx="8" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.7"/>
+  <text class="dg-sub" x="317" y="38" text-anchor="middle" fill="var(--ok)">your editor</text>
+  <text class="dg-sub" x="317" y="55" text-anchor="middle">autocomplete, red squiggles</text>
+  <rect x="222" y="80" width="190" height="48" rx="8" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.7"/>
+  <text class="dg-sub" x="317" y="102" text-anchor="middle" fill="var(--ok)">mypy / pyright</text>
+  <text class="dg-sub" x="317" y="119" text-anchor="middle">catches it before you run</text>
+  <rect x="222" y="144" width="190" height="52" rx="8" fill="var(--panel)" stroke="var(--danger)" stroke-width="1.7"/>
+  <text class="dg-sub" x="317" y="166" text-anchor="middle" fill="var(--danger)">Python at runtime</text>
+  <text class="dg-sub" x="317" y="184" text-anchor="middle">ignores them entirely</text>
+  <path class="dg-arrow" d="M154,94 Q190,94 216,44" marker-end="url(#ty-a)"/>
+  <path class="dg-arrow" d="M154,104 L216,104" marker-end="url(#ty-a)"/>
+  <path class="dg-arrow" d="M154,114 Q190,114 216,164" marker-end="url(#ty-a)"/>
+  <rect x="452" y="84" width="194" height="80" rx="9" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.8"/>
+  <text class="dg-label" x="549" y="108" text-anchor="middle" fill="var(--accent-2)">So for outside data</text>
+  <text class="dg-sub"   x="549" y="130" text-anchor="middle">use Pydantic to CHECK</text>
+  <text class="dg-sub"   x="549" y="148" text-anchor="middle">at runtime, not just hint</text>
+  <path class="dg-arrow" d="M412,170 Q440,170 446,140" marker-end="url(#ty-a)"/>
+</svg>
+<figcaption>
+<strong>Hints are not validation.</strong> <code>def f(k: int)</code> will happily accept the
+string <code>"5"</code> and fail later somewhere confusing. For anything arriving from an
+API, a file or a model, you need a real runtime check.
+</figcaption>
+</figure>
 
-Exceptions — libraries that read annotations at runtime:
-  Pydantic   → validates and coerces
-  FastAPI    → parses requests, generates OpenAPI
-  dataclasses→ builds __init__
-  LangChain  → derives tool schemas from your signature
+```python
+def search(query: str, k: int = 5) -> list[str]:
+    ...
+
+search("hello", k="3")      # Python runs this. mypy would have stopped you.
 ```
+
+That is why the handbook uses Pydantic for anything crossing a boundary:
+
+```python
+from pydantic import BaseModel, Field
+
+class SearchRequest(BaseModel):
+    query: str = Field(min_length=1, max_length=500)
+    k: int = Field(default=5, ge=1, le=50)
+
+SearchRequest(query="hi", k="3")     # k becomes 3 - coerced and checked
+SearchRequest(query="", k=999)       # ValidationError, raised immediately
+```
+
+:::tip Where to spend your typing effort
+Type the **edges** of your code — function signatures, dataclasses, anything public. That is
+where hints pay for themselves in autocomplete and caught mistakes.
+
+Do not bother annotating every local variable. `count = 0` is obviously an int, and
+`count: int = 0` just adds noise.
+:::
 
 ## Core Concepts
 

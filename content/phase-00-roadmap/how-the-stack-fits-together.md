@@ -39,49 +39,38 @@ A request falls downwards through layers. Each layer has one job.
       <path d="M0,0 L6,0 L3,8 z" fill="var(--text-muted)"/>
     </marker>
   </defs>
-
   <rect x="8" y="10" width="480" height="40" rx="9" class="dg-box"/>
   <text class="dg-label" x="24" y="35">1 · Client</text>
   <text class="dg-sub" x="130" y="35">web page, Slack, another service</text>
-
   <rect x="8" y="66" width="480" height="40" rx="9" class="dg-box"/>
   <text class="dg-label" x="24" y="91">2 · API layer</text>
   <text class="dg-sub" x="130" y="91">who are you? are you over your limit?</text>
-
   <rect x="8" y="122" width="480" height="40" rx="9" fill="var(--panel-2)" stroke="var(--warn)" stroke-width="1.5"/>
   <text class="dg-label" x="24" y="147" fill="var(--warn)">3 · Input checks</text>
   <text class="dg-sub" x="146" y="147">strip secrets, block obvious attacks</text>
-
   <rect x="8" y="178" width="480" height="104" rx="10" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
   <text class="dg-label" x="24" y="202" fill="var(--accent)">4 · The orchestrator</text>
   <text class="dg-sub" x="168" y="202">decides the steps — this is your real app</text>
-
   <rect x="24" y="216" width="138" height="52" rx="8" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.2"/>
   <text class="dg-label" x="36" y="237">Context</text>
   <text class="dg-sub" x="36" y="254">search + memory</text>
-
   <rect x="176" y="216" width="138" height="52" rx="8" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.2"/>
   <text class="dg-label" x="188" y="237">Model</text>
   <text class="dg-sub" x="188" y="254">plus a backup one</text>
-
   <rect x="328" y="216" width="144" height="52" rx="8" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.2"/>
   <text class="dg-label" x="340" y="237">Tools</text>
   <text class="dg-sub" x="340" y="254">SQL, HTTP, search</text>
-
   <rect x="8" y="298" width="480" height="40" rx="9" fill="var(--panel-2)" stroke="var(--warn)" stroke-width="1.5"/>
   <text class="dg-label" x="24" y="323" fill="var(--warn)">5 · Output checks</text>
   <text class="dg-sub" x="160" y="323">right shape? real citations? allowed?</text>
-
   <rect x="8" y="354" width="480" height="40" rx="9" class="dg-box"/>
   <text class="dg-label" x="24" y="379">6 · Answer</text>
   <text class="dg-sub" x="130" y="379">or pause and ask a human first</text>
-
   <path class="dg-arrow" d="M248,50 L248,62" marker-end="url(#st-d)"/>
   <path class="dg-arrow" d="M248,106 L248,118" marker-end="url(#st-d)"/>
   <path class="dg-arrow" d="M248,162 L248,174" marker-end="url(#st-d)"/>
   <path class="dg-arrow" d="M248,282 L248,294" marker-end="url(#st-d)"/>
   <path class="dg-arrow" d="M248,338 L248,350" marker-end="url(#st-d)"/>
-
   <rect x="508" y="10" width="144" height="384" rx="10" fill="var(--panel-2)" stroke="var(--accent-2)" stroke-width="1.5" stroke-dasharray="5 4"/>
   <text class="dg-label" x="580" y="190" text-anchor="middle" fill="var(--accent-2)">Watching</text>
   <text class="dg-sub" x="580" y="210" text-anchor="middle">every layer</text>

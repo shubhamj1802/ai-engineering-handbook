@@ -38,10 +38,8 @@ The "instantly" part is the whole reason these exist. Compare how each one finds
       <path d="M0,0 L8,3 L0,6 z" fill="var(--accent)"/>
     </marker>
   </defs>
-
   <text class="dg-label" x="14" y="22" fill="var(--danger)">A list: look at every item</text>
   <text class="dg-sub"   x="14" y="40">slower and slower as it grows</text>
-
   <rect x="150" y="52" width="66" height="38" rx="7" class="dg-box"/>
   <text class="dg-sub" x="183" y="76" text-anchor="middle">nope</text>
   <rect x="230" y="52" width="66" height="38" rx="7" class="dg-box"/>
@@ -52,31 +50,24 @@ The "instantly" part is the whole reason these exist. Compare how each one finds
   <text class="dg-sub" x="423" y="76" text-anchor="middle">nope</text>
   <rect x="470" y="48" width="86" height="46" rx="8" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="2"/>
   <text class="dg-sub" x="513" y="76" text-anchor="middle" fill="var(--danger)">found it</text>
-
   <path d="M120,71 L144,71" stroke="var(--danger)" stroke-width="1.6" marker-end="url(#dc-s)"/>
   <path d="M216,71 L224,71" stroke="var(--danger)" stroke-width="1.6" marker-end="url(#dc-s)"/>
   <path d="M296,71 L304,71" stroke="var(--danger)" stroke-width="1.6" marker-end="url(#dc-s)"/>
   <path d="M376,71 L384,71" stroke="var(--danger)" stroke-width="1.6" marker-end="url(#dc-s)"/>
   <path d="M456,71 L464,71" stroke="var(--danger)" stroke-width="1.6" marker-end="url(#dc-s)"/>
   <text class="dg-sub" x="580" y="76">5 steps</text>
-
   <line x1="14" y1="120" x2="646" y2="120" stroke="var(--border)" stroke-width="1"/>
-
   <text class="dg-label" x="14" y="152" fill="var(--accent)">A dict: work out where it is</text>
   <text class="dg-sub"   x="14" y="170">same speed with 10 items or 10 million</text>
-
   <rect x="150" y="186" width="120" height="48" rx="8" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
   <text class="dg-mono" x="210" y="206" text-anchor="middle" fill="var(--accent)">"role"</text>
   <text class="dg-sub"  x="210" y="224" text-anchor="middle">the key</text>
-
   <rect x="330" y="182" width="150" height="56" rx="9" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.5"/>
   <text class="dg-sub"  x="405" y="204" text-anchor="middle">hash it to a slot</text>
   <text class="dg-sub"  x="405" y="222" text-anchor="middle">a bit of arithmetic</text>
-
   <rect x="530" y="182" width="116" height="56" rx="9" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
   <text class="dg-mono" x="588" y="204" text-anchor="middle" fill="var(--accent)">"user"</text>
   <text class="dg-sub"  x="588" y="222" text-anchor="middle">1 step</text>
-
   <path d="M270,210 L324,210" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#dc-f)"/>
   <path d="M480,210 L524,210" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#dc-f)"/>
 </svg>

@@ -34,35 +34,28 @@ of those, if it passes this test.*
       <path d="M0,0 L8,3 L0,6 z" fill="var(--accent)"/>
     </marker>
   </defs>
-
   <text class="dg-sub" x="14" y="22">the long way</text>
   <rect x="14" y="32" width="300" height="94" rx="9" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.3"/>
   <text class="dg-mono" x="28" y="54" style="font-size:11.5px">names = []</text>
   <text class="dg-mono" x="28" y="72" style="font-size:11.5px">for user in users:</text>
   <text class="dg-mono" x="28" y="90" style="font-size:11.5px">    if user.active:</text>
   <text class="dg-mono" x="28" y="108" style="font-size:11.5px">        names.append(user.name)</text>
-
   <path d="M322,79 L364,79" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#cp-a)"/>
-
   <text class="dg-sub" x="376" y="22">the short way</text>
   <rect x="376" y="32" width="270" height="94" rx="9" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
   <text class="dg-mono" x="390" y="66" style="font-size:11.5px">names = [</text>
   <text class="dg-mono" x="390" y="86" style="font-size:11.5px">  user.name</text>
   <text class="dg-mono" x="390" y="104" style="font-size:11.5px">  for user in users</text>
   <text class="dg-mono" x="390" y="122" style="font-size:11.5px">  if user.active ]</text>
-
   <rect x="14" y="152" width="196" height="56" rx="8" fill="var(--panel)" stroke="var(--accent)" stroke-width="1.5"/>
   <text class="dg-label" x="28" y="174" fill="var(--accent)">1. what to keep</text>
   <text class="dg-mono"  x="28" y="196" style="font-size:11.5px">user.name</text>
-
   <rect x="230" y="152" width="196" height="56" rx="8" fill="var(--panel)" stroke="var(--accent-3)" stroke-width="1.5"/>
   <text class="dg-label" x="244" y="174" fill="var(--accent-3)">2. what to loop over</text>
   <text class="dg-mono"  x="244" y="196" style="font-size:11.5px">for user in users</text>
-
   <rect x="446" y="152" width="200" height="56" rx="8" fill="var(--panel)" stroke="var(--accent-2)" stroke-width="1.5"/>
   <text class="dg-label" x="460" y="174" fill="var(--accent-2)">3. which ones (optional)</text>
   <text class="dg-mono"  x="460" y="196" style="font-size:11.5px">if user.active</text>
-
   <text class="dg-sub" x="330" y="232" text-anchor="middle">Always these three parts, always in this order.</text>
 </svg>
 <figcaption>

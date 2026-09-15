@@ -32,28 +32,22 @@ A traceback looks like a wall of text. It is actually a very tidy report, and yo
       <path d="M0,0 L8,3 L0,6 z" fill="var(--danger)"/>
     </marker>
   </defs>
-
   <rect x="150" y="14" width="500" height="182" rx="10" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
-
   <text class="dg-mono" x="166" y="38" style="font-size:11.5px">Traceback (most recent call last):</text>
   <text class="dg-mono" x="166" y="60" style="font-size:11.5px">  File "app.py", line 42, in main</text>
   <text class="dg-mono" x="166" y="78" style="font-size:11.5px">    total = summarise(rows)</text>
   <text class="dg-mono" x="166" y="100" style="font-size:11.5px">  File "report.py", line 7, in summarise</text>
   <text class="dg-mono" x="166" y="118" style="font-size:11.5px">    return sum(r["amount"] for r in rows)</text>
-
   <rect x="158" y="136" width="484" height="50" rx="8" fill="var(--panel)" stroke="var(--danger)" stroke-width="2"/>
   <text class="dg-mono" x="172" y="157" style="font-size:12px" fill="var(--danger)">KeyError: &apos;amount&apos;</text>
   <text class="dg-sub"  x="172" y="176">what went wrong, and with which value</text>
-
   <text class="dg-sub" x="14" y="40" fill="var(--text-muted)">how you</text>
   <text class="dg-sub" x="14" y="56" fill="var(--text-muted)">got there</text>
   <text class="dg-sub" x="14" y="76">read this</text>
   <text class="dg-sub" x="14" y="92">second</text>
-
   <text class="dg-label" x="14" y="152" fill="var(--danger)">START HERE</text>
   <text class="dg-sub"   x="14" y="170">read this first</text>
   <path d="M110,148 L152,158" stroke="var(--danger)" stroke-width="1.8" fill="none" marker-end="url(#er-a)"/>
-
   <text class="dg-sub" x="330" y="222" text-anchor="middle">The last line says WHAT broke. The lines above say WHERE you came from.</text>
   <text class="dg-sub" x="330" y="244" text-anchor="middle">The deepest file listed, second from the bottom, is usually where your bug lives.</text>
 </svg>

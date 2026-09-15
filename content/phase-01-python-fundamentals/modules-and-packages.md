@@ -36,37 +36,28 @@ and the first match wins.
       <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
     </marker>
   </defs>
-
   <rect x="14" y="28" width="150" height="48" rx="9" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
   <text class="dg-mono" x="89" y="50" text-anchor="middle" fill="var(--accent)">import json</text>
   <text class="dg-sub"  x="89" y="68" text-anchor="middle">where is it?</text>
-
   <path class="dg-arrow" d="M164,52 L204,52" marker-end="url(#md-a)"/>
-
   <rect x="214" y="16" width="200" height="44" rx="8" class="dg-box"/>
   <text class="dg-label" x="230" y="36">1. built into Python</text>
   <text class="dg-sub"   x="230" y="52">json, os, pathlib, csv</text>
-
   <rect x="214" y="70" width="200" height="44" rx="8" class="dg-box"/>
   <text class="dg-label" x="230" y="90">2. your own folder</text>
   <text class="dg-sub"   x="230" y="106">where you ran the script</text>
-
   <rect x="214" y="124" width="200" height="44" rx="8" class="dg-box"/>
   <text class="dg-label" x="230" y="144">3. your .venv</text>
   <text class="dg-sub"   x="230" y="160">pip / uv installed things</text>
-
   <rect x="214" y="178" width="200" height="40" rx="8" fill="var(--panel)" stroke="var(--danger)" stroke-width="1.6"/>
   <text class="dg-sub" x="230" y="203" fill="var(--danger)">not found: ModuleNotFoundError</text>
-
   <path class="dg-arrow" d="M314,60 L314,66" marker-end="url(#md-a)"/>
   <path class="dg-arrow" d="M314,114 L314,120" marker-end="url(#md-a)"/>
   <path class="dg-arrow" d="M314,168 L314,174" marker-end="url(#md-a)"/>
-
   <rect x="450" y="60" width="196" height="60" rx="9" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.8"/>
   <text class="dg-label" x="548" y="84" text-anchor="middle" fill="var(--ok)">first match wins</text>
   <text class="dg-sub"   x="548" y="104" text-anchor="middle">it stops looking</text>
   <path d="M414,38 Q440,38 448,74" stroke="var(--ok)" stroke-width="1.6" fill="none" marker-end="url(#md-a)"/>
-
   <text class="dg-sub" x="330" y="240" text-anchor="middle">You can see the real list any time with: import sys; print(sys.path)</text>
 </svg>
 <figcaption>

@@ -138,6 +138,24 @@ for (const phaseDir of readdirSync(CONTENT)) {
       }
     });
     if (depth !== 0) fail(path, `${depth} unclosed ::: container(s)`);
+
+    // A blank line inside a raw HTML block ends that block as far as markdown-it is
+    // concerned, so everything after it is parsed as markdown. In an inline SVG that
+    // wraps elements (and the closing </svg>) in <p> tags and the figure renders
+    // broken or half-missing. Cheap to check, invisible to catch by eye.
+    for (const figure of raw.match(/<figure[\s\S]*?<\/figure>/g) || []) {
+      const lines = figure.split(String.fromCharCode(10));
+      const blankAt = lines.findIndex(
+        (line, idx) => idx > 0 && idx < lines.length - 1 && line.trim() === '',
+      );
+      if (blankAt !== -1) {
+        fail(
+          path,
+          `blank line inside a <figure> block (relative line ${blankAt + 1}) - ` +
+            'it breaks the inline SVG; remove blank lines inside figures',
+        );
+      }
+    }
   }
 }
 

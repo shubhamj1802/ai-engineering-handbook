@@ -38,32 +38,26 @@ hard to test.
       <path d="M0,0 L8,3 L0,6 z" fill="var(--warn)"/>
     </marker>
   </defs>
-
   <rect x="14" y="40" width="150" height="96" rx="10" class="dg-box"/>
   <text class="dg-label" x="30" y="64">Goes in</text>
   <text class="dg-sub"   x="30" y="86">values you pass</text>
   <text class="dg-sub"   x="30" y="104">defaults if you don't</text>
   <text class="dg-sub"   x="30" y="122">*args, **kwargs</text>
-
   <rect x="238" y="30" width="170" height="116" rx="12" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2.2"/>
   <text class="dg-label" x="323" y="66" text-anchor="middle" fill="var(--accent)">The function</text>
   <text class="dg-sub"   x="323" y="88" text-anchor="middle">does one job</text>
   <text class="dg-sub"   x="323" y="106" text-anchor="middle">has a name that</text>
   <text class="dg-sub"   x="323" y="122" text-anchor="middle">says what it does</text>
-
   <rect x="482" y="40" width="164" height="96" rx="10" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.8"/>
   <text class="dg-label" x="564" y="72" text-anchor="middle" fill="var(--ok)">Comes out</text>
   <text class="dg-sub"   x="564" y="94" text-anchor="middle">one return value</text>
   <text class="dg-sub"   x="564" y="112" text-anchor="middle">easy to check</text>
-
   <path class="dg-arrow" d="M164,88 L232,88" marker-end="url(#fn-a)"/>
   <path class="dg-arrow" d="M408,88 L476,88" marker-end="url(#fn-a)"/>
-
   <rect x="238" y="182" width="170" height="52" rx="9" fill="var(--panel)" stroke="var(--warn)" stroke-width="1.6" stroke-dasharray="5 4"/>
   <text class="dg-sub" x="323" y="204" text-anchor="middle" fill="var(--warn)">files, network, print</text>
   <text class="dg-sub" x="323" y="222" text-anchor="middle">these leak out the bottom</text>
   <path d="M323,146 L323,176" stroke="var(--warn)" stroke-width="1.6" fill="none" marker-end="url(#fn-w)"/>
-
   <text class="dg-sub" x="470" y="212">Fewer of these = easier tests</text>
 </svg>
 <figcaption>

@@ -31,10 +31,8 @@ separated:
   <rect x="200" y="10" width="250" height="52" rx="10" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="2"/>
   <text class="dg-label" x="325" y="33" text-anchor="middle" fill="var(--accent-3)">Python itself</text>
   <text class="dg-sub"   x="325" y="50" text-anchor="middle">installed once on your computer</text>
-
   <path class="dg-arrow" d="M260,62 L150,104" stroke-dasharray="4 3"/>
   <path class="dg-arrow" d="M390,62 L500,104" stroke-dasharray="4 3"/>
-
   <rect x="16" y="106" width="290" height="170" rx="12" fill="none" stroke="var(--border-strong)" stroke-width="1.5"/>
   <text class="dg-label" x="32" y="130">project-a/</text>
   <rect x="32" y="144" width="258" height="56" rx="8" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
@@ -43,7 +41,6 @@ separated:
   <rect x="32" y="210" width="258" height="50" rx="8" fill="var(--panel)" stroke="var(--border)" stroke-width="1.2"/>
   <text class="dg-mono" x="46" y="230">pyproject.toml</text>
   <text class="dg-sub"  x="46" y="248">the list of what this project needs</text>
-
   <rect x="354" y="106" width="290" height="170" rx="12" fill="none" stroke="var(--border-strong)" stroke-width="1.5"/>
   <text class="dg-label" x="370" y="130">project-b/</text>
   <rect x="370" y="144" width="258" height="56" rx="8" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
@@ -52,7 +49,6 @@ separated:
   <rect x="370" y="210" width="258" height="50" rx="8" fill="var(--panel)" stroke="var(--border)" stroke-width="1.2"/>
   <text class="dg-mono" x="384" y="230">pyproject.toml</text>
   <text class="dg-sub"  x="384" y="248">a different list</text>
-
   <text class="dg-sub" x="330" y="294" text-anchor="middle">Two versions of the same package, on one computer, peacefully.</text>
 </svg>
 <figcaption>

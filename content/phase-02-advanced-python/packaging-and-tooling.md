@@ -21,16 +21,69 @@ dependency releases a breaking change — which, in this ecosystem, happens mont
 
 ## Mental Model
 
-```text
-pyproject.toml   what you declare you need        (ranges, human-edited)
-uv.lock          what you actually got            (exact versions + hashes, generated)
-.venv/           where it is installed            (disposable, gitignored)
+A folder of scripts and an installable project are different things. The difference is a
+single file that says what this project is and what it needs.
 
-uv add X         edit declaration + lock + install
-uv sync          make .venv match the lock exactly
-uv sync --frozen make .venv match the lock, failing if the lock is stale (CI)
-uv lock --upgrade  deliberately refresh versions
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 250" role="img" aria-label="Diagram: a loose folder of scripts with imports that only work from one directory, compared with a packaged project whose pyproject.toml declares its dependencies and lets it be installed and run from anywhere.">
+  <defs>
+    <marker id="pk-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+  <text class="dg-label" x="14" y="22" fill="var(--warn)">A folder of scripts</text>
+  <rect x="14" y="34" width="250" height="118" rx="10" fill="var(--panel-2)" stroke="var(--warn)" stroke-width="1.6"/>
+  <text class="dg-mono" x="30" y="58" style="font-size:11.5px">my_stuff/</text>
+  <text class="dg-mono" x="30" y="78" style="font-size:11.5px">  script.py</text>
+  <text class="dg-mono" x="30" y="96" style="font-size:11.5px">  helpers.py</text>
+  <text class="dg-mono" x="30" y="114" style="font-size:11.5px">  notes.txt</text>
+  <text class="dg-sub"  x="30" y="138" fill="var(--warn)">works only from this folder</text>
+  <path d="M272,92 L322,92" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#pk-a)"/>
+  <text class="dg-label" x="344" y="22" fill="var(--ok)">A real project</text>
+  <rect x="344" y="34" width="302" height="118" rx="10" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.9"/>
+  <text class="dg-mono" x="360" y="58" style="font-size:11.5px">my_project/</text>
+  <text class="dg-mono" x="360" y="76" style="font-size:11.5px">  pyproject.toml</text>
+  <text class="dg-sub"  x="486" y="76" style="font-size:10.5px" fill="var(--ok)">the declaration</text>
+  <text class="dg-mono" x="360" y="94" style="font-size:11.5px">  src/my_project/</text>
+  <text class="dg-mono" x="360" y="112" style="font-size:11.5px">  tests/</text>
+  <text class="dg-sub"  x="360" y="136" fill="var(--ok)">installable, importable, runnable anywhere</text>
+  <rect x="14" y="176" width="632" height="58" rx="9" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.3"/>
+  <text class="dg-sub" x="330" y="198" text-anchor="middle">pyproject.toml is the source of truth: the name, the Python version, the dependencies,</text>
+  <text class="dg-sub" x="330" y="218" text-anchor="middle">and the settings for your formatter, linter and type checker, all in one place.</text>
+</svg>
+<figcaption>
+<strong>The <code>src/</code> layout is worth the extra folder.</strong> It forces you to
+install your own package to import it, which means your tests exercise the same code path a
+real user would — and import bugs surface on your machine instead of theirs.
+</figcaption>
+</figure>
+
+```toml
+# pyproject.toml - the whole project in one file
+[project]
+name = "my-project"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = ["httpx>=0.27", "pydantic>=2.7"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
 ```
+
+```bash
+uv sync                  # build the environment from this file
+uv run pytest            # run tests inside it
+```
+
+:::tip Pin what you install, declare what you need
+`pyproject.toml` says "I need httpx 0.27 or newer". The lock file records "we actually
+installed 0.27.2" so a colleague gets byte-identical packages.
+
+Commit both. The declaration is your intent; the lock file is what reproducibly works.
+:::
 
 ## Core Concepts
 

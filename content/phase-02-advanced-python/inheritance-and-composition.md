@@ -22,28 +22,84 @@ that know about their children) and the codebase calcifies.
 
 ## Mental Model
 
-```text
-INHERITANCE   "is-a"      QdrantStore IS A VectorStore
-COMPOSITION   "has-a"     RagService HAS A VectorStore and HAS AN LLMClient
+Two ways to reuse code, and one of them ages much better.
 
-Prefer composition. Use inheritance only to share an interface,
-almost never to share implementation.
+- **Inheritance** says *is a*. A `CachedRetriever` **is a** `Retriever`.
+- **Composition** says *has a*. A `Service` **has a** retriever.
+
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 250" role="img" aria-label="Diagram comparing inheritance, where subclasses form a rigid tree and a change at the top affects everything below, with composition, where a service holds interchangeable parts that can be swapped freely.">
+  <text class="dg-label" x="14" y="22" fill="var(--warn)">Inheritance — a rigid tree</text>
+  <rect x="96" y="32" width="120" height="34" rx="7" fill="var(--panel-2)" stroke="var(--warn)" stroke-width="1.8"/>
+  <text class="dg-sub" x="156" y="54" text-anchor="middle">Retriever</text>
+  <rect x="20" y="86" width="120" height="34" rx="7" class="dg-box"/>
+  <text class="dg-sub" x="80" y="108" text-anchor="middle">CachedRetriever</text>
+  <rect x="164" y="86" width="126" height="34" rx="7" class="dg-box"/>
+  <text class="dg-sub" x="227" y="108" text-anchor="middle">HybridRetriever</text>
+  <path class="dg-arrow" d="M140,66 L92,82"/>
+  <path class="dg-arrow" d="M180,66 L218,82"/>
+  <text class="dg-sub" x="14" y="142" fill="var(--warn)">Change the parent and everything below it changes too.</text>
+  <text class="dg-sub" x="14" y="160" fill="var(--warn)">Need caching AND hybrid? Now you are stuck.</text>
+  <line x1="320" y1="14" x2="320" y2="236" stroke="var(--border)" stroke-width="1"/>
+  <text class="dg-label" x="344" y="22" fill="var(--ok)">Composition — parts you can swap</text>
+  <rect x="344" y="32" width="150" height="40" rx="8" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="2"/>
+  <text class="dg-sub" x="419" y="57" text-anchor="middle" fill="var(--ok)">Service</text>
+  <rect x="344" y="92" width="136" height="32" rx="6" class="dg-box"/>
+  <text class="dg-sub" x="412" y="112" text-anchor="middle">a retriever</text>
+  <rect x="344" y="132" width="136" height="32" rx="6" class="dg-box"/>
+  <text class="dg-sub" x="412" y="152" text-anchor="middle">a cache</text>
+  <rect x="344" y="172" width="136" height="32" rx="6" class="dg-box"/>
+  <text class="dg-sub" x="412" y="192" text-anchor="middle">a reranker</text>
+  <path class="dg-arrow" d="M400,72 L400,88"/>
+  <path class="dg-arrow" d="M400,124 L400,128"/>
+  <path class="dg-arrow" d="M400,164 L400,168"/>
+  <rect x="502" y="92" width="144" height="112" rx="9" fill="var(--panel)" stroke="var(--ok)" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text class="dg-sub" x="574" y="122" text-anchor="middle" fill="var(--ok)">swap any part</text>
+  <text class="dg-sub" x="574" y="142" text-anchor="middle">for a fake one</text>
+  <text class="dg-sub" x="574" y="162" text-anchor="middle">in a test, with</text>
+  <text class="dg-sub" x="574" y="182" text-anchor="middle">no subclassing</text>
+  <text class="dg-sub" x="344" y="228">Mix and match freely. Nothing is locked to anything.</text>
+</svg>
+<figcaption>
+<strong>Prefer composition.</strong> The tree looks tidier on day one, but the moment you
+need two behaviours at once it forces you into awkward multiple inheritance. Holding parts
+keeps every combination available.
+</figcaption>
+</figure>
+
+```python
+# Inheritance: locked into one chain
+class CachedRetriever(Retriever):
+    def search(self, query):
+        ...
+
+# Composition: parts you pass in, and can replace
+class SearchService:
+    def __init__(self, retriever, cache, reranker=None):
+        self.retriever = retriever          # any object with .search()
+        self.cache = cache
+        self.reranker = reranker
+
+    def search(self, query):
+        if hit := self.cache.get(query):
+            return hit
+        results = self.retriever.search(query)
+        if self.reranker:
+            results = self.reranker.rerank(query, results)
+        self.cache.set(query, results)
+        return results
 ```
 
-```mermaid
-flowchart TB
-  subgraph INH["Inheritance — one interface, many implementations"]
-    VS["VectorStore (ABC)<br/>search() · upsert()"]
-    VS --> CH["ChromaStore"]
-    VS --> QD["QdrantStore"]
-    VS --> MEM["InMemoryStore (tests)"]
-  end
-  subgraph COMP["Composition — assemble behaviour"]
-    RAG["RagService"] --> VS2["store: VectorStore"]
-    RAG --> LLM["llm: LLMClient"]
-    RAG --> CACHE["cache: TTLCache"]
-  end
-```
+The second version can be tested with a fake retriever and a dict as the cache — no
+subclassing, no mocking framework.
+
+:::tip The question that decides it
+Ask: *would I ever want this behaviour without the parent?*
+
+If yes, it is a **part** (composition). If it genuinely only makes sense as a specialised
+version of the parent, inheritance is fine. In practice the answer is usually "yes" and
+inheritance is usually the wrong call.
+:::
 
 ## Core Concepts
 

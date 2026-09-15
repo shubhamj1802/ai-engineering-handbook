@@ -31,32 +31,25 @@ Ten minutes here saves a lot of confusion later.
   <rect x="10" y="10" width="640" height="300" rx="16" fill="none" stroke="var(--border-strong)" stroke-width="2"/>
   <text class="dg-label" x="28" y="36">ARTIFICIAL INTELLIGENCE</text>
   <text class="dg-sub"   x="28" y="52">any machine doing something we'd call smart</text>
-
   <rect x="28" y="228" width="240" height="62" rx="10" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.5"/>
   <text class="dg-label" x="44" y="252">Rule-based AI</text>
   <text class="dg-sub"   x="44" y="270">chess engines, expert systems</text>
   <text class="dg-sub"   x="44" y="284">no learning at all</text>
-
   <rect x="286" y="64" width="350" height="226" rx="14" fill="none" stroke="var(--accent-3)" stroke-width="2"/>
   <text class="dg-label" x="302" y="88" fill="var(--accent-3)">MACHINE LEARNING</text>
   <text class="dg-sub"   x="302" y="104">learned from examples, not hand-written</text>
-
   <rect x="302" y="216" width="150" height="60" rx="10" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.5"/>
   <text class="dg-label" x="316" y="240">Classical ML</text>
   <text class="dg-sub"   x="316" y="257">trees, regression</text>
   <text class="dg-sub"   x="316" y="270">still the right tool often</text>
-
   <rect x="470" y="118" width="152" height="158" rx="12" fill="none" stroke="var(--accent-2)" stroke-width="2"/>
   <text class="dg-label" x="484" y="140" fill="var(--accent-2)">DEEP LEARNING</text>
   <text class="dg-sub"   x="484" y="155">neural networks</text>
-
   <rect x="484" y="168" width="124" height="94" rx="10" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
   <text class="dg-label" x="496" y="190" fill="var(--accent)">Generative AI</text>
   <text class="dg-sub"   x="496" y="205">makes new content</text>
-
   <rect x="496" y="216" width="100" height="34" rx="8" fill="var(--panel)" stroke="var(--accent)" stroke-width="1.5"/>
   <text class="dg-label" x="546" y="237" text-anchor="middle" fill="var(--accent)">LLMs</text>
-
   <text class="dg-sub" x="330" y="336">Read it inwards: every box is a special case of the box around it.</text>
 </svg>
 <figcaption>

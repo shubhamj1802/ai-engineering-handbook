@@ -47,31 +47,24 @@ Here is the shape of almost every serious AI system. Look at how small the model
       <path d="M0,0 L8,3 L0,6 z" fill="var(--warn)"/>
     </marker>
   </defs>
-
   <rect class="dg-box" x="8"   y="52" width="112" height="52" rx="9"/>
   <text class="dg-label" x="64"  y="76" text-anchor="middle">User asks</text>
   <text class="dg-sub"   x="64"  y="92" text-anchor="middle">a question</text>
-
   <rect class="dg-box" x="148" y="52" width="122" height="52" rx="9"/>
   <text class="dg-label" x="209" y="72" text-anchor="middle">Your app</text>
   <text class="dg-sub"   x="209" y="88" text-anchor="middle">login · rules · budget</text>
-
   <rect class="dg-box" x="298" y="52" width="122" height="52" rx="9"/>
   <text class="dg-label" x="359" y="72" text-anchor="middle">Find context</text>
   <text class="dg-sub"   x="359" y="88" text-anchor="middle">docs · memory · tools</text>
-
   <rect x="448" y="46" width="104" height="64" rx="10" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
   <text class="dg-label" x="500" y="72" text-anchor="middle" fill="var(--accent)">The model</text>
   <text class="dg-sub"   x="500" y="90" text-anchor="middle">you just call it</text>
-
   <rect class="dg-box" x="448" y="152" width="104" height="52" rx="9"/>
   <text class="dg-label" x="500" y="172" text-anchor="middle">Check it</text>
   <text class="dg-sub"   x="500" y="188" text-anchor="middle">is it valid?</text>
-
   <rect class="dg-box" x="580" y="52" width="72" height="52" rx="9"/>
   <text class="dg-label" x="616" y="76" text-anchor="middle">Answer</text>
   <text class="dg-sub"   x="616" y="92" text-anchor="middle">to user</text>
-
   <path class="dg-arrow" d="M120,78 L142,78" marker-end="url(#ae-a)"/>
   <path class="dg-arrow" d="M270,78 L292,78" marker-end="url(#ae-a)"/>
   <path class="dg-arrow" d="M420,78 L442,78" marker-end="url(#ae-a)"/>
@@ -79,7 +72,6 @@ Here is the shape of almost every serious AI system. Look at how small the model
   <path class="dg-arrow" d="M552,170 Q616,170 616,110" marker-end="url(#ae-a)"/>
   <path d="M448,178 Q359,178 359,110" stroke="var(--warn)" stroke-width="1.6" fill="none" stroke-dasharray="4 3" marker-end="url(#ae-b)"/>
   <text class="dg-sub" x="392" y="198" fill="var(--warn)">if the answer is bad, try again</text>
-
   <text class="dg-sub" x="330" y="228" text-anchor="middle">You build every box except the green one.</text>
 </svg>
 <figcaption>

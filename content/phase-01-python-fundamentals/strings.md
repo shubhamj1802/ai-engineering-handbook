@@ -31,7 +31,6 @@ string and leaves the original alone.
 <figure class="lesson-figure">
 <svg viewBox="0 0 660 230" role="img" aria-label="Diagram: the word retrieval with each letter in a box. Below each letter is its position counting from zero going forwards, and its negative position counting from minus one going backwards. A highlight shows that slicing from zero to four returns the first four letters.">
   <text class="dg-mono" x="8" y="79" style="font-size:15px">text =</text>
-
   <rect x="60" y="46" width="52" height="52" rx="7" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
   <text class="dg-mono" x="86" y="79" text-anchor="middle" style="font-size:19px">r</text>
   <text class="dg-sub" x="86" y="118" text-anchor="middle" fill="var(--accent)">0</text>
@@ -68,15 +67,12 @@ string and leaves the original alone.
   <text class="dg-mono" x="550" y="79" text-anchor="middle" style="font-size:19px">l</text>
   <text class="dg-sub" x="550" y="118" text-anchor="middle" fill="var(--accent)">8</text>
   <text class="dg-sub" x="550" y="140" text-anchor="middle">-1</text>
-
   <text class="dg-sub" x="8" y="118" fill="var(--accent)">from the start</text>
   <text class="dg-sub" x="8" y="140">from the end</text>
-
   <rect x="58" y="42" width="234" height="60" rx="9" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
   <text class="dg-mono" x="175" y="176" text-anchor="middle" fill="var(--accent)">text[0:4]</text>
   <text class="dg-sub"  x="175" y="196" text-anchor="middle">gives "retr"</text>
   <text class="dg-sub"  x="175" y="214" text-anchor="middle">4 is where it stops, not what it takes</text>
-
   <text class="dg-mono" x="470" y="176" text-anchor="middle">text[-1]</text>
   <text class="dg-sub"  x="470" y="196" text-anchor="middle">gives "l" - the last letter</text>
   <text class="dg-sub"  x="470" y="214" text-anchor="middle">no need to know the length</text>

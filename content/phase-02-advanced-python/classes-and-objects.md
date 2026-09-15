@@ -22,19 +22,72 @@ extra ceremony, and beginner codebases are full of them.
 
 ## Mental Model
 
-```text
-class  = the blueprint        class Retriever: ...
-object = one built thing      retriever = Retriever(index, k=5)
-self   = "this particular object", passed automatically as the first argument
+- A **class** is the template.
+- An **object** is one thing built from that template.
+- **`self`** just means "this particular one".
 
-state    → attributes   (retriever.k, retriever.index)
-behaviour → methods     (retriever.search(query))
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 240" role="img" aria-label="Diagram: one class definition acts as a template from which several independent objects are built, each holding its own values but sharing the same methods.">
+  <defs>
+    <marker id="cl-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+  <rect x="14" y="60" width="200" height="120" rx="12" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2.2"/>
+  <text class="dg-label" x="32" y="86" fill="var(--accent)">class Retriever</text>
+  <text class="dg-sub"   x="32" y="106">the template</text>
+  <text class="dg-sub"   x="32" y="130">holds: index, k</text>
+  <text class="dg-sub"   x="32" y="150">can do: search()</text>
+  <text class="dg-sub"   x="32" y="170">written once</text>
+  <text class="dg-sub" x="250" y="46">built from it, independent of each other</text>
+  <rect x="250" y="58" width="180" height="52" rx="9" class="dg-box"/>
+  <text class="dg-mono" x="266" y="78" style="font-size:11.5px">docs_retriever</text>
+  <text class="dg-sub"  x="266" y="97">k = 5, its own index</text>
+  <rect x="250" y="122" width="180" height="52" rx="9" class="dg-box"/>
+  <text class="dg-mono" x="266" y="142" style="font-size:11.5px">faq_retriever</text>
+  <text class="dg-sub"  x="266" y="161">k = 2, a different index</text>
+  <path class="dg-arrow" d="M214,100 L244,84" marker-end="url(#cl-a)"/>
+  <path class="dg-arrow" d="M214,140 L244,148" marker-end="url(#cl-a)"/>
+  <rect x="466" y="88" width="180" height="58" rx="9" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.5"/>
+  <text class="dg-sub" x="556" y="110" text-anchor="middle">same search() code</text>
+  <text class="dg-sub" x="556" y="130" text-anchor="middle">different data each time</text>
+  <path class="dg-arrow" d="M430,84 Q456,84 462,112" marker-end="url(#cl-a)"/>
+  <path class="dg-arrow" d="M430,148 Q456,148 462,124" marker-end="url(#cl-a)"/>
+  <text class="dg-sub" x="14" y="222">That is why self exists: the method needs to know WHICH one it is working on.</text>
+</svg>
+<figcaption>
+<strong>One template, many independent objects.</strong> The methods are shared; the values
+are not. <code>self</code> is how a shared method knows which object it was called on.
+</figcaption>
+</figure>
+
+The real question is *when* to write a class at all:
+
+| Situation | Use |
+| --- | --- |
+| You pass the same 3 arguments to 5 functions | a **class** — they want to live together |
+| Something holds state between calls (a connection, a cache) | a **class** |
+| Just data, no real behaviour | a **dataclass** (next lesson) |
+| One input, one output, no memory | a plain **function** |
+
+```python
+class Retriever:
+    def __init__(self, index, k: int = 5):
+        self.index = index          # state that outlives one call
+        self.k = k
+
+    def search(self, query: str) -> list[str]:
+        return self.index.query(query, top_k=self.k)
+
+docs = Retriever(docs_index, k=5)
+faq = Retriever(faq_index, k=2)     # same behaviour, different settings
 ```
 
-A class earns its place when **state and behaviour belong together and the state outlives a
-single call** — a client holding a connection, a cache holding entries, a graph holding
-nodes. If you would pass the same three arguments to five functions, those arguments want
-to be a class.
+:::tip Do not reach for a class too early
+A class with only an `__init__` and one method that you call once is just a function wearing
+a costume. Start with functions. Promote to a class when you notice yourself passing the same
+values around, or needing to remember something between calls.
+:::
 
 ## Core Concepts
 

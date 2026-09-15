@@ -31,10 +31,8 @@ Both hold a row of things in order. The difference is one word: **can it change?
       <path d="M0,0 L8,3 L0,6 z" fill="var(--accent)"/>
     </marker>
   </defs>
-
   <text class="dg-label" x="14" y="26" fill="var(--accent)">LIST — can change</text>
   <text class="dg-mono"  x="210" y="26" fill="var(--accent)">[ ]</text>
-
   <rect x="14" y="44" width="60" height="46" rx="7" class="dg-box"/>
   <text class="dg-mono" x="44" y="73" text-anchor="middle">1</text>
   <rect x="82" y="44" width="60" height="46" rx="7" class="dg-box"/>
@@ -43,25 +41,19 @@ Both hold a row of things in order. The difference is one word: **can it change?
   <text class="dg-mono" x="180" y="73" text-anchor="middle">3</text>
   <rect x="218" y="44" width="60" height="46" rx="7" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-dasharray="5 4"/>
   <text class="dg-sub" x="248" y="72" text-anchor="middle" fill="var(--accent)">room</text>
-
   <path d="M320,67 L288,67" stroke="var(--accent)" stroke-width="1.8" marker-end="url(#lt-a)"/>
   <text class="dg-mono" x="330" y="64">.append(4)</text>
   <text class="dg-sub"  x="330" y="84">also .remove(), .pop(), .sort()</text>
-
   <text class="dg-sub" x="14" y="118">Use it when you are collecting things as you go.</text>
-
   <line x1="14" y1="140" x2="646" y2="140" stroke="var(--border)" stroke-width="1"/>
-
   <text class="dg-label" x="14" y="168">TUPLE — sealed</text>
   <text class="dg-mono"  x="180" y="168">( )</text>
-
   <rect x="14" y="186" width="264" height="46" rx="9" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="2"/>
   <text class="dg-mono" x="44"  y="215" text-anchor="middle">12.5</text>
   <line x1="88" y1="192" x2="88" y2="226" stroke="var(--border-strong)" stroke-width="1.2"/>
   <text class="dg-mono" x="140" y="215" text-anchor="middle">48.9</text>
   <line x1="196" y1="192" x2="196" y2="226" stroke="var(--border-strong)" stroke-width="1.2"/>
   <text class="dg-sub"  x="238" y="215" text-anchor="middle">no room</text>
-
   <text class="dg-sub" x="320" y="204">Nothing can be added or removed.</text>
   <text class="dg-sub" x="320" y="224">Use it when the shape is fixed: (latitude, longitude).</text>
 </svg>

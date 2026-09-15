@@ -31,56 +31,43 @@ RAG is two separate pipelines. People conflate them, then cannot tell which one 
       <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
     </marker>
   </defs>
-
   <rect x="8" y="8" width="644" height="130" rx="12" fill="none" stroke="var(--accent-3)" stroke-width="1.6" stroke-dasharray="6 4"/>
   <text class="dg-label" x="24" y="30" fill="var(--accent-3)">ONCE, BEFOREHAND</text>
   <text class="dg-sub" x="186" y="30">you run this when documents change</text>
-
   <rect class="dg-box" x="24"  y="48" width="104" height="54" rx="9"/>
   <text class="dg-label" x="76" y="70" text-anchor="middle">Documents</text>
   <text class="dg-sub"   x="76" y="88" text-anchor="middle">PDFs, pages</text>
-
   <rect class="dg-box" x="168" y="48" width="104" height="54" rx="9"/>
   <text class="dg-label" x="220" y="70" text-anchor="middle">Split up</text>
   <text class="dg-sub"   x="220" y="88" text-anchor="middle">into chunks</text>
-
   <rect class="dg-box" x="312" y="48" width="104" height="54" rx="9"/>
   <text class="dg-label" x="364" y="70" text-anchor="middle">Embed</text>
   <text class="dg-sub"   x="364" y="88" text-anchor="middle">text to numbers</text>
-
   <rect x="456" y="44" width="172" height="62" rx="10" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
   <text class="dg-label" x="542" y="68" text-anchor="middle" fill="var(--accent)">Vector store</text>
   <text class="dg-sub"   x="542" y="88" text-anchor="middle">searchable by meaning</text>
-
   <path class="dg-arrow" d="M128,75 L162,75" marker-end="url(#rg-a)"/>
   <path class="dg-arrow" d="M272,75 L306,75" marker-end="url(#rg-a)"/>
   <path class="dg-arrow" d="M416,75 L450,75" marker-end="url(#rg-a)"/>
-
   <rect x="8" y="158" width="644" height="132" rx="12" fill="none" stroke="var(--accent-2)" stroke-width="1.6" stroke-dasharray="6 4"/>
   <text class="dg-label" x="24" y="180" fill="var(--accent-2)">EVERY QUESTION</text>
   <text class="dg-sub" x="166" y="180">this is the part the user waits for</text>
-
   <rect class="dg-box" x="24" y="198" width="96" height="54" rx="9"/>
   <text class="dg-label" x="72" y="220" text-anchor="middle">Question</text>
   <text class="dg-sub"   x="72" y="238" text-anchor="middle">embed it too</text>
-
   <rect class="dg-box" x="160" y="198" width="118" height="54" rx="9"/>
   <text class="dg-label" x="219" y="220" text-anchor="middle">Search</text>
   <text class="dg-sub"   x="219" y="238" text-anchor="middle">closest chunks</text>
-
   <rect class="dg-box" x="318" y="198" width="118" height="54" rx="9"/>
   <text class="dg-label" x="377" y="220" text-anchor="middle">Build prompt</text>
   <text class="dg-sub"   x="377" y="238" text-anchor="middle">chunks + question</text>
-
   <rect class="dg-box" x="476" y="198" width="152" height="54" rx="9"/>
   <text class="dg-label" x="552" y="220" text-anchor="middle">Answer + sources</text>
   <text class="dg-sub"   x="552" y="238" text-anchor="middle">check the citations</text>
-
   <path class="dg-arrow" d="M120,225 L154,225" marker-end="url(#rg-a)"/>
   <path class="dg-arrow" d="M278,225 L312,225" marker-end="url(#rg-a)"/>
   <path class="dg-arrow" d="M436,225 L470,225" marker-end="url(#rg-a)"/>
   <path class="dg-arrow" d="M542,106 L542,150 Q542,168 300,168 L240,168 L219,192" marker-end="url(#rg-a)" stroke-dasharray="4 3"/>
-
   <text class="dg-sub" x="330" y="316" text-anchor="middle">The model never sees your documents, only the few chunks you chose.</text>
 </svg>
 <figcaption>

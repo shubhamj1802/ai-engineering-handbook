@@ -36,32 +36,24 @@ The real picture: **the value sits in memory, and the variable is a sticky label
       <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
     </marker>
   </defs>
-
   <text class="dg-sub" x="60" y="22" text-anchor="middle">labels</text>
   <text class="dg-sub" x="440" y="22" text-anchor="middle">objects in memory</text>
-
   <rect x="20" y="40" width="80" height="34" rx="17" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
   <text class="dg-mono" x="60" y="62" text-anchor="middle" fill="var(--accent)">a</text>
-
   <rect x="20" y="92" width="80" height="34" rx="17" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
   <text class="dg-mono" x="60" y="114" text-anchor="middle" fill="var(--accent)">b</text>
-
   <rect x="20" y="184" width="80" height="34" rx="17" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.5"/>
   <text class="dg-mono" x="60" y="206" text-anchor="middle">c</text>
-
   <rect x="300" y="52" width="280" height="76" rx="12" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
   <text class="dg-mono"  x="322" y="80">[1, 2, 3]</text>
   <text class="dg-sub"   x="322" y="100">one list · can be changed</text>
   <text class="dg-sub"   x="322" y="117">both labels see every change</text>
-
   <rect x="300" y="170" width="280" height="62" rx="12" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.5"/>
   <text class="dg-mono"  x="322" y="196">42</text>
   <text class="dg-sub"   x="322" y="216">a number · can never be changed</text>
-
   <path d="M100,57 L294,80" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#vd-a)"/>
   <path d="M100,109 L294,100" stroke="var(--accent)" stroke-width="2" fill="none" marker-end="url(#vd-a)"/>
   <path d="M100,201 L294,201" stroke="var(--text-muted)" stroke-width="1.6" fill="none" marker-end="url(#vd-g)"/>
-
   <text class="dg-sub" x="330" y="258" text-anchor="middle">Two labels, one list. There is no second copy anywhere.</text>
 </svg>
 <figcaption>

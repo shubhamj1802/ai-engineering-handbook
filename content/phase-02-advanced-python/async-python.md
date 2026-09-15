@@ -22,32 +22,69 @@ streaming endpoint is async. FastAPI, httpx, LangChain and LangGraph are all asy
 
 ## Mental Model
 
-```text
-SYNC                                   ASYNC
-call API ──wait 200ms── result         call API ─┐
-call API ──wait 200ms── result         call API ─┼─ all waiting together ── results
-call API ──wait 200ms── result         call API ─┘
-total: 600ms                           total: ~200ms
+Async helps when your code is **waiting**, not when it is **calculating**.
+
+Three API calls that each take 200 ms take 600 ms one after another — or about 200 ms if you
+start them all and wait together. Nothing runs in parallel; you just stop wasting the waiting.
+
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 250" role="img" aria-label="Timeline comparison: three synchronous API calls run one after another taking six hundred milliseconds in total, while three async calls overlap their waiting and finish in about two hundred milliseconds.">
+  <text class="dg-label" x="14" y="22" fill="var(--danger)">One after another (sync)</text>
+  <rect x="120" y="32" width="150" height="24" rx="5" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.4"/>
+  <text class="dg-sub" x="195" y="49" text-anchor="middle">waiting 200ms</text>
+  <rect x="274" y="62" width="150" height="24" rx="5" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.4"/>
+  <text class="dg-sub" x="349" y="79" text-anchor="middle">waiting 200ms</text>
+  <rect x="428" y="92" width="150" height="24" rx="5" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.4"/>
+  <text class="dg-sub" x="503" y="109" text-anchor="middle">waiting 200ms</text>
+  <text class="dg-sub" x="14" y="49">call 1</text>
+  <text class="dg-sub" x="14" y="79">call 2</text>
+  <text class="dg-sub" x="14" y="109">call 3</text>
+  <text class="dg-label" x="590" y="79" fill="var(--danger)">600ms</text>
+  <line x1="14" y1="134" x2="646" y2="134" stroke="var(--border)" stroke-width="1"/>
+  <text class="dg-label" x="14" y="160" fill="var(--ok)">All at once (async)</text>
+  <rect x="120" y="170" width="150" height="24" rx="5" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.4"/>
+  <text class="dg-sub" x="195" y="187" text-anchor="middle">waiting 200ms</text>
+  <rect x="120" y="198" width="150" height="24" rx="5" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.4"/>
+  <text class="dg-sub" x="195" y="215" text-anchor="middle">waiting 200ms</text>
+  <rect x="120" y="226" width="150" height="24" rx="5" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.4"/>
+  <text class="dg-sub" x="195" y="243" text-anchor="middle">waiting 200ms</text>
+  <text class="dg-sub" x="14" y="187">call 1</text>
+  <text class="dg-sub" x="14" y="215">call 2</text>
+  <text class="dg-sub" x="14" y="243">call 3</text>
+  <text class="dg-label" x="300" y="215" fill="var(--ok)">~200ms</text>
+  <text class="dg-sub" x="300" y="234">the waiting overlaps</text>
+  <line x1="118" y1="26" x2="118" y2="250" stroke="var(--border-strong)" stroke-width="1.2" stroke-dasharray="3 3"/>
+</svg>
+<figcaption>
+<strong>The work did not get faster — the waiting got shared.</strong> This is why async is
+transformative for API calls and databases, and does nothing at all for a heavy calculation.
+</figcaption>
+</figure>
+
+```python
+import asyncio, httpx
+
+async def fetch(client, url):
+    response = await client.get(url)        # `await` = "park me, run someone else"
+    return response.json()
+
+async def main():
+    async with httpx.AsyncClient() as client:
+        # Starts all three, then waits for all three
+        results = await asyncio.gather(*(fetch(client, u) for u in urls))
 ```
 
-One thread, one event loop. When a coroutine hits `await`, it yields control back to the
-loop, which runs another ready coroutine. Nothing runs in parallel — but waiting happens
-concurrently, and waiting is 99% of what your code does.
-
-```mermaid
-flowchart LR
-  L["event loop"] --> A["coroutine A<br/>awaiting HTTP"]
-  L --> B["coroutine B<br/>awaiting HTTP"]
-  L --> C["coroutine C<br/>computing"]
-  A -.response arrives.-> L
-  B -.response arrives.-> L
+:::warning Async will not speed up a calculation
+```python
+async def crunch():
+    return sum(i * i for i in range(10_000_000))     # pointless as async
 ```
+There is no waiting here, so there is nothing to overlap. Worse, this *blocks the whole
+event loop* — every other coroutine freezes until it finishes. Heavy computation belongs in
+a process pool, not a coroutine.
 
-:::danger The one rule that matters
-**A blocking call inside a coroutine freezes the entire event loop.** `time.sleep`,
-`requests.get`, a CPU-heavy loop, a synchronous database driver — any of these stops every
-other task. Use `asyncio.sleep`, `httpx.AsyncClient`, and `asyncio.to_thread` for
-unavoidable blocking calls.
+The test: **does this line wait on something outside Python?** Network, disk, database: async
+helps. Pure maths: it does not.
 :::
 
 ## Core Concepts

@@ -22,24 +22,84 @@ decorator that turns a function into something an LLM can call; this lesson is h
 
 ## Mental Model
 
-A decorator is **a function that takes a function and returns a replacement**.
+A decorator is **a function that takes your function and gives back a replacement**.
+
+The replacement usually does something before, something after, and calls your original in
+the middle. Your function never changes; callers just reach the wrapper instead.
+
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 250" role="img" aria-label="Diagram: a caller reaches a wrapper function which starts a timer, calls the original function, stops the timer and logs it, then returns the result. The original function is unchanged inside the wrapper.">
+  <defs>
+    <marker id="dk-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+  </defs>
+  <rect x="10" y="98" width="86" height="48" rx="8" class="dg-box"/>
+  <text class="dg-label" x="53" y="120" text-anchor="middle">caller</text>
+  <text class="dg-sub"   x="53" y="137" text-anchor="middle">search(q)</text>
+  <rect x="140" y="28" width="380" height="192" rx="13" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2.2"/>
+  <text class="dg-label" x="158" y="52" fill="var(--accent)">the wrapper (what @timed returns)</text>
+  <rect x="164" y="64" width="150" height="40" rx="7" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.3"/>
+  <text class="dg-sub" x="239" y="88" text-anchor="middle">start the clock</text>
+  <rect x="222" y="118" width="216" height="52" rx="9" fill="var(--panel)" stroke="var(--ok)" stroke-width="2"/>
+  <text class="dg-label" x="330" y="140" text-anchor="middle" fill="var(--ok)">your original function</text>
+  <text class="dg-sub"   x="330" y="158" text-anchor="middle">completely untouched</text>
+  <rect x="346" y="64" width="158" height="40" rx="7" fill="var(--panel)" stroke="var(--border-strong)" stroke-width="1.3"/>
+  <text class="dg-sub" x="425" y="88" text-anchor="middle">stop it, log it</text>
+  <rect x="164" y="182" width="340" height="28" rx="6" fill="var(--panel)" stroke="var(--border)" stroke-width="1.1"/>
+  <text class="dg-sub" x="334" y="201" text-anchor="middle">hand the result back unchanged</text>
+  <rect x="554" y="98" width="92" height="48" rx="8" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.7"/>
+  <text class="dg-sub" x="600" y="120" text-anchor="middle" fill="var(--ok)">result</text>
+  <text class="dg-sub" x="600" y="137" text-anchor="middle">same as before</text>
+  <path class="dg-arrow" d="M96,122 L134,122" marker-end="url(#dk-a)"/>
+  <path class="dg-arrow" d="M520,122 L548,122" marker-end="url(#dk-a)"/>
+  <path class="dg-arrow" d="M239,104 L300,114" marker-end="url(#dk-a)"/>
+  <path class="dg-arrow" d="M400,118 L420,106" marker-end="url(#dk-a)"/>
+</svg>
+<figcaption>
+<strong>The caller cannot tell.</strong> Same name, same arguments, same return value — with
+timing, logging, retries or caching quietly added around the outside.
+</figcaption>
+</figure>
+
+The `@` symbol is pure shorthand. These two are identical:
 
 ```python
 @timed
 def search(query): ...
 
-# is exactly:
+# means exactly this:
 def search(query): ...
 search = timed(search)
 ```
 
-```mermaid
-flowchart LR
-  F["original function"] --> D["decorator"]
-  D --> W["wrapper function<br/>(closes over the original)"]
-  W --> CALL["callers now call the wrapper"]
-  W -.calls.-> F
+And here is the whole pattern, which you will write many times:
+
+```python
+import functools, time, logging
+
+logger = logging.getLogger(__name__)
+
+def timed(func):
+    @functools.wraps(func)                      # keeps the original name and docstring
+    def wrapper(*args, **kwargs):
+        started = time.perf_counter()
+        try:
+            return func(*args, **kwargs)
+        finally:                                # runs even if func raises
+            logger.info("%s took %.1fms", func.__name__, (time.perf_counter() - started) * 1000)
+    return wrapper
 ```
+
+:::mistake Forgetting @functools.wraps
+Without it, the wrapper replaces your function's identity:
+
+```python
+search.__name__     # 'wrapper'   <- unhelpful in every log line and traceback
+help(search)        # shows the wrapper's docstring, not yours
+```
+It is one line and it costs nothing. Always include it.
+:::
 
 ## Core Concepts
 

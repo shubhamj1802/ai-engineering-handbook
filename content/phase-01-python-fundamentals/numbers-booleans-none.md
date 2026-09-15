@@ -33,28 +33,20 @@ Three separate surprises live in this lesson, and all three catch people out:
   <rect x="14" y="20" width="176" height="52" rx="9" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
   <text class="dg-mono" x="102" y="44" text-anchor="middle">0.1 + 0.2</text>
   <text class="dg-sub"  x="102" y="62" text-anchor="middle">looks obvious</text>
-
   <text class="dg-sub" x="204" y="50">becomes</text>
-
   <rect x="270" y="14" width="260" height="64" rx="9" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="2"/>
   <text class="dg-mono" x="400" y="40" text-anchor="middle" fill="var(--danger)" style="font-size:12.5px">0.30000000000000004</text>
   <text class="dg-sub"  x="400" y="60" text-anchor="middle">binary cannot hold 0.1 exactly</text>
   <text class="dg-sub"  x="400" y="74" text-anchor="middle">any more than decimal can hold 1/3</text>
-
   <text class="dg-mono" x="552" y="50" fill="var(--danger)">!= 0.3</text>
-
   <line x1="14" y1="100" x2="646" y2="100" stroke="var(--border)" stroke-width="1"/>
-
   <text class="dg-label" x="14" y="126" fill="var(--ok)">So compare like this instead</text>
-
   <rect x="14" y="140" width="306" height="58" rx="9" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.7"/>
   <text class="dg-mono" x="28" y="162" style="font-size:11.5px">math.isclose(0.1 + 0.2, 0.3)</text>
   <text class="dg-sub"  x="28" y="184">True. For measurements and scores.</text>
-
   <rect x="340" y="140" width="306" height="58" rx="9" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.7"/>
   <text class="dg-mono" x="354" y="162" style="font-size:11.5px">Decimal("0.1") + Decimal("0.2")</text>
   <text class="dg-sub"  x="354" y="184">Exactly 0.3. For money, always.</text>
-
   <text class="dg-sub" x="330" y="228" text-anchor="middle">Never use == on floats. Never use float for currency.</text>
 </svg>
 <figcaption>

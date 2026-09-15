@@ -23,22 +23,79 @@ is AI-specific, and all of it is assumed by every later phase.
 
 ## Mental Model
 
-```mermaid
-flowchart LR
-  ENV["environment variables<br/>+ .env in dev"] --> SET["Settings (validated once)"]
-  SET --> LOG["logging config"]
-  SET --> HTTP["shared HTTP client"]
-  SET --> APP["application"]
-  APP --> LOGS["structured log lines<br/>one JSON object per event"]
-  LOGS --> AGG["log aggregator / trace store"]
+`print` writes a string to the screen and forgets it. A **logger** attaches a level, a
+timestamp and a source to every message, then lets you decide where it goes — without
+touching the code that wrote it.
+
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 240" role="img" aria-label="Diagram: print sends text only to the terminal, while a logger tags each message with a level and sends it to the console, a file or a log service depending on configuration.">
+  <defs>
+    <marker id="lg-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+  </defs>
+  <rect x="14" y="26" width="120" height="44" rx="8" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="1.7"/>
+  <text class="dg-mono" x="74" y="47" text-anchor="middle" fill="var(--danger)" style="font-size:11.5px">print()</text>
+  <text class="dg-sub"  x="74" y="63" text-anchor="middle">no level, no time</text>
+  <rect x="216" y="26" width="150" height="44" rx="8" class="dg-box"/>
+  <text class="dg-sub" x="291" y="44" text-anchor="middle">the terminal only</text>
+  <text class="dg-sub" x="291" y="61" text-anchor="middle">nowhere else, ever</text>
+  <path class="dg-arrow" d="M134,48 L210,48" marker-end="url(#lg-a)"/>
+  <line x1="14" y1="88" x2="646" y2="88" stroke="var(--border)" stroke-width="1"/>
+  <rect x="14" y="116" width="120" height="58" rx="8" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="dg-mono" x="74" y="138" text-anchor="middle" fill="var(--accent)" style="font-size:11px">logger.info()</text>
+  <text class="dg-sub"  x="74" y="155" text-anchor="middle">level + time</text>
+  <text class="dg-sub"  x="74" y="169" text-anchor="middle">+ which module</text>
+  <rect x="196" y="104" width="130" height="34" rx="6" class="dg-box"/>
+  <text class="dg-sub" x="261" y="125" text-anchor="middle">the console</text>
+  <rect x="196" y="146" width="130" height="34" rx="6" class="dg-box"/>
+  <text class="dg-sub" x="261" y="167" text-anchor="middle">a file</text>
+  <rect x="196" y="188" width="130" height="34" rx="6" class="dg-box"/>
+  <text class="dg-sub" x="261" y="209" text-anchor="middle">a log service</text>
+  <path class="dg-arrow" d="M134,138 Q170,138 190,121" marker-end="url(#lg-a)"/>
+  <path class="dg-arrow" d="M134,145 L190,161" marker-end="url(#lg-a)"/>
+  <path class="dg-arrow" d="M134,152 Q170,152 190,199" marker-end="url(#lg-a)"/>
+  <rect x="380" y="116" width="266" height="86" rx="9" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.7"/>
+  <text class="dg-label" x="513" y="140" text-anchor="middle" fill="var(--ok)">and you can filter</text>
+  <text class="dg-sub"   x="513" y="162" text-anchor="middle">DEBUG while developing</text>
+  <text class="dg-sub"   x="513" y="182" text-anchor="middle">WARNING in production</text>
+  <path class="dg-arrow" d="M326,161 L374,161" marker-end="url(#lg-a)"/>
+</svg>
+<figcaption>
+<strong>Same call, configurable destination.</strong> The code that logs never needs to know
+where the message ends up — which is exactly why you can turn the noise up while debugging
+and down in production.
+</figcaption>
+</figure>
+
+The whole setup is two lines per module:
+
+```python
+import logging
+
+logger = logging.getLogger(__name__)     # __name__ = this module's name, automatically
+
+logger.debug("retrieved %d chunks", len(chunks))     # detail, usually hidden
+logger.info("request finished in %.0fms", elapsed)   # normal operation
+logger.warning("falling back to keyword search")     # something to look at
+logger.error("provider call failed", exc_info=True)  # include the traceback
 ```
 
-Four rules:
+| Level | Use it when | Visible in production? |
+| --- | --- | --- |
+| `debug` | tracing your own logic | no |
+| `info` | normal, notable events | usually |
+| `warning` | recovered from something bad | yes |
+| `error` | the request failed | yes, and someone gets paged |
 
-1. Configuration is read **once**, at startup, and validated.
-2. Logs are **structured** (key/value), not prose.
-3. Every request carries a **correlation id** through every layer.
-4. HTTP clients are **created once** and reused.
+:::mistake Never put secrets or user data in a log
+```python
+logger.info("calling API with key %s", api_key)     # now your key is in the log file
+logger.info("user asked: %s", question)             # and possibly personal data
+```
+Logs get shipped to third-party services, kept for months and read by lots of people. Log
+*identifiers*, not contents: `logger.info("request %s from tenant %s", request_id, tenant_id)`.
+:::
 
 ## Core Concepts
 

@@ -23,21 +23,63 @@ tests apply.
 
 ## Mental Model
 
-```text
-        fast, many          ← unit tests: pure functions, no I/O (milliseconds)
-       ─────────────
-      integration tests     ← real DB / vector store, fake LLM (seconds)
-     ─────────────────
-    end-to-end / evals      ← real everything, small dataset, scheduled (minutes, costs money)
+A test is **one sentence about what your code should do**, written so a machine can check it.
 
-Test doubles:
-  stub  returns canned data
-  fake  a working lightweight implementation (InMemoryStore)
-  mock  records calls so you can assert on them
+Every test has the same three beats, and keeping them visibly separate makes tests readable
+years later:
+
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 220" role="img" aria-label="Diagram of the arrange, act, assert pattern: first set up the inputs, then call the one thing under test, then check exactly one outcome.">
+  <defs>
+    <marker id="ts-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--text-muted)"/>
+    </marker>
+  </defs>
+  <rect x="14" y="34" width="190" height="86" rx="10" fill="var(--panel-2)" stroke="var(--accent-3)" stroke-width="1.8"/>
+  <text class="dg-label" x="32" y="58" fill="var(--accent-3)">1. Arrange</text>
+  <text class="dg-sub"   x="32" y="80">build the inputs</text>
+  <text class="dg-sub"   x="32" y="98">set up the fake parts</text>
+  <rect x="234" y="34" width="190" height="86" rx="10" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="2"/>
+  <text class="dg-label" x="252" y="58" fill="var(--accent)">2. Act</text>
+  <text class="dg-sub"   x="252" y="80">call the ONE thing</text>
+  <text class="dg-sub"   x="252" y="98">you are testing</text>
+  <rect x="454" y="34" width="192" height="86" rx="10" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.8"/>
+  <text class="dg-label" x="472" y="58" fill="var(--ok)">3. Assert</text>
+  <text class="dg-sub"   x="472" y="80">check one outcome</text>
+  <text class="dg-sub"   x="472" y="98">say what went wrong</text>
+  <path class="dg-arrow" d="M204,77 L228,77" marker-end="url(#ts-a)"/>
+  <path class="dg-arrow" d="M424,77 L448,77" marker-end="url(#ts-a)"/>
+  <rect x="14" y="146" width="632" height="52" rx="9" fill="var(--panel)" stroke="var(--danger)" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text class="dg-sub" x="330" y="168" text-anchor="middle" fill="var(--danger)">If a test needs several Act steps, it is testing several things.</text>
+  <text class="dg-sub" x="330" y="187" text-anchor="middle">Split it, so a failure names exactly what broke.</text>
+</svg>
+<figcaption>
+<strong>One test, one claim.</strong> When a test with one assertion fails, the name tells
+you what is wrong. When a test with nine assertions fails, you start debugging the test.
+</figcaption>
+</figure>
+
+```python
+def test_total_sales_ignores_refunds():
+    # Arrange
+    rows = [{"amount": 10}, {"amount": -4, "refund": True}]
+
+    # Act
+    result = total_sales(rows)
+
+    # Assert
+    assert result == 10
 ```
 
-Never call a real LLM in unit tests: it is slow, costs money, and its non-determinism makes
-the suite flaky. Inject a fake.
+Notice the test name. `test_total_sales_ignores_refunds` tells you what broke without reading
+a single line of the body — that is the point of a long test name.
+
+:::tip Write the failing test first
+It sounds like extra work. It is actually the cheapest way to be sure your test works at all.
+
+A test written after the code often passes for the wrong reason — and a test that can never
+fail is worse than no test, because it buys false confidence.
+:::
 
 ## Core Concepts
 

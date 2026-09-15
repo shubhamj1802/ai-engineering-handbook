@@ -22,24 +22,80 @@ production AI system, and both are simpler than they look.
 
 ## Mental Model
 
-```text
-ITERABLE   something you can loop over            list, dict, file, generator
-ITERATOR   something with __next__(), stateful    iter(list) -> list_iterator
-GENERATOR  a function with `yield`; an iterator whose state is its paused execution
+A normal function builds the **whole list**, then hands it over. A generator hands over
+**one item at a time** and remembers where it stopped.
 
-with block:
-    __enter__()  → set up (open file, start span, acquire lock)
-    ... body ...
-    __exit__()   → tear down, ALWAYS, even on exception or return
+That difference is what lets you process a 10 GB file on a laptop.
+
+<figure class="lesson-figure">
+<svg viewBox="0 0 660 260" role="img" aria-label="Diagram: a function returning a list loads every row into memory at once, while a generator yields one row at a time so memory stays flat regardless of file size.">
+  <defs>
+    <marker id="gn-a" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 z" fill="var(--accent)"/>
+    </marker>
+  </defs>
+  <text class="dg-label" x="14" y="22" fill="var(--danger)">return a list — everything at once</text>
+  <rect x="14" y="34" width="100" height="70" rx="8" class="dg-box"/>
+  <text class="dg-sub" x="64" y="62" text-anchor="middle">10 GB</text>
+  <text class="dg-sub" x="64" y="80" text-anchor="middle">file</text>
+  <rect x="160" y="30" width="300" height="78" rx="10" fill="var(--panel-2)" stroke="var(--danger)" stroke-width="2"/>
+  <text class="dg-sub" x="310" y="54" text-anchor="middle" fill="var(--danger)">all 10 GB in memory</text>
+  <text class="dg-sub" x="310" y="74" text-anchor="middle">before your loop even starts</text>
+  <text class="dg-sub" x="310" y="94" text-anchor="middle">MemoryError on most machines</text>
+  <path class="dg-arrow" d="M114,69 L154,69" marker-end="url(#gn-a)"/>
+  <text class="dg-sub" x="482" y="74">then you finally loop</text>
+  <line x1="14" y1="126" x2="646" y2="126" stroke="var(--border)" stroke-width="1"/>
+  <text class="dg-label" x="14" y="152" fill="var(--ok)">yield — one at a time</text>
+  <rect x="14" y="164" width="100" height="70" rx="8" class="dg-box"/>
+  <text class="dg-sub" x="64" y="192" text-anchor="middle">10 GB</text>
+  <text class="dg-sub" x="64" y="210" text-anchor="middle">file</text>
+  <rect x="160" y="180" width="58" height="38" rx="6" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.6"/>
+  <text class="dg-sub" x="189" y="204" text-anchor="middle">row</text>
+  <rect x="236" y="180" width="58" height="38" rx="6" fill="var(--panel)" stroke="var(--border)" stroke-width="1.2" stroke-dasharray="3 3"/>
+  <text class="dg-sub" x="265" y="204" text-anchor="middle">next</text>
+  <rect x="312" y="180" width="58" height="38" rx="6" fill="var(--panel)" stroke="var(--border)" stroke-width="1.2" stroke-dasharray="3 3"/>
+  <text class="dg-sub" x="341" y="204" text-anchor="middle">next</text>
+  <path class="dg-arrow" d="M114,199 L154,199" marker-end="url(#gn-a)"/>
+  <rect x="420" y="172" width="226" height="54" rx="9" fill="var(--panel-2)" stroke="var(--ok)" stroke-width="1.8"/>
+  <text class="dg-sub" x="533" y="194" text-anchor="middle" fill="var(--ok)">memory stays flat</text>
+  <text class="dg-sub" x="533" y="212" text-anchor="middle">one row at a time, forever</text>
+  <path class="dg-arrow" d="M376,199 L414,199" marker-end="url(#gn-a)"/>
+  <text class="dg-sub" x="14" y="254">The generator is paused between items. Its position IS its state.</text>
+</svg>
+<figcaption>
+<strong>Same loop, completely different memory.</strong> Swapping <code>return</code> for
+<code>yield</code> turns "load it all" into "stream it", and usually costs one word of code.
+</figcaption>
+</figure>
+
+```python
+# Loads the whole file first - dies on a big one
+def read_rows(path):
+    rows = []
+    for line in open(path, encoding="utf-8"):
+        rows.append(parse(line))
+    return rows
+
+# Streams it - works on any size
+def read_rows(path):
+    with open(path, encoding="utf-8") as handle:
+        for line in handle:
+            yield parse(line)          # the only real change
 ```
 
-```mermaid
-flowchart LR
-  CALL["gen = stream()"] --> PAUSE["function body paused<br/>nothing has run yet"]
-  PAUSE -->|next()| Y1["runs until first yield<br/>produces a value, pauses again"]
-  Y1 -->|next()| Y2["resumes after the yield"]
-  Y2 -->|no more yields| STOP["StopIteration → loop ends"]
+Both are used identically: `for row in read_rows(path):`. The caller cannot tell the
+difference, which is why this is such a cheap win.
+
+:::mistake A generator can only be walked once
+```python
+rows = read_rows("data.csv")
+print(sum(1 for _ in rows))     # 1000
+print(sum(1 for _ in rows))     # 0  <- it is exhausted!
 ```
+Once consumed, it is empty. If you need the data twice, either call the generator again or
+wrap it in `list(...)` — and if you do that, accept that you are back to holding everything
+in memory.
+:::
 
 ## Core Concepts
 

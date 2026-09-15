@@ -34,10 +34,8 @@ Python gives you three tools for deciding what happens, and that is genuinely al
       <path d="M0,0 L7,3 L0,6 z" fill="var(--accent)"/>
     </marker>
   </defs>
-
   <text class="dg-mono" x="14" y="26" style="font-size:14px" fill="var(--accent)">if</text>
   <text class="dg-sub"  x="42" y="26">choose one path, once</text>
-
   <path d="M120,58 L152,44 L184,58 L152,72 z" fill="var(--panel-2)" stroke="var(--border-strong)" stroke-width="1.4"/>
   <text class="dg-sub" x="152" y="62" text-anchor="middle">yes?</text>
   <rect x="222" y="30" width="96" height="28" rx="6" class="dg-box"/>
@@ -46,7 +44,6 @@ Python gives you three tools for deciding what happens, and that is genuinely al
   <text class="dg-sub" x="270" y="81" text-anchor="middle">else that</text>
   <path class="dg-arrow" d="M184,52 L216,45" marker-end="url(#cf-a)"/>
   <path class="dg-arrow" d="M184,64 L216,73" marker-end="url(#cf-a)"/>
-
   <text class="dg-mono" x="380" y="26" style="font-size:14px" fill="var(--accent)">for</text>
   <text class="dg-sub"  x="414" y="26">once per item</text>
   <rect x="380" y="40" width="44" height="30" rx="6" class="dg-box"/>
@@ -59,21 +56,16 @@ Python gives you three tools for deciding what happens, and that is genuinely al
   <path class="dg-arrow" d="M528,55 L534,55"/>
   <path class="dg-arrow" d="M580,55 L586,55" marker-end="url(#cf-a)"/>
   <text class="dg-sub" x="380" y="88">you know how many rounds</text>
-
   <line x1="14" y1="112" x2="646" y2="112" stroke="var(--border)" stroke-width="1"/>
-
   <text class="dg-mono" x="14" y="142" style="font-size:14px" fill="var(--accent)">while</text>
   <text class="dg-sub"  x="70" y="142">keep going until something changes</text>
-
   <rect x="150" y="156" width="130" height="44" rx="8" fill="var(--panel-2)" stroke="var(--accent)" stroke-width="1.8"/>
   <text class="dg-sub" x="215" y="182" text-anchor="middle" fill="var(--accent)">do the work</text>
   <path d="M280,178 Q330,178 330,150 Q330,134 215,134 L215,150" stroke="var(--accent)" stroke-width="1.8" fill="none" marker-end="url(#cf-c)"/>
   <text class="dg-sub" x="330" y="128" text-anchor="middle" fill="var(--accent)">still true? go again</text>
-
   <rect x="430" y="156" width="150" height="44" rx="8" fill="var(--panel)" stroke="var(--danger)" stroke-width="1.6" stroke-dasharray="5 4"/>
   <text class="dg-sub" x="505" y="176" text-anchor="middle" fill="var(--danger)">always add a limit</text>
   <text class="dg-sub" x="505" y="192" text-anchor="middle">or it may never stop</text>
-
   <text class="dg-sub" x="150" y="220">you do not know how many rounds</text>
 </svg>
 <figcaption>
